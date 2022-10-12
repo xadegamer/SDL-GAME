@@ -51,17 +51,22 @@ int main(int arg, char* argv[])
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+
+	}
+
 	//Initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags))
 	{
 		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-		success = false;
 	}
 	else
 	{
 		//Get window surface
-		gScreenSurface = SDL_GetWindowSurface(sdlWindow);
+		SDL_Surface* gScreenSurface = SDL_GetWindowSurface(sdlWindow);
 	}
 
 	sdlWindow = SDL_CreateWindow("Week 1 - Intro and Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, NULL);

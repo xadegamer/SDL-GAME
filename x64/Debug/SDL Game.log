@@ -1,7 +1,7 @@
-﻿C:\Program Files\Visual_Studio_Community_2022_17.3.3_x64_PR2\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (SDL Template.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
-D:\Year 2\Git Projects\SDL-GAME\main.cpp(104,36): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-D:\Year 2\Git Projects\SDL-GAME\main.cpp(108,36): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
-D:\Year 2\Git Projects\SDL-GAME\main.cpp(112,36): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
-D:\Year 2\Git Projects\SDL-GAME\main.cpp(116,36): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-  SDL Game.vcxproj -> D:\Year 2\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe
+﻿  main.cpp
+E:\Year 2\CGP\Projects\SDL Game\main.cpp(15,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+E:\Year 2\CGP\Projects\SDL Game\main.cpp(205,24): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+E:\Year 2\CGP\Projects\SDL Game\main.cpp(209,24): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+E:\Year 2\CGP\Projects\SDL Game\main.cpp(213,24): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+E:\Year 2\CGP\Projects\SDL Game\main.cpp(217,24): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+  SDL Game.vcxproj -> E:\Year 2\CGP\Projects\SDL Game\x64\Debug\SDL Game.exe

@@ -1,2 +1,3 @@
-D:\Year 2\COMPUTER GAMES PROGRAMMING\Week 3 - Hardware Acceleration\SDL Game\x64\Debug\SDL Game.exe
-D:\Year 2\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe
+D:\Year 2\COMPUTER GAMES PROGRAMMING\Week 5\SDL Game\x64\Debug\SDL Game.exe
+D:\Year 2\CGP\Projects\SDL Game\x64\Debug\SDL Game.exe
+E:\Year 2\CGP\Projects\SDL Game\x64\Debug\SDL Game.exe

@@ -1,82 +1,136 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <string>
 #include <iostream>
+#include <vector>
+
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
+#include "SDL_ttf.h"
 
 using namespace std;
 
-SDL_Texture* LoadTexture(string filePath, SDL_Renderer* renderTarget)
-{
-	SDL_Texture* texture = nullptr;
-	SDL_Surface* surface = SDL_LoadBMP(filePath.c_str());
+#define PI 3.14159265358979323846
 
-	if (surface == NULL)
+float GetAngle(int x1, int y1, int x2, int y2)
+{
+	float angle = -90 + atan2(y1 - y2, x1 - x2) * (180 / PI);
+	return angle >= 0 ? angle : 360 + angle;
+}
+
+void Blit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget)
+{
+	SDL_Rect dest;
+
+	dest.x = x;
+	dest.y = y;
+	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+
+	if (center)
 	{
-		cout << "Error:" << SDL_GetError() << endl;
+		dest.x -= dest.w / 2;
+		dest.y -= dest.h / 2;
+	}
+
+	SDL_RenderCopy(renderTarget, texture, NULL, &dest);
+}
+
+void blitRotated(SDL_Texture* texture, int x, int y, float angle, SDL_Renderer* renderTarget)
+{
+	SDL_Rect dstRect;
+
+	dstRect.x = x;
+	dstRect.y = y;
+	dstRect.w = dstRect.h = 100;
+	SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
+	dstRect.x -= (dstRect.w / 2);
+	dstRect.y -= (dstRect.h / 2);
+
+	SDL_RenderCopyEx(renderTarget, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
+}
+
+void ToggleCursor(bool show)
+{
+	SDL_ShowCursor(show);
+}
+
+SDL_Texture* loadSurface(std::string path, SDL_Renderer* renderTarget)
+{
+	SDL_Texture* newTexture = NULL;
+
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+
+	if (!loadedSurface == NULL)
+	{
+		newTexture = SDL_CreateTextureFromSurface(renderTarget, loadedSurface);
+
+		if (!newTexture == NULL)
+		{
+			SDL_FreeSurface(loadedSurface);
+		}
+		else
+		{
+			cout << "Unable to create texture from %s! SDL Error:" << SDL_GetError();
+		}
 	}
 	else
 	{
-		texture = SDL_CreateTextureFromSurface(renderTarget, surface);
-		if (texture == NULL)
-		{
-			cout << "Error:" << SDL_GetError() << endl;
-		}
+		cout << "Unable to load image %s! SDL_image Error:" << IMG_GetError();
 	}
-
-	SDL_FreeSurface(surface);
-
-	return texture;
+	
+	return newTexture;
 }
 
 int main(int arg, char* argv[])
 {
 	SDL_Window* sdlWindow = nullptr;
 	SDL_Renderer* renderTarget = nullptr;
-	SDL_Texture* currentImage = nullptr;
+	
+	SDL_Texture* imageTexture = nullptr;
+
+	SDL_Texture* cursorTexture = nullptr;
+	
 	SDL_Rect playerRect;
 	SDL_Rect playerPosition;
 
 	int frameWidth, frameHeight;
 	int textureWidth, textureHeight;
 
-	playerPosition.x = playerPosition.y = 0;
-	playerPosition.w = playerPosition.h = 32;
+	playerPosition.x = playerPosition.y = 100;
+	playerPosition.w = playerPosition.h = 100;
 
 	float frameTime = 0;
 	int prevTime = 0;
 	int currentTime = 0;
 	float deltaTime = 0;
-	float moveSpeed = 5000.0f;
+	float moveSpeed = 500.0f;
+
+	int mouse_x, mouse_y;
+
+	const Uint8* keyState;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-
-	}
-
 	//Initialize PNG loading
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init(imgFlags) & imgFlags))
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
 	{
-		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+		cout << "SDL_image could not initialize!SDL_image Error :" << IMG_GetError();
 	}
 	else
 	{
 		//Get window surface
-		SDL_Surface* gScreenSurface = SDL_GetWindowSurface(sdlWindow);
 	}
 
 	sdlWindow = SDL_CreateWindow("Week 1 - Intro and Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, NULL);
+	
 	renderTarget = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
-	currentImage = LoadTexture("Assets/door.bmp", renderTarget);
+	
+	imageTexture = loadSurface("Assets/Character.png", renderTarget);
 
-	SDL_QueryTexture(currentImage, NULL, NULL, &textureWidth, &textureHeight);
+	cursorTexture  = loadSurface("Assets/Cursor.png", renderTarget);
 
-	frameWidth = textureWidth / 3;
-	frameHeight = textureWidth / 4;
+	SDL_QueryTexture(imageTexture, NULL, NULL, &textureWidth, &textureHeight);
+
+	frameWidth = textureWidth / 6;
+	frameHeight = textureWidth / 1;
 
 	playerRect.x = playerRect.y = 0;
 	playerRect.w = frameWidth;
@@ -93,33 +147,76 @@ int main(int arg, char* argv[])
 		currentTime = SDL_GetTicks();
 		deltaTime = (currentTime - prevTime) / 1000.0f;
 
+		SDL_GetMouseState(&mouse_x, &mouse_y);
+
 		while (SDL_PollEvent(&ev) != 0)
 		{
-			if (ev.type == SDL_QUIT)isRunning = false;
-			else if (ev.type == SDL_KEYDOWN)
+
+			switch (ev.type)
 			{
-				switch (ev.key.keysym.sym)
-				{
-				case SDLK_RIGHT:
-					playerPosition.x += moveSpeed * deltaTime;
+				case SDL_QUIT:
+				isRunning = false;
+				break;
+				
+				case SDL_MOUSEMOTION:
+					//playerPosition.x = mouse_x - playerPosition.w / 2;
+					//playerPosition.y = mouse_y - playerPosition.h / 2;
+					cout << "Mouse x:" << mouse_x << " : Mouse y: " << mouse_y << endl;
 					break;
 
-				case SDLK_LEFT:
-					playerPosition.x -= moveSpeed * deltaTime;
-					break;
-
-				case SDLK_UP:
-					playerPosition.y -= moveSpeed * deltaTime;
-					break;
-
-				case SDLK_DOWN:
-					playerPosition.y += moveSpeed * deltaTime;
-					break;
-
-				default: break;
-				}
+				
+				default:break;
 			}
+			
+			//if (ev.type == SDL_KEYDOWN)
+			//{
+			//	switch (ev.key.keysym.sym)
+			//	{
+			//	case SDLK_RIGHT:
+			//		cout << "Right" << endl;
+			//		playerPosition.x += moveSpeed * deltaTime;
+			//		break;
+
+			//	case SDLK_LEFT:
+			//		cout << "Left" << endl;
+			//		playerPosition.x -= moveSpeed * deltaTime;
+			//		break;
+
+			//	case SDLK_UP:
+			//		cout << "Up" << endl;
+			//		playerPosition.y -= moveSpeed * deltaTime;
+			//		break;
+
+			//	case SDLK_DOWN:
+			//		cout << "Down" << endl;
+			//		playerPosition.y += moveSpeed * deltaTime;
+			//		break;
+
+			//	default: break;
+			//	}
+			//}
 		}
+
+
+		keyState = SDL_GetKeyboardState(NULL);
+		
+		if (keyState[SDL_SCANCODE_RIGHT])
+		{
+			playerPosition.x += moveSpeed;
+		}
+		if (keyState[SDL_SCANCODE_LEFT])
+		{
+			playerPosition.x -= moveSpeed ;
+		}
+		if (keyState[SDL_SCANCODE_UP])
+		{
+			playerPosition.y -= moveSpeed;
+		}
+		if (keyState[SDL_SCANCODE_DOWN])
+		{
+			playerPosition.y += moveSpeed;
+		}
+
 
 		frameTime += deltaTime;
 
@@ -131,18 +228,59 @@ int main(int arg, char* argv[])
 		}
 
 		SDL_RenderClear(renderTarget);
-		SDL_RenderCopy(renderTarget, currentImage, &playerRect, &playerPosition);
+		
+		Blit(cursorTexture, mouse_x, mouse_y, true, renderTarget);
+		
+		///RotateObject(playerPosition,imageTexture, playerPosition.x, playerPosition.y, GetAngle(playerPosition.x, playerPosition.y, mouse_x, mouse_y), renderTarget);
+		
+		SDL_RenderCopyEx(renderTarget, imageTexture, &playerRect, &playerPosition, GetAngle( mouse_x, mouse_y, playerPosition.x, playerPosition.y), NULL, SDL_FLIP_NONE);
+		
+		//SDL_RenderCopy(renderTarget, imageTexture, &playerRect, &playerPosition);
+		
 		SDL_RenderPresent(renderTarget);
 	}
 
 	SDL_DestroyRenderer(renderTarget);
-	SDL_DestroyTexture(currentImage);
+	SDL_DestroyRenderer(renderTarget);
 	SDL_DestroyWindow(sdlWindow);
 	renderTarget = nullptr;
-	currentImage = nullptr;
 	sdlWindow = nullptr;
 
 	SDL_Quit();
 
 	return 0;
 }
+
+class Sprite
+{
+private:
+	SDL_Texture* texture;
+	SDL_Surface imageSurface;
+	SDL_Rect rect;
+	
+public:
+	Sprite();
+	~Sprite();
+
+	void Draw();
+	void Update();
+};
+
+class Vector2
+{
+public:
+	float x, y;
+};
+
+struct Entity {
+	float x;
+	float y;
+	int w;
+	int h;
+	float dx;
+	float dy;
+	int health;
+	int angle;
+	SDL_Texture* texture;
+	Entity* next;
+};

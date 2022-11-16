@@ -1,0 +1,84 @@
+#include "Vector2.h"
+#include <cmath>
+
+
+Vector2::Vector2(): x(0), y(0)
+{
+}
+
+
+Vector2::Vector2(float x, float y) : x(x), y(y)
+{
+}
+
+Vector2::Vector2(const Vector2& v): x(v.x), y(v.y)
+{
+}
+
+Vector2& Vector2::operator=(const Vector2& v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
+
+Vector2 Vector2::operator+(const Vector2& v)
+{
+	return Vector2(x + v.x, y + v.y);
+}
+
+Vector2 Vector2::operator-(const Vector2& v)
+{
+	return Vector2(x - v.x, y - v.y);
+}
+
+Vector2 Vector2::operator-()
+{
+	return Vector2{ -x, -y };
+}
+
+Vector2& Vector2::operator+=(const Vector2& v)
+{
+	x += v.x;
+	y += v.y;
+	return *this;
+}
+
+Vector2& Vector2::operator-=(const Vector2& v)
+{
+	x -= v.x;
+	y -= v.y;
+	return *this;
+}
+
+bool   Vector2::operator==(const Vector2& v) const
+{
+	if (this->x == v.x && this->y == v.y)
+		return true;
+	return false;
+}
+
+float Vector2::dist(const Vector2& v) const
+{
+	return static_cast<float>(std::sqrt((v.x - x) * (v.x - x) + (v.y - y) * (v.y - y)));
+}
+
+Vector2 operator+(const Vector2& lv, const Vector2& rv)
+{
+	Vector2 v(lv);
+	v += rv;
+	return v;
+}
+
+Vector2 operator-(const Vector2& lv, const Vector2& rv)
+{
+	Vector2 v(lv);
+	v -= rv;
+	return v;
+}
+
+std::ostream& operator<<(std::ostream& out, const Vector2& v)
+{
+	out << "(" << v.x << ", " << v.y << ")";
+	return out;
+}

@@ -1,12 +1,33 @@
 #pragma once
 #include "Component.h"
+#include "Vector2.h"
+#include "SpriteRenderer.h"
+
 
 class GameObject
 {
-public:
-
+private:
 	std::vector<Component*> components;
+	Vector2 position;
 
+	std::string textureID;
+	SDL_Texture* texture;
+
+	int currentFrame;
+	int currentRow;
+
+public:
+	GameObject();
+	~GameObject();
+
+	void Load(int x, int y, std::string textureID);
+
+	void Update();
+	void Render(SDL_Renderer* pRenderer);
+	void SetPosition(Vector2 position);
+	Vector2 GetPosition();
+
+public:
 	bool CheckIfComponentExits(Component* newComponent);
 
 	template<class T>
@@ -30,6 +51,21 @@ public:
 		{
 			T* component = dynamic_cast<T*>(components[i]);
 			if (component != nullptr) return  component;
+		}
+	}
+
+
+	template<class T>
+	T* RemoveComponent()
+	{
+		for (size_t i = 0; i < components.size(); i++)
+		{
+			T* component = dynamic_cast<T*>(components[i]);
+			if (component != nullptr)
+			{
+				components.erase(components.begin() + i);
+				return component;
+			}
 		}
 	}
 

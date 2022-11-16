@@ -1,0 +1,51 @@
+#pragma once
+#include "Component.h"
+
+#include <string>
+#include <map>
+#include "SDL.h"
+
+
+
+struct Sprite
+{
+public:
+	SDL_Texture* texture;
+	int textureWidth, textureHeight;
+
+	Sprite(SDL_Texture* texture)
+	{
+		this->texture = texture;
+		SDL_QueryTexture(texture, NULL, NULL, &textureWidth, &textureHeight);
+	}
+};
+
+class SpriteRenderer : public Component
+{
+private:
+	
+	typedef std::map<std::string, Sprite*> TextureMap;
+	static TextureMap textureMap;
+	
+	std::string m_textureID;
+	SDL_Texture* texture;
+
+	int currentFrame;
+	int currentRow;
+
+	int width;
+	int height;
+
+public:
+	SpriteRenderer();
+	~SpriteRenderer();
+	
+	void someFunc();
+	
+	bool Load(std::string fileName, std::string id, SDL_Renderer* pRenderer);
+	void Draw(std::string id, int x, int y, int numberOfCells,int scalerSize, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void DrawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
+	void Animate(std::string id, int x, int y, int numberOfCells, int scalerSize, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+};
+

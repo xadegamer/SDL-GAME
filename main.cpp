@@ -6,9 +6,20 @@
 #include "SDL_mixer.h"
 #include "SDL_ttf.h"
 
+#include "InputManager.h"
+#include "GameObject.h"
+#include "SpriteRenderer.h"
+#include "Game.h"
+
+
 using namespace std;
 
 #define PI 3.14159265358979323846
+
+InputManager* inputmanager;
+
+const int FPS = 60;
+const int DELAY_TIME = 1000.0f / FPS;
 
 float GetAngle(int x1, int y1, int x2, int y2)
 {
@@ -79,15 +90,16 @@ SDL_Texture* loadSurface(std::string path, SDL_Renderer* renderTarget)
 	return newTexture;
 }
 
-int main(int arg, char* argv[])
+
+int OldMain(int arg, char* argv[])
 {
 	SDL_Window* sdlWindow = nullptr;
 	SDL_Renderer* renderTarget = nullptr;
-	
+
 	SDL_Texture* imageTexture = nullptr;
 
 	SDL_Texture* cursorTexture = nullptr;
-	
+
 	SDL_Rect playerRect;
 	SDL_Rect playerPosition;
 
@@ -97,11 +109,13 @@ int main(int arg, char* argv[])
 	playerPosition.x = playerPosition.y = 100;
 	playerPosition.w = playerPosition.h = 100;
 
-	float frameTime = 0;
-	int prevTime = 0;
-	int currentTime = 0;
+	Uint32 previousFrameTicks = SDL_GetTicks();
 	float deltaTime = 0;
-	float moveSpeed = 500.0f;
+
+	Uint32 frameStart, frameTime;
+
+
+	float moveSpeed = 3.0f;
 
 	int mouse_x, mouse_y;
 
@@ -120,12 +134,12 @@ int main(int arg, char* argv[])
 	}
 
 	sdlWindow = SDL_CreateWindow("Week 1 - Intro and Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, NULL);
-	
+
 	renderTarget = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
-	
+
 	imageTexture = loadSurface("Assets/Character.png", renderTarget);
 
-	cursorTexture  = loadSurface("Assets/Cursor.png", renderTarget);
+	cursorTexture = loadSurface("Assets/Cursor.png", renderTarget);
 
 	SDL_QueryTexture(imageTexture, NULL, NULL, &textureWidth, &textureHeight);
 
@@ -141,103 +155,75 @@ int main(int arg, char* argv[])
 	bool isRunning = true;
 	SDL_Event ev;
 
+	inputmanager = inputmanager->GetInstance();
+
+	GameObject* newObject = new GameObject();
+	newObject->AddComponent<SpriteRenderer>();
+
 	while (isRunning)
 	{
-		prevTime = currentTime;
-		currentTime = SDL_GetTicks();
-		deltaTime = (currentTime - prevTime) / 1000.0f;
+		frameStart = SDL_GetTicks();
+
+		inputmanager->Update();
+
+		inputmanager->UpdatePreviousInput();
 
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
 		while (SDL_PollEvent(&ev) != 0)
 		{
-
 			switch (ev.type)
 			{
-				case SDL_QUIT:
+			case SDL_QUIT:
 				isRunning = false;
 				break;
-				
-				case SDL_MOUSEMOTION:
-					//playerPosition.x = mouse_x - playerPosition.w / 2;
-					//playerPosition.y = mouse_y - playerPosition.h / 2;
-					cout << "Mouse x:" << mouse_x << " : Mouse y: " << mouse_y << endl;
-					break;
 
-				
-				default:break;
+			case SDL_MOUSEMOTION:
+				//playerPosition.x = mouse_x - playerPosition.w / 2;
+				//playerPosition.y = mouse_y - playerPosition.h / 2;
+				cout << "Mouse x:" << mouse_x << " : Mouse y: " << mouse_y << endl;
+				break;
+			default:break;
 			}
-			
-			//if (ev.type == SDL_KEYDOWN)
-			//{
-			//	switch (ev.key.keysym.sym)
-			//	{
-			//	case SDLK_RIGHT:
-			//		cout << "Right" << endl;
-			//		playerPosition.x += moveSpeed * deltaTime;
-			//		break;
-
-			//	case SDLK_LEFT:
-			//		cout << "Left" << endl;
-			//		playerPosition.x -= moveSpeed * deltaTime;
-			//		break;
-
-			//	case SDLK_UP:
-			//		cout << "Up" << endl;
-			//		playerPosition.y -= moveSpeed * deltaTime;
-			//		break;
-
-			//	case SDLK_DOWN:
-			//		cout << "Down" << endl;
-			//		playerPosition.y += moveSpeed * deltaTime;
-			//		break;
-
-			//	default: break;
-			//	}
-			//}
 		}
 
-
-		keyState = SDL_GetKeyboardState(NULL);
-		
-		if (keyState[SDL_SCANCODE_RIGHT])
+		if (inputmanager->GetKey(SDL_SCANCODE_UP))
 		{
-			playerPosition.x += moveSpeed;
-		}
-		if (keyState[SDL_SCANCODE_LEFT])
-		{
-			playerPosition.x -= moveSpeed ;
-		}
-		if (keyState[SDL_SCANCODE_UP])
-		{
+			cout << "Up" << endl;
 			playerPosition.y -= moveSpeed;
 		}
-		if (keyState[SDL_SCANCODE_DOWN])
+
+		if (inputmanager->GetKey(SDL_SCANCODE_DOWN))
 		{
+			cout << "Down" << endl;
 			playerPosition.y += moveSpeed;
 		}
 
-
-		frameTime += deltaTime;
-
-		if (frameTime >= 0.25f)
+		if (inputmanager->GetKey(SDL_SCANCODE_LEFT))
 		{
-			frameTime = 0;
-			playerRect.x += frameWidth;
-			if (playerRect.x >= textureWidth) playerRect.x = 0;
+			cout << "Left" << endl;
+			playerPosition.x -= moveSpeed;
 		}
 
+		if (inputmanager->GetKey(SDL_SCANCODE_RIGHT))
+		{
+			cout << "Right" << endl;
+			playerPosition.x += moveSpeed;
+		}
+
+		//Player animation
+		playerRect.x = frameWidth * int(((SDL_GetTicks() / 100) % 6));
+
 		SDL_RenderClear(renderTarget);
-		
+
 		Blit(cursorTexture, mouse_x, mouse_y, true, renderTarget);
-		
-		///RotateObject(playerPosition,imageTexture, playerPosition.x, playerPosition.y, GetAngle(playerPosition.x, playerPosition.y, mouse_x, mouse_y), renderTarget);
-		
-		SDL_RenderCopyEx(renderTarget, imageTexture, &playerRect, &playerPosition, GetAngle( mouse_x, mouse_y, playerPosition.x, playerPosition.y), NULL, SDL_FLIP_NONE);
-		
-		//SDL_RenderCopy(renderTarget, imageTexture, &playerRect, &playerPosition);
-		
+
+		SDL_RenderCopyEx(renderTarget, imageTexture, &playerRect, &playerPosition, GetAngle(mouse_x, mouse_y, playerPosition.x, playerPosition.y), NULL, SDL_FLIP_NONE);
+
 		SDL_RenderPresent(renderTarget);
+
+		frameTime = SDL_GetTicks() - frameStart;
+		if (frameTime < DELAY_TIME) SDL_Delay((int)(DELAY_TIME - frameTime));
 	}
 
 	SDL_DestroyRenderer(renderTarget);
@@ -251,36 +237,22 @@ int main(int arg, char* argv[])
 	return 0;
 }
 
-class Sprite
+int main(int arg, char* argv[])
 {
-private:
-	SDL_Texture* texture;
-	SDL_Surface imageSurface;
-	SDL_Rect rect;
+	Game* g_game = new Game();
+
+	g_game->Init("Chapter 1", 100, 100, 1280, 720, false);
+
+	while (g_game->IsRunning())
+	{
+		g_game->HandleEvents();
+		g_game->Update();
+		g_game->Render();
+	}
+	g_game->Clean();
+
 	
-public:
-	Sprite();
-	~Sprite();
-
-	void Draw();
-	void Update();
-};
-
-class Vector2
-{
-public:
-	float x, y;
-};
-
-struct Entity {
-	float x;
-	float y;
-	int w;
-	int h;
-	float dx;
-	float dy;
-	int health;
-	int angle;
-	SDL_Texture* texture;
-	Entity* next;
-};
+//	OldMain(arg, argv);
+		
+	return 0;
+}

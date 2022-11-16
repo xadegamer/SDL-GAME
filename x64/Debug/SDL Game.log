@@ -1,3 +1,4 @@
 ﻿  SpriteRenderer.cpp
-E:\Year 2\Git Projects\SDL-GAME\SpriteRenderer.cpp(38,141): error C2572: 'SpriteRenderer::Draw': redefinition of default argument: parameter 1
-E:\Year 2\Git Projects\SDL-GAME\SpriteRenderer.h(46): message : see declaration of 'SpriteRenderer::Draw'
+E:\Year 2\Git Projects\SDL-GAME\SpriteRenderer.cpp(94,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\Year 2\Git Projects\SDL-GAME\SpriteRenderer.cpp(95,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  SDL Game.vcxproj -> E:\Year 2\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe

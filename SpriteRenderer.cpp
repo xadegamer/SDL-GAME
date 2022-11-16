@@ -35,25 +35,25 @@ bool SpriteRenderer::Load(std::string fileName, std::string id, SDL_Renderer* pR
 	return false;
 }
 
-void SpriteRenderer::Draw(std::string id, int x, int y, int numberOfCells, int scalerSize, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE)
+void SpriteRenderer::Draw(std::string id, int x, int y, int numberOfCells, int scalerSize, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
-
+	
 	srcRect.x = 0;
 	srcRect.y = 0;
-	
+		
 	srcRect.w = textureMap[id]->textureWidth / numberOfCells;
 	srcRect.h = textureMap[id]->textureHeight;
-	
+		
 	//Position in world
 	destRect.x = x;
 	destRect.y = y;
-
+	
 	//Size of object
 	destRect.w = srcRect.w / scalerSize;
 	destRect.h = srcRect.h / scalerSize;
-
+	
 	SDL_RenderCopyEx(pRenderer, textureMap[id]->texture, &srcRect, &destRect, 0, 0, flip);
 }
 
@@ -78,7 +78,7 @@ void SpriteRenderer::DrawFrame(std::string id, int x, int y, int width, int heig
 	SDL_RenderCopyEx(pRenderer, textureMap[id]->texture, &srcRect, &destRect, 0, 0, flip);
 }
 
-void SpriteRenderer::Animate(std::string id, int x, int y, int numberOfCells, int scalerSize, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
+void SpriteRenderer::Animate(std::string id, Vector2 position, int numberOfCells, int scalerSize, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
 	currentFrame = int(((SDL_GetTicks() / 100) % 6));
 
@@ -91,8 +91,8 @@ void SpriteRenderer::Animate(std::string id, int x, int y, int numberOfCells, in
 	srcRect.h = textureMap[id]->textureHeight;
 
 	//Position in world
-	destRect.x = x;
-	destRect.y = y;
+	destRect.x = position.x;
+	destRect.y = position.y;
 
 	//Size of object
 	destRect.w = srcRect.w / scalerSize;
@@ -101,3 +101,19 @@ void SpriteRenderer::Animate(std::string id, int x, int y, int numberOfCells, in
 	SDL_RenderCopyEx(pRenderer, textureMap[id]->texture, &srcRect, &destRect, 0, 0, flip);
 }
 
+void SpriteRenderer::CursorBlit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget)
+{
+	SDL_Rect dest;
+
+	dest.x = x;
+	dest.y = y;
+	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+
+	if (center)
+	{
+		dest.x -= dest.w / 2;
+		dest.y -= dest.h / 2;
+	}
+
+	SDL_RenderCopy(renderTarget, texture, NULL, &dest);
+}

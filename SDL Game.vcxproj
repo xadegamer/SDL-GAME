@@ -148,6 +148,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />

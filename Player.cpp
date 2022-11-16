@@ -12,6 +12,7 @@ void Player::Render(SDL_Renderer* pRenderer)
 
 void Player::Update()
 {
+	
 }
 
 void Player::Clean()

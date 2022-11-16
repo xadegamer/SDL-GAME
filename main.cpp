@@ -27,7 +27,7 @@ float GetAngle(int x1, int y1, int x2, int y2)
 	return angle >= 0 ? angle : 360 + angle;
 }
 
-void Blit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget)
+void CursorBlit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget)
 {
 	SDL_Rect dest;
 
@@ -216,7 +216,7 @@ int OldMain(int arg, char* argv[])
 
 		SDL_RenderClear(renderTarget);
 
-		Blit(cursorTexture, mouse_x, mouse_y, true, renderTarget);
+		CursorBlit(cursorTexture, mouse_x, mouse_y, true, renderTarget);
 
 		SDL_RenderCopyEx(renderTarget, imageTexture, &playerRect, &playerPosition, GetAngle(mouse_x, mouse_y, playerPosition.x, playerPosition.y), NULL, SDL_FLIP_NONE);
 
@@ -239,15 +239,52 @@ int OldMain(int arg, char* argv[])
 
 int main(int arg, char* argv[])
 {
+	Uint32 frameStart, frameTime;
+	float moveSpeed = 1.0f;
+	
+	frameStart = SDL_GetTicks();
+	
 	Game* g_game = new Game();
 
 	g_game->Init("Chapter 1", 100, 100, 1280, 720, false);
+
+	inputmanager = inputmanager->GetInstance();
 
 	while (g_game->IsRunning())
 	{
 		g_game->HandleEvents();
 		g_game->Update();
 		g_game->Render();
+		
+		inputmanager->Update();
+		inputmanager->UpdatePreviousInput();
+
+		if (inputmanager->GetKey(SDL_SCANCODE_UP))
+		{
+			cout << "Up" << endl;
+			g_game->player.ModifyPosition()->y -= moveSpeed;
+		}
+
+		if (inputmanager->GetKey(SDL_SCANCODE_DOWN))
+		{
+			cout << "Down" << endl;
+			g_game->player.ModifyPosition()->y += moveSpeed;
+		}
+
+		if (inputmanager->GetKey(SDL_SCANCODE_LEFT))
+		{
+			cout << "Left" << endl;
+			g_game->player.ModifyPosition()->x -= moveSpeed;
+		}
+
+		if (inputmanager->GetKey(SDL_SCANCODE_RIGHT))
+		{
+			g_game->player.ModifyPosition()->x += moveSpeed;
+		}
+
+
+		frameTime = SDL_GetTicks() - frameStart;
+		if (frameTime < DELAY_TIME) SDL_Delay((int)(DELAY_TIME - frameTime));
 	}
 	g_game->Clean();
 

@@ -17,6 +17,7 @@ private:
 
 	int currentFrame;
 
+public:
 	GameObject newObject;
 	Player player;
 

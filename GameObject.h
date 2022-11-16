@@ -25,7 +25,7 @@ public:
 	void Update();
 	void Render(SDL_Renderer* pRenderer);
 	void SetPosition(Vector2 position);
-	Vector2 GetPosition();
+	Vector2* ModifyPosition();
 
 public:
 	bool CheckIfComponentExits(Component* newComponent);

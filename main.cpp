@@ -240,9 +240,8 @@ int OldMain(int arg, char* argv[])
 int main(int arg, char* argv[])
 {
 	Uint32 frameStart, frameTime;
-	float moveSpeed = 1.0f;
+	float moveSpeed = 3.0f;
 	
-	frameStart = SDL_GetTicks();
 	
 	Game* g_game = new Game();
 
@@ -252,12 +251,16 @@ int main(int arg, char* argv[])
 
 	while (g_game->IsRunning())
 	{
+		frameStart = SDL_GetTicks();
+		
 		g_game->HandleEvents();
 		g_game->Update();
 		g_game->Render();
 		
 		inputmanager->Update();
 		inputmanager->UpdatePreviousInput();
+
+		g_game->player.SetAngle(GetAngle(inputmanager->GetMousePosition().x, inputmanager->GetMousePosition().y, g_game->player.GetPosition().x, g_game->player.GetPosition().y));
 
 		if (inputmanager->GetKey(SDL_SCANCODE_UP))
 		{

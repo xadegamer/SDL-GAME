@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-
 #include <string>
 #include <map>
 #include "SDL.h"
@@ -48,8 +47,10 @@ public:
 	
 	void DrawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-	void Animate(std::string id, Vector2 position, int numberOfCells, int scalerSize, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void Animate(std::string id, Vector2 position, int numberOfCells, int scalerSize, int currentRow, int currentFrame, float angle, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	
 	void CursorBlit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget);
+
+	Sprite* CreateSprite(std::string fileName, std::string id, SDL_Renderer* pRenderer);
 };
 

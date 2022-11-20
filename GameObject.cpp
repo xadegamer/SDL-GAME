@@ -35,7 +35,7 @@ void GameObject::Render(SDL_Renderer* pRenderer)
 
 	//if (renderer != nullptr) renderer->Draw(textureID, position.x, position.y, 6 , 2, pRenderer);
 
-	if (renderer != nullptr) renderer->Animate(textureID, position, 6, 3, currentRow, currentFrame, pRenderer);
+	if (renderer != nullptr) renderer->Animate(textureID, position,6, 2, currentRow, currentFrame, angle, pRenderer);
 }
 
 void GameObject::SetPosition(Vector2 position)
@@ -46,6 +46,16 @@ void GameObject::SetPosition(Vector2 position)
 Vector2* GameObject::ModifyPosition()
 {
 	return &position;
+}
+
+Vector2 GameObject::GetPosition()
+{
+	return position;
+}
+
+void GameObject::SetAngle(float angle)
+{
+	this->angle = angle;
 }
 
 bool GameObject::CheckIfComponentExits(Component* newComponent)

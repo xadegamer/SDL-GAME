@@ -1,4 +1,7 @@
-﻿  SpriteRenderer.cpp
-E:\Year 2\Git Projects\SDL-GAME\SpriteRenderer.cpp(94,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Git Projects\SDL-GAME\SpriteRenderer.cpp(95,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+﻿  Game.cpp
+  GameObject.cpp
+E:\Year 2\Git Projects\SDL-GAME\GameObject.cpp(14,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\Year 2\Git Projects\SDL-GAME\GameObject.cpp(15,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+E:\Year 2\Git Projects\SDL-GAME\GameObject.h(60): warning C4715: 'GameObject::GetComponent<SpriteRenderer>': not all control paths return a value
   SDL Game.vcxproj -> E:\Year 2\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe

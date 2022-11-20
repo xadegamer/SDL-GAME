@@ -9,6 +9,7 @@ class GameObject
 private:
 	std::vector<Component*> components;
 	Vector2 position;
+	float angle;
 
 	std::string textureID;
 	SDL_Texture* texture;
@@ -24,8 +25,12 @@ public:
 
 	void Update();
 	void Render(SDL_Renderer* pRenderer);
+	
 	void SetPosition(Vector2 position);
 	Vector2* ModifyPosition();
+	Vector2 GetPosition();
+
+	void SetAngle(float angle);
 
 public:
 	bool CheckIfComponentExits(Component* newComponent);

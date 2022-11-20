@@ -78,9 +78,9 @@ void SpriteRenderer::DrawFrame(std::string id, int x, int y, int width, int heig
 	SDL_RenderCopyEx(pRenderer, textureMap[id]->texture, &srcRect, &destRect, 0, 0, flip);
 }
 
-void SpriteRenderer::Animate(std::string id, Vector2 position, int numberOfCells, int scalerSize, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
+void SpriteRenderer::Animate(std::string id, Vector2 position, int numberOfCells, int scalerSize, int currentRow, int currentFrame, float angle, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
-	currentFrame = int(((SDL_GetTicks() / 100) % 6));
+	currentFrame = int(((SDL_GetTicks() / 100) % numberOfCells));
 
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
@@ -98,7 +98,7 @@ void SpriteRenderer::Animate(std::string id, Vector2 position, int numberOfCells
 	destRect.w = srcRect.w / scalerSize;
 	destRect.h = srcRect.h / scalerSize;
 
-	SDL_RenderCopyEx(pRenderer, textureMap[id]->texture, &srcRect, &destRect, 0, 0, flip);
+	SDL_RenderCopyEx(pRenderer, textureMap[id]->texture, &srcRect, &destRect, angle, 0, flip);
 }
 
 void SpriteRenderer::CursorBlit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget)
@@ -116,4 +116,14 @@ void SpriteRenderer::CursorBlit(SDL_Texture* texture, int x, int y, bool center,
 	}
 
 	SDL_RenderCopy(renderTarget, texture, NULL, &dest);
+}
+
+Sprite* SpriteRenderer::CreateSprite(std::string fileName, std::string id, SDL_Renderer* pRenderer)
+{
+	SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
+	if (pTempSurface == 0) return nullptr;
+	SDL_Texture* pTexture = SDL_CreateTextureFromSurface(pRenderer, pTempSurface);
+	SDL_FreeSurface(pTempSurface);
+	if (pTexture != 0) return new Sprite(pTexture);
+	else return nullptr;
 }

@@ -30,12 +30,6 @@ private:
 	std::string m_textureID;
 	SDL_Texture* texture;
 
-	int currentFrame;
-	int currentRow;
-
-	int width;
-	int height;
-
 public:
 	SpriteRenderer();
 	~SpriteRenderer();

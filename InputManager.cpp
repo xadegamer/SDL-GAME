@@ -1,30 +1,23 @@
 #include "InputManager.h"
 
-InputManager* InputManager::instance = nullptr;
+Uint8* InputManager::previousKeyboardState = nullptr;
+const Uint8* InputManager::currentKeyboardState = nullptr;
+int InputManager::keyLength = 0;
 
-InputManager* InputManager::GetInstance()
-{
-	if (instance == nullptr) instance = new InputManager();
-	return instance;
-}
+Uint32 InputManager::previousMouseState = 0;
+Uint32 InputManager::currentMouseState = 0;
 
-void InputManager::ReleaseInstance()
-{
-	if (instance != nullptr)
-	{
-		delete instance;
-		instance = nullptr;
-	}
-}
+int InputManager::mouseX = 0;
+int InputManager::mouseY = 0;
 
-InputManager::InputManager()
+void InputManager::Init()
 {
 	currentKeyboardState = SDL_GetKeyboardState(&keyLength);
 	previousKeyboardState = new Uint8[keyLength];
 	memcpy(previousKeyboardState, currentKeyboardState, keyLength);
 }
 
-InputManager::~InputManager()
+void InputManager::Close()
 {
 	delete[] previousKeyboardState;
 	previousKeyboardState = nullptr;

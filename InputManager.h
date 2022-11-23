@@ -6,40 +6,41 @@
 
 class InputManager
 {
-private:
-	static InputManager* instance;
-	
-	Uint8* previousKeyboardState = nullptr;
-	const Uint8* currentKeyboardState = nullptr;
-	int keyLength = 0;
+private:	
+	static Uint8* previousKeyboardState;
+	static const Uint8* currentKeyboardState;
+	static int keyLength;
 
-	Uint32 previousMouseState = 0;
-	Uint32 currentMouseState = 0;
+	static Uint32 previousMouseState;
+	static Uint32 currentMouseState;
 	
-	int mouseX = 0;
-	int mouseY = 0;
+	static int mouseX;
+	static int mouseY;
+
+	InputManager() = delete;
+	~InputManager() = delete;
 	
 public:
 	enum MOUSE_BUTTON { LEFT = 0, MIDDLE = 1, RIGHT = 2, BACK = 3, FORWARD = 4 };
-	
-	InputManager();
-	~InputManager();
+
+	static void Init();
+
+	static void Close();
 	
 	static InputManager* GetInstance();
 	static void ReleaseInstance();
 
-	bool GetKeyDown(SDL_Scancode key);
-	bool GetKey(SDL_Scancode key);
-	bool GetKeyUp(SDL_Scancode key);
+	static bool GetKeyDown(SDL_Scancode key);
+	static bool GetKey(SDL_Scancode key);
+	static bool GetKeyUp(SDL_Scancode key);
 
-
-	bool GetMouseButtonDown(MOUSE_BUTTON button);
-	bool GetMouseButton(MOUSE_BUTTON button);
-	bool GetMouseButtonUp(MOUSE_BUTTON button);
+	static bool GetMouseButtonDown(MOUSE_BUTTON button);
+	static bool GetMouseButton(MOUSE_BUTTON button);
+	static bool GetMouseButtonUp(MOUSE_BUTTON button);
 	
-	Vector2 GetMousePosition();
+	static Vector2 GetMousePosition();
 	
-	void Update();
-	void UpdatePreviousInput();
+	static void Update();
+	static void UpdatePreviousInput();
 };
 

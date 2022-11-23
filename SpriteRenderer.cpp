@@ -82,8 +82,8 @@ void SpriteRenderer::Animate(std::string id, Vector2 position, int numberOfCells
 {
 	currentFrame = int(((SDL_GetTicks() / 100) % numberOfCells));
 
-	SDL_Rect srcRect;
-	SDL_Rect destRect;
+	SDL_Rect srcRect; // Animation
+	SDL_Rect destRect; // Moving
 
 	srcRect.x = textureMap[id]->textureWidth / numberOfCells * currentFrame;
 	srcRect.y = textureMap[id]->textureHeight * (currentRow - 1);

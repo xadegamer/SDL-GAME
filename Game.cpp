@@ -53,7 +53,7 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	std::cout << "init success\n";
 	isRunning = true; // everything inited successfully, start the main loop
 
-	player.AddComponent<SpriteRenderer>()->Load("Assets/Character.png", "Player", m_pRenderer);
+	player.AddComponent<SpriteRenderer>()->Load("Assets/Walk_firethrower.png", "Player", m_pRenderer);
 	
 	return true;
 }

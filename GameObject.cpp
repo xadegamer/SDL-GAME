@@ -35,7 +35,7 @@ void GameObject::Render(SDL_Renderer* pRenderer)
 
 	//if (renderer != nullptr) renderer->Draw(textureID, position.x, position.y, 6 , 2, pRenderer);
 
-	if (renderer != nullptr) renderer->Animate(textureID, position,6, 2, currentRow, currentFrame, angle, pRenderer);
+	if (renderer != nullptr) renderer->Animate(textureID, position,6, 3, currentRow, currentFrame, angle, pRenderer);
 }
 
 void GameObject::SetPosition(Vector2 position)

@@ -16,8 +16,6 @@ using namespace std;
 
 #define PI 3.14159265358979323846
 
-InputManager* inputmanager;
-
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 
@@ -155,18 +153,18 @@ int OldMain(int arg, char* argv[])
 	bool isRunning = true;
 	SDL_Event ev;
 
-	inputmanager = inputmanager->GetInstance();
-
 	GameObject* newObject = new GameObject();
 	newObject->AddComponent<SpriteRenderer>();
+
+	InputManager::Init();
 
 	while (isRunning)
 	{
 		frameStart = SDL_GetTicks();
 
-		inputmanager->Update();
+		InputManager::Update();
 
-		inputmanager->UpdatePreviousInput();
+		InputManager::UpdatePreviousInput();
 
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
@@ -187,25 +185,25 @@ int OldMain(int arg, char* argv[])
 			}
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_UP))
+		if (InputManager::GetKey(SDL_SCANCODE_UP))
 		{
 			cout << "Up" << endl;
 			playerPosition.y -= moveSpeed;
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_DOWN))
+		if (InputManager::GetKey(SDL_SCANCODE_DOWN))
 		{
 			cout << "Down" << endl;
 			playerPosition.y += moveSpeed;
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_LEFT))
+		if (InputManager::GetKey(SDL_SCANCODE_LEFT))
 		{
 			cout << "Left" << endl;
 			playerPosition.x -= moveSpeed;
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_RIGHT))
+		if (InputManager::GetKey(SDL_SCANCODE_RIGHT))
 		{
 			cout << "Right" << endl;
 			playerPosition.x += moveSpeed;
@@ -247,7 +245,7 @@ int main(int arg, char* argv[])
 
 	g_game->Init("Chapter 1", 100, 100, 1280, 720, false);
 
-	inputmanager = inputmanager->GetInstance();
+	InputManager::Init();
 
 	while (g_game->IsRunning())
 	{
@@ -257,30 +255,30 @@ int main(int arg, char* argv[])
 		g_game->Update();
 		g_game->Render();
 		
-		inputmanager->Update();
-		inputmanager->UpdatePreviousInput();
+		InputManager::Update();
+		InputManager::UpdatePreviousInput();
 
-		g_game->player.SetAngle(GetAngle(inputmanager->GetMousePosition().x, inputmanager->GetMousePosition().y, g_game->player.GetPosition().x, g_game->player.GetPosition().y));
+		g_game->player.SetAngle(GetAngle(InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, g_game->player.GetPosition().x, g_game->player.GetPosition().y));
 
-		if (inputmanager->GetKey(SDL_SCANCODE_UP))
+		if (InputManager::GetKey(SDL_SCANCODE_UP))
 		{
 			cout << "Up" << endl;
 			g_game->player.ModifyPosition()->y -= moveSpeed;
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_DOWN))
+		if (InputManager::GetKey(SDL_SCANCODE_DOWN))
 		{
 			cout << "Down" << endl;
 			g_game->player.ModifyPosition()->y += moveSpeed;
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_LEFT))
+		if (InputManager::GetKey(SDL_SCANCODE_LEFT))
 		{
 			cout << "Left" << endl;
 			g_game->player.ModifyPosition()->x -= moveSpeed;
 		}
 
-		if (inputmanager->GetKey(SDL_SCANCODE_RIGHT))
+		if (InputManager::GetKey(SDL_SCANCODE_RIGHT))
 		{
 			g_game->player.ModifyPosition()->x += moveSpeed;
 		}

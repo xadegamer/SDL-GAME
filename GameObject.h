@@ -1,13 +1,17 @@
 #pragma once
+
+#include <iostream>
+
 #include "Component.h"
-#include "Vector2.h"
+#include "AssetManager.h"
 #include "SpriteRenderer.h"
 #include "Animator.h"
-#include "AssetManager.h"
+
+#include "Vector2.h"
 
 class GameObject
 {
-private:
+protected:
 	std::vector<Component*> components;
 	Vector2 position;
 	float angle;

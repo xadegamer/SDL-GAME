@@ -1,5 +1,10 @@
 #pragma once
 #include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
+#include "SDL_ttf.h"
+
+#include <iostream>
 
 class SDLManager
 {
@@ -11,6 +16,8 @@ private:
 public:
 
 	static bool Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+	
+	static void Clean();
 
 	static SDL_Window* GetWindow() { return m_pWindow; }
 	static SDL_Renderer* GetRenderer() { return m_pRenderer; }

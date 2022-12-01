@@ -1,11 +1,47 @@
 #pragma once
 #include "Component.h"
+#include "SpriteRenderer.h"
+
 #include <string>
-#include <map>
-#include "SDL.h"
+
+
+#include <iostream>
 #include "Vector2.h"
 
-#include "SpriteRenderer.h"
+#include <map>
+#include "SDL.h"
+#include <vector>
+#include <stdio.h>
+
+
+struct AnimationEvent
+{
+	std::string eventName;
+	int frame;
+	void (*eventLogic)();
+	bool isFired;
+
+	AnimationEvent(std::string eventName, int frame, void (*eventLogic)())
+	{
+		this->eventName = eventName;
+		this->frame = frame;
+		this->eventLogic = eventLogic;
+	}
+
+	void TriggerEvent()
+	{
+		if (!isFired)
+		{
+			eventLogic();
+			isFired = true;
+		}
+	}
+
+	void ResetEvent()
+	{
+		if(isFired) isFired = false;
+	}
+};
 
 struct AnimationClip
 {
@@ -25,12 +61,18 @@ public:
 
 	float animSpeed;//a multiplier for how fast to play the animation.
 
-	AnimationClip (std::string name , Sprite* sprite, int numberOfCells, float animSpeed)
+	bool loop;
+
+	std::vector<AnimationEvent> animationEvents;
+
+
+	AnimationClip (std::string name , Sprite* sprite, int numberOfCells, float animSpeed, bool loop = true)
 	{
 		this->name = name;
 		this->sprite = sprite;
 		this->numberOfCells = numberOfCells;
 		this->animSpeed = animSpeed;
+		this->loop = loop;
 		
 		textureHeight = sprite->textureHeight;
 		textureWidth = sprite->textureWidth;
@@ -38,21 +80,51 @@ public:
 		animPixelHeight = textureHeight;
 		animPixelWidth = textureWidth / numberOfCells;
 	}
+
+	void AddAnimationEvent(std::string eventName, int frame, void (*eventLogic)())
+	{
+		animationEvents.push_back(AnimationEvent(eventName, frame, eventLogic));
+	}
+};
+
+struct AnimationTransition
+{
+	std::string name;
+	std::string from;
+	std::string to;
+	float duration;
+	float timeInTransition;
+	bool isPlaying = false;
+	bool isFinished = false;
+
+	AnimationTransition(std::string name, std::string from, std::string to, float duration)
+	{
+		this->name = name;
+		this->from = from;
+		this->to = to;
+		this->duration = duration;
+	}
 };
 
 class Animator : public Component
 {
 private:
 
+	bool isChanging;
+	
 	std::vector<AnimationClip*> animationClips;
 	
 	AnimationClip* currentAnimationClip;
+
+	AnimationClip* lastAnimationClip;
 
 	SpriteRenderer* spriteRenderer;
 
 	SDL_Rect scrRect;
 
 	float timeInAnimtionState; //this is used to calculate which frame of the animation should be shown depending on time
+	
+	int currentFrame; //this is used to calculate which frame of the animation should be shown depending on time
 	
 	void SwitchAnimation(AnimationClip* newClip);
 
@@ -63,12 +135,10 @@ public:
 
 	void SetSpriteRender(SpriteRenderer* spriteRenderer);
 
-	void AddAnimationClip(std::string name ,Sprite* sprite, int numberOfCells, float animSpeed);
+	AnimationClip* AddAnimationClip(std::string name, Sprite* sprite, int numberOfCells, float animSpeed, bool loop = true);
 
 	void ChangeAnimation(std::string name);
 	
-
-
 	void Animate();
 
 	SDL_Rect& GetRect();

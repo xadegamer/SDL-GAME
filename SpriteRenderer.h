@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "Vector2.h"
 
+#include "SDLManager.h"
 
 
 struct Sprite

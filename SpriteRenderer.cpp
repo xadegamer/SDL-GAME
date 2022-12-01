@@ -1,7 +1,5 @@
 #include "SpriteRenderer.h"
 
-#include "SDLManager.h"
-
 SpriteRenderer::SpriteRenderer()
 {
 }

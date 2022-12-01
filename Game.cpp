@@ -1,8 +1,8 @@
 #include "Game.h"
-#include "AssetManager.h"
-#include "InputManager.h"
 
-#include <iostream>
+
+
+
 
 Game::Game()
 {
@@ -17,7 +17,12 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	if (SDLManager::Init(title, xpos, ypos, width, height, fullscreen))
 	{	
+		AssetManager::Init();
+		InputManager::Init();
+		UIManager::Init();
+		
 		isRunning = true;
+		
 		std::cout << "init success\n";
 		isRunning = true; // everything inited successfully, start the main loop
 
@@ -38,8 +43,8 @@ void Game::Render()
 
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 
-	//Render
-	
+	UIManager::Draw();
+
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }
 
@@ -68,9 +73,9 @@ void Game::Update()
 void Game::Clean()
 {
 	std::cout << "cleaning game\n";
-	SDL_DestroyWindow(SDLManager::GetWindow());
-	SDL_DestroyRenderer(SDLManager::GetRenderer());
-	SDL_Quit();
+
+	AssetManager::Clear();
+	SDLManager::Clean();
 }
 
 void Game::LoadScore()

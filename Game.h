@@ -6,6 +6,12 @@
 #include "SpriteRenderer.h"
 
 #include "SDLManager.h"
+#include "AssetManager.h"
+#include "UIManager.h"
+#include "SpriteRenderer.h"
+#include "InputManager.h"
+
+#include <iostream>
 
 class Game
 {
@@ -20,6 +26,7 @@ public:
 	GameObject newObject;
 	Player* player;
 	Sprite* cursor;
+	
 public:
 
 	Game();

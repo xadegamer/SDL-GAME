@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Helper.h"
+#include <iostream>
 
 class Component
 {

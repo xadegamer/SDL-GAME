@@ -14,6 +14,12 @@
 #include "SDL_mixer.h"
 #include "SDL_ttf.h"
 
+#include "AssetManager.h"
+#include "SDLManager.h"
+#include "InputManager.h"
+#include "UIManager.h"
+
+
 //#define PI 3.14159265358979323846
 //
 //float GetAngle(int x1, int y1, int x2, int y2)

@@ -2,7 +2,8 @@
 #include "Component.h"
 #include "Vector2.h"
 #include "SpriteRenderer.h"
-
+#include "Animator.h"
+#include "AssetManager.h"
 
 class GameObject
 {
@@ -12,7 +13,7 @@ private:
 	float angle;
 
 	std::string textureID;
-	SDL_Texture* texture;
+	Sprite* sprite;
 
 	int currentFrame;
 	int currentRow;
@@ -21,10 +22,8 @@ public:
 	GameObject();
 	~GameObject();
 
-	void Load(int x, int y, std::string textureID);
-
 	void Update();
-	void Render(SDL_Renderer* pRenderer);
+	void Render();
 	
 	void SetPosition(Vector2 position);
 	Vector2* ModifyPosition();

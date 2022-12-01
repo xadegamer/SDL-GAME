@@ -258,35 +258,38 @@ int main(int arg, char* argv[])
 		InputManager::Update();
 		InputManager::UpdatePreviousInput();
 
-		g_game->player.SetAngle(GetAngle(InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, g_game->player.GetPosition().x, g_game->player.GetPosition().y));
+		g_game->player->SetAngle(GetAngle(InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, g_game->player->GetPosition().x, g_game->player->GetPosition().y));
 
 		if (InputManager::GetKey(SDL_SCANCODE_UP))
 		{
 			cout << "Up" << endl;
-			g_game->player.ModifyPosition()->y -= moveSpeed;
+			g_game->player->ModifyPosition()->y -= moveSpeed;
 		}
 
 		if (InputManager::GetKey(SDL_SCANCODE_DOWN))
 		{
 			cout << "Down" << endl;
-			g_game->player.ModifyPosition()->y += moveSpeed;
+			g_game->player->ModifyPosition()->y += moveSpeed;
 		}
 
 		if (InputManager::GetKey(SDL_SCANCODE_LEFT))
 		{
+			g_game->player->GetComponent<Animator>()->ChangeAnimation("Walk_firethrower");
 			cout << "Left" << endl;
-			g_game->player.ModifyPosition()->x -= moveSpeed;
+			g_game->player->ModifyPosition()->x -= moveSpeed;
 		}
-
+		
 		if (InputManager::GetKey(SDL_SCANCODE_RIGHT))
 		{
-			g_game->player.ModifyPosition()->x += moveSpeed;
+			g_game->player->GetComponent<Animator>()->ChangeAnimation("FlameThrower");
+			g_game->player->ModifyPosition()->x += moveSpeed;
 		}
 
 
 		frameTime = SDL_GetTicks() - frameStart;
 		if (frameTime < DELAY_TIME) SDL_Delay((int)(DELAY_TIME - frameTime));
 	}
+
 	g_game->Clean();
 
 	

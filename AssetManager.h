@@ -2,25 +2,22 @@
 #include <iostream>
 #include <map>
 #include "SDL.h"
+#include "SpriteRenderer.h"
+
 
 class AssetManager
 {
 private:
-
-	static AssetManager* instance;
-
-	std::map<std::string, SDL_Texture*> textures;
+	static std::map<std::string, Sprite*> sprites;
 
 public:
-	static AssetManager* Instance();
-	static void Release();
-
-	SDL_Texture* GetTexture(std::string filename);
+	static Sprite* GetSprite(std::string filename);
 
 private:
+	AssetManager() = delete;
+	~AssetManager() = delete;
 
-	AssetManager();
-	~AssetManager();
-
+	static void Init();
+	static void Clear();
 };
 

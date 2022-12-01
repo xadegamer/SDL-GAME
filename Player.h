@@ -8,8 +8,7 @@ public:
 	Player();
 	~Player();
 	
-	void Load(int x, int y, std::string textureID);
-	void Render(SDL_Renderer* pRenderer);
+	void Render();
 	void Update();
 	void Clean();
 };

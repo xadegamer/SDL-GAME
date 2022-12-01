@@ -1,46 +1,44 @@
 #include "AssetManager.h"
+#include <SDL_image.h>
+#include "SDLManager.h"
 
-AssetManager* AssetManager::instance = nullptr;
+std::map<std::string, Sprite*> AssetManager::sprites = std::map<std::string, Sprite*>();
 
-AssetManager* AssetManager::Instance()
+
+void AssetManager::Init()
 {
-	if (instance == nullptr) instance = new AssetManager();
-
-	return instance;
 }
 
-void AssetManager::Release()
+void AssetManager::Clear()
 {
-	delete instance;
-	instance = nullptr;
-}
-
-AssetManager::AssetManager()
-{
-
-}
-
-AssetManager::~AssetManager()
-{
-	for (auto tex : textures)
+	for (auto tex : sprites)
 	{
-		if (tex.second != nullptr)
+		if (tex.second->texture != nullptr) SDL_DestroyTexture(tex.second->texture);
+	}
+	sprites.clear();
+}
+
+Sprite* AssetManager::GetSprite(std::string filename)
+{
+	std::string fullPath = "Assets/" + filename + ".png";
+
+	if (sprites[fullPath] == nullptr)
+	{
+		SDL_Surface* pTempSurface = IMG_Load(fullPath.c_str());
+		if (pTempSurface == 0) 
 		{
-			SDL_DestroyTexture(tex.second);
+			std::cout << "Not Found 1" << std::endl;
+			return nullptr;
+		}
+		SDL_Texture* pTexture = SDL_CreateTextureFromSurface(SDLManager::GetRenderer(), pTempSurface);
+		SDL_FreeSurface(pTempSurface);
+		if (pTexture != 0) return new Sprite(pTexture);
+		else
+		{
+			std::cout << "Not Found 2" << std::endl;
+			return nullptr;
 		}
 	}
-	textures.clear();
-}
 
-SDL_Texture* AssetManager::GetTexture(std::string filename)
-{
-	std::string fullPath = SDL_GetBasePath();
-	fullPath.append("Assets/" + filename);
-
-	//if (textures[fullPath] == nullptr)
-	//{
-	//	textures[fullPath] = Gph
-	//}
-
-	return nullptr;
+	return 	sprites[fullPath];
 }

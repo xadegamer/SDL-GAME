@@ -2,7 +2,15 @@
 
 Player::Player()
 {
-	Load(0, 0, "Player");
+	SpriteRenderer* renderer = AddComponent<SpriteRenderer>();
+
+	AddComponent<Animator>()->SetSpriteRender(renderer);
+
+	Animator* anim = GetComponent<Animator>();
+
+	anim->AddAnimationClip("Walk_firethrower", AssetManager::GetSprite("Walk_firethrower"), 6, 10);
+
+	anim->AddAnimationClip("FlameThrower",AssetManager::GetSprite("FlameThrower"), 9, 10);
 }
 
 Player::~Player()
@@ -10,14 +18,9 @@ Player::~Player()
 	
 }
 
-void Player::Load(int x, int y, std::string textureID)
+void Player::Render()
 {
-	GameObject::Load(x, y, textureID);
-}
-
-void Player::Render(SDL_Renderer* pRenderer)
-{
-	GameObject::Render(pRenderer);
+	GameObject::Render();
 }
 
 void Player::Update()

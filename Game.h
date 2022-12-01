@@ -5,22 +5,21 @@
 #include "Player.h"
 #include "SpriteRenderer.h"
 
+#include "SDLManager.h"
 
 class Game
 {
 private:
 	int highscore{};
 	int lastScore{};
-	SDL_Window* m_pWindow;
-	SDL_Renderer* m_pRenderer;
 	bool isRunning;
 
 	int currentFrame;
 
 public:
 	GameObject newObject;
-	Player player;
-
+	Player* player;
+	Sprite* cursor;
 public:
 
 	Game();

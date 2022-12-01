@@ -1,3 +1,4 @@
 E:\Year 2\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe
 D:\Year 2\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe
 D:\Year 2\Semester 1\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe
+E:\Year 2\Semester 1\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe

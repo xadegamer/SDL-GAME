@@ -26,9 +26,6 @@ public:
 	static void Init();
 
 	static void Close();
-	
-	static InputManager* GetInstance();
-	static void ReleaseInstance();
 
 	static bool GetKeyDown(SDL_Scancode key);
 	static bool GetKey(SDL_Scancode key);

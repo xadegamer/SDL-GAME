@@ -9,33 +9,20 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::Load(int x, int y, std::string textureID)
-{
-	position.x = x;
-	position.y = y;
-
-	this->textureID = textureID;
-
-	currentRow = 1;
-	currentFrame = 1;
-}
-
 void GameObject::Update()
 {
 }
 
-void GameObject::Render(SDL_Renderer* pRenderer)
+void GameObject::Render()
 {
-
 	SpriteRenderer* renderer = GetComponent<SpriteRenderer>();
 	renderer->name = "SpriteRenderer";
-	//std::cout << renderer->name << std::endl;
-	
-	//if (renderer != nullptr) renderer->DrawFrame(textureID, position.x, position.y, width, height, currentRow, currentFrame, pRenderer);
 
-	//if (renderer != nullptr) renderer->Draw(textureID, position.x, position.y, 6 , 2, pRenderer);
+	Animator* aimator = GetComponent<Animator>();
 
-	if (renderer != nullptr) renderer->Animate(textureID, position,6, 3, currentRow, currentFrame, angle, pRenderer);
+	if (aimator != nullptr) aimator->Animate();
+
+	if (renderer != nullptr) renderer->Draw(aimator->GetSprite()->texture, position, 3, angle, aimator->GetRect());
 }
 
 void GameObject::SetPosition(Vector2 position)

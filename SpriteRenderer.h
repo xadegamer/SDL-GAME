@@ -23,28 +23,21 @@ public:
 class SpriteRenderer : public Component
 {
 private:
-	
-	typedef std::map<std::string, Sprite*> TextureMap;
-	static TextureMap textureMap;
-	
-	std::string m_textureID;
-	SDL_Texture* texture;
+	Sprite* sprite;
+	SDL_Rect destRect;
 
 public:
 	SpriteRenderer();
 	~SpriteRenderer();
 	
 	void someFunc();
-	
-	bool Load(std::string fileName, std::string id, SDL_Renderer* pRenderer);
-	void Draw(std::string id, int x, int y, int numberOfCells,int scalerSize, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	
-	void DrawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-	void Animate(std::string id, Vector2 position, int numberOfCells, int scalerSize, int currentRow, int currentFrame, float angle, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	
-	void CursorBlit(SDL_Texture* texture, int x, int y, bool center, SDL_Renderer* renderTarget);
+	void SetSprite(Sprite* sprite);
 
-	Sprite* CreateSprite(std::string fileName, std::string id, SDL_Renderer* pRenderer);
+	void Draw(SDL_Texture* texture, Vector2 position, int scalerSize, float angle, SDL_Rect srcRect,SDL_RendererFlip flip = SDL_FLIP_NONE);
+	
+	void CursorBlit(SDL_Texture* texture, int x, int y, bool center);
+
+	Sprite* CreateSprite(std::string fileName, std::string id);
 };
 

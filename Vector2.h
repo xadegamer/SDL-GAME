@@ -11,8 +11,10 @@ public:
 	virtual ~Vector2() {}
 
 	// basic functions
-	float	dist(const Vector2& v) const;
-	bool	empty() { return (x == 0 && y == 0) ? true : false; }
+	float dist(const Vector2& v) const;
+	bool empty() { return (x == 0 && y == 0) ? true : false; }
+
+	static Vector2 Lerp(Vector2 v1, Vector2 v2, float t);
 
 	// operators
 	Vector2& operator=(const Vector2& v);
@@ -21,6 +23,13 @@ public:
 	Vector2 operator-();
 	Vector2& operator+=(const Vector2& v);
 	Vector2& operator-=(const Vector2& v);
+
+	Vector2& operator*(const Vector2& v);
+	Vector2& operator*(float scaler);
+
+	Vector2& operator/(const Vector2& v);
+	Vector2& operator/(float scaler);
+	
 	bool operator==(const Vector2& v) const;
 
 	// data - public

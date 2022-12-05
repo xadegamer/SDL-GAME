@@ -10,9 +10,13 @@ Player::Player()
 
 	Animator* anim = GetComponent<Animator>();
 
-	anim->AddAnimationClip("Idle", AssetManager::GetSprite("Walk_riffle"), 6, 10);
+	anim->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle_A"), 11, 5);
+	
+	anim->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Walk"), 8, 10);
 
-	anim->AddAnimationClip("Fire",AssetManager::GetSprite("Riffle_Shot"), 9,  10, false)->AddAnimationEvent("Shoot Event", 5, []() {std::cout << "Shoot" << std::endl; });
+	anim->AddAnimationClip("Attack",AssetManager::GetSprite("CowBoy_6_Hurt"), 6,  10, false)->AddAnimationEvent("Shoot Event", 5, []() {std::cout << "Shoot" << std::endl; });
+
+	AddComponent<RigidBody>()->gravity = 0;
 }
 
 Player::~Player()
@@ -27,37 +31,52 @@ void Player::Render()
 
 void Player::Update()
 {
-	SetAngle(GetAngle(InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, position.x, position.y));
-	
+	transfrom->rotation = GetAngleFromVector(InputManager::GetMousePosition() , transfrom->position);
+
+	RigidBody* rigidBody = GetComponent<RigidBody>();
+	rigidBody->ResetForce();
+	transfrom->Translate(rigidBody->GetPosition());
+
+	GetComponent<Animator>()->ChangeAnimation("Idle");
+
 	if (InputManager::GetKey(SDL_SCANCODE_UP))
 	{
 		std::cout << "Up" << std::endl;
-		position.y -= moveSpeed;
+		rigidBody->ApplyForceY(-10);
+		//transfrom->position.y -= moveSpeed;
+		GetComponent<Animator>()->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_DOWN))
 	{
 		std::cout << "Down" << std::endl;
-		position.y += moveSpeed;
+		rigidBody->ApplyForceY(10);
+		//transfrom->position.y += moveSpeed;
+		GetComponent<Animator>()->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_LEFT))
 	{
 		std::cout << "Left" << std::endl;
-		GetComponent<Animator>()->ChangeAnimation("Idle");
-		position.x -= moveSpeed;
+		rigidBody->ApplyForceX(-10);
+		GetComponent<Animator>()->ChangeAnimation("Walk");
+		//transfrom->position.x -= moveSpeed;
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_RIGHT))
 	{
 		std::cout << "Right" << std::endl;
-		position.x += moveSpeed;
+		rigidBody->ApplyForceX(10);
+		//transfrom->position.x += moveSpeed;
+		GetComponent<Animator>()->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 	{
-		GetComponent<Animator>()->ChangeAnimation("Fire");
+		GetComponent<Animator>()->ChangeAnimation("Attack");
 	}
+
+	rigidBody->Update(0.4f);
 }
 
 void Player::Clean()

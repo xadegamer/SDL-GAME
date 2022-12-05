@@ -2,7 +2,7 @@
 
 GameObject::GameObject()
 {
-	//AddComponent<SpriteRenderer>()->Load("Assets/Character.png", "Player", m_pRenderer);
+	transfrom = AddComponent<Transform>();
 }
 
 GameObject::~GameObject()
@@ -22,27 +22,7 @@ void GameObject::Render()
 
 	if (aimator != nullptr) aimator->Animate();
 
-	if (renderer != nullptr) renderer->Draw(aimator->GetSprite()->texture, position, 3, angle, aimator->GetRect());
-}
-
-void GameObject::SetPosition(Vector2 position)
-{
-	this->position = position;
-}
-
-Vector2* GameObject::ModifyPosition()
-{
-	return &position;
-}
-
-Vector2 GameObject::GetPosition()
-{
-	return position;
-}
-
-void GameObject::SetAngle(float angle)
-{
-	this->angle = angle;
+	if (renderer != nullptr) renderer->Draw(aimator->GetSprite()->texture, transfrom->position, 3, transfrom->rotation, aimator->GetRect());
 }
 
 bool GameObject::CheckIfComponentExits(Component* newComponent)

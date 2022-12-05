@@ -6,6 +6,8 @@
 #include "AssetManager.h"
 #include "SpriteRenderer.h"
 #include "Animator.h"
+#include "Transform.h"
+#include "RigidBody.h"
 
 #include "Vector2.h"
 
@@ -13,27 +15,15 @@ class GameObject
 {
 protected:
 	std::vector<Component*> components;
-	Vector2 position;
-	float angle;
-
-	std::string textureID;
-	Sprite* sprite;
-
-	int currentFrame;
-	int currentRow;
-
+	
+	Transform* transfrom;
+	
 public:
 	GameObject();
 	~GameObject();
 
 	void Update();
 	void Render();
-	
-	void SetPosition(Vector2 position);
-	Vector2* ModifyPosition();
-	Vector2 GetPosition();
-
-	void SetAngle(float angle);
 
 public:
 	bool CheckIfComponentExits(Component* newComponent);

@@ -1,26 +1,4 @@
-﻿  Animator.cpp
-  AssetManager.cpp
-  Game.cpp
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\Game.cpp(44,110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\Game.cpp(44,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  GameObject.cpp
-  InputManager.cpp
-  Player.cpp
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\MathUtility.h(10,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\Player.cpp(30,112): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\Player.cpp(30,100): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\Player.cpp(30,88): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\Player.cpp(30,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  SpriteRenderer.cpp
+﻿  SpriteRenderer.cpp
 E:\Year 2\Semester 1\Git Projects\SDL-GAME\SpriteRenderer.cpp(24,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 E:\Year 2\Semester 1\Git Projects\SDL-GAME\SpriteRenderer.cpp(25,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  UIManager.cpp
-  Vector2.cpp
-  main.cpp
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\main.cpp(20,32): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\main.cpp(24,21): warning C4101: 'frameTime': unreferenced local variable
-  Generating Code...
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\GameObject.h(63): warning C4715: 'GameObject::GetComponent<Animator>': not all control paths return a value
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\GameObject.h(63): warning C4715: 'GameObject::GetComponent<SpriteRenderer>': not all control paths return a value
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\GameObject.h(63): warning C4715: 'GameObject::GetComponent<Animator>': not all control paths return a value
   SDL Game.vcxproj -> E:\Year 2\Semester 1\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe

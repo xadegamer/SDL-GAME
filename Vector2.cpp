@@ -51,6 +51,34 @@ Vector2& Vector2::operator-=(const Vector2& v)
 	return *this;
 }
 
+Vector2& Vector2::operator*(const Vector2& v)
+{
+	x *= v.x;
+	y *= v.y;
+	return *this;
+}
+
+Vector2& Vector2::operator*(float scaler)
+{
+	x *= scaler;
+	y *= scaler;
+	return *this;
+}
+
+Vector2& Vector2::operator/(const Vector2& v)
+{
+	x /= v.x;
+	y /= v.y;
+	return *this;
+}
+
+Vector2& Vector2::operator/(float scaler)
+{
+	x /= scaler;
+	y /= scaler;
+	return *this;
+}
+
 bool   Vector2::operator==(const Vector2& v) const
 {
 	if (this->x == v.x && this->y == v.y)
@@ -61,6 +89,11 @@ bool   Vector2::operator==(const Vector2& v) const
 float Vector2::dist(const Vector2& v) const
 {
 	return static_cast<float>(std::sqrt((v.x - x) * (v.x - x) + (v.y - y) * (v.y - y)));
+}
+
+Vector2 Vector2::Lerp(Vector2 v1, Vector2 v2, float t)
+{
+	return Vector2(v1.x + (v2.x - v1.x) * t, v1.y + (v2.y - v1.y) * t);
 }
 
 Vector2 operator+(const Vector2& lv, const Vector2& rv)

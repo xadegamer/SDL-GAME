@@ -12,9 +12,10 @@ Animator::~Animator()
 	lastAnimationClip = nullptr;
 }
 
-void Animator::SetSpriteRender(SpriteRenderer* spriteRenderer)
+
+void Animator::SpriteRendererSprite(Sprite* spriteRendererSprite)
 {
-	this->spriteRenderer = spriteRenderer;
+	this->spriteRendererSprite = spriteRendererSprite;
 }
 
 AnimationClip* Animator::AddAnimationClip(std::string name, Sprite* sprite, int numberOfCells, float animSpeed, bool loop)
@@ -26,13 +27,16 @@ AnimationClip* Animator::AddAnimationClip(std::string name, Sprite* sprite, int 
 	return animClip;
 }
 
-void Animator::ChangeAnimation(std::string name)
+void Animator::ChangeAnimation(std::string name, bool thisWaitTillFinish)
 {
+	if(waitTillFinish || (currentAnimationClip != nullptr && currentAnimationClip->name == name)) return;
+	
 	for (size_t i = 0; i < animationClips.size(); i++)
 	{
 		if (animationClips[i]->name == name)
 		{
 			SwitchAnimation(animationClips[i]);
+			waitTillFinish = thisWaitTillFinish;
 			return;
 		}
 	}
@@ -40,15 +44,13 @@ void Animator::ChangeAnimation(std::string name)
 
 void Animator::SwitchAnimation(AnimationClip* newClip)
 {
-	if (currentAnimationClip != nullptr && currentAnimationClip->name == newClip->name) return;
-
 	isChanging = true;
 	
 	std::cout << "Reset Animation" << std::endl;
 	
 	lastAnimationClip = currentAnimationClip;
 	currentAnimationClip = newClip;
-	spriteRenderer->SetSprite(currentAnimationClip->sprite);
+	spriteRendererSprite = currentAnimationClip->sprite;
 
 	timeInAnimtionState = 0;
 	currentFrame = 0;
@@ -66,11 +68,14 @@ void Animator::Animate()
 	
 	currentFrame = (int)(timeInAnimtionState * currentAnimationClip->animSpeed) % currentAnimationClip->numberOfCells;
 
+	//currentFrame = (currentFrame + 1) % currentAnimationClip->numberOfCells;
+
 	if (currentAnimationClip->name == "Fire")
 	std::cout << currentFrame << std::endl;
 
 	if (currentFrame == currentAnimationClip->numberOfCells - 1 && !currentAnimationClip->loop)
 	{ 
+		waitTillFinish = false;
 		isChanging = true;
 		std::cout << "Animation Finished" << std::endl;
 		SwitchAnimation(lastAnimationClip);

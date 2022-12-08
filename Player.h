@@ -6,6 +6,11 @@
 class Player : public GameObject
 {
 private:
+	
+	SpriteRenderer* spriteRenderer;
+	Animator* animator;
+	RigidBody* rigidBody;
+	
 	float moveSpeed = 3.0f;
 	
 public:
@@ -13,8 +18,7 @@ public:
 	Player();
 	~Player();
 	
-	void Render();
 	void Update();
-	void Clean();
+	void Draw();
 };
 

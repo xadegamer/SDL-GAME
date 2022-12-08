@@ -14,19 +14,19 @@
 class GameObject
 {
 protected:
+
 	std::vector<Component*> components;
-	
-	Transform* transfrom;
-	
+
 public:
 	GameObject();
 	~GameObject();
 
-	void Update();
-	void Render();
+	Transform* transfrom;
+
+	virtual void Update();
+	virtual void Draw();
 
 public:
-	bool CheckIfComponentExits(Component* newComponent);
 
 	template<class T>
 	T* AddComponent()
@@ -52,7 +52,6 @@ public:
 		}
 	}
 
-
 	template<class T>
 	T* RemoveComponent()
 	{
@@ -68,5 +67,7 @@ public:
 	}
 
 	void CheckComponent(Component* newCom);
+
+	bool CheckIfComponentExits(Component* newComponent);
 };
 

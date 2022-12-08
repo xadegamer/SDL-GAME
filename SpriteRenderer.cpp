@@ -18,22 +18,17 @@ void SpriteRenderer::SetSprite(Sprite* sprite)
 	this->sprite = sprite;
 }
 
-void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, int scalerSize, float angle, SDL_Rect srcRect, SDL_RendererFlip flip)
+void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect, SDL_RendererFlip flip)
 {
 	//Position in world
 	destRect.x = position.x;
 	destRect.y = position.y;
 
 	//Size of object
-	destRect.w = srcRect.w / scalerSize;
-	destRect.h = srcRect.h / scalerSize;
+	destRect.w = srcRect.w;
+	destRect.h = srcRect.h ;
 	
-	//set pivot point
-	SDL_Point* pivot = new SDL_Point();
-	pivot->x = destRect.w / 2;
-	pivot->y = destRect.h / 2;
-
-	SDL_RenderCopyEx(SDLManager::GetRenderer(), texture, &srcRect, &destRect, angle, pivot, flip);
+	SDL_RenderCopyEx(SDLManager::GetRenderer(), texture, &srcRect, &destRect, angle, NULL, flip);
 }
 
 void SpriteRenderer::CursorBlit(SDL_Texture* texture, int x, int y, bool center)

@@ -35,10 +35,12 @@ public:
 
 	void SetSprite(Sprite* sprite);
 
-	void Draw(SDL_Texture* texture, Vector2 position, int scalerSize, float angle, SDL_Rect srcRect,SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect,SDL_RendererFlip flip = SDL_FLIP_NONE);
 	
 	void CursorBlit(SDL_Texture* texture, int x, int y, bool center);
 
 	Sprite* CreateSprite(std::string fileName, std::string id);
+
+	Sprite* GetSprite() { return sprite; }
 };
 

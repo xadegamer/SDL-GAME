@@ -110,6 +110,7 @@ class Animator : public Component
 {
 private:
 
+	bool waitTillFinish;
 	bool isChanging;
 	
 	std::vector<AnimationClip*> animationClips;
@@ -118,7 +119,7 @@ private:
 
 	AnimationClip* lastAnimationClip;
 
-	SpriteRenderer* spriteRenderer;
+	Sprite* spriteRendererSprite;
 
 	SDL_Rect scrRect;
 
@@ -133,17 +134,19 @@ public:
 	Animator();
 	~Animator();
 
-	void SetSpriteRender(SpriteRenderer* spriteRenderer);
+	void SpriteRendererSprite(Sprite* spriteRendererSprite);
 
 	AnimationClip* AddAnimationClip(std::string name, Sprite* sprite, int numberOfCells, float animSpeed, bool loop = true);
 
-	void ChangeAnimation(std::string name);
+	void ChangeAnimation(std::string name, bool waitTillFinish = false);
 	
 	void Animate();
 
 	SDL_Rect& GetRect();
 
 	std::vector<AnimationClip*> GetAnimationClips() { return animationClips; }
+	
+	AnimationClip* GetCurrentAnimationClip() { return currentAnimationClip; }
 
 	Sprite* GetSprite() { return currentAnimationClip->sprite; }
 };

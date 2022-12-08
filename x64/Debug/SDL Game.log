@@ -1,4 +1,2 @@
-﻿  SpriteRenderer.cpp
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\SpriteRenderer.cpp(24,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\Year 2\Semester 1\Git Projects\SDL-GAME\SpriteRenderer.cpp(25,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  SDL Game.vcxproj -> E:\Year 2\Semester 1\Git Projects\SDL-GAME\x64\Debug\SDL Game.exe
+﻿  Animator.cpp
+  SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

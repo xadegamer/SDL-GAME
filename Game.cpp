@@ -39,7 +39,7 @@ void Game::Render()
 {
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
-	player->Render();
+	player->Draw();
 
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 

@@ -34,11 +34,13 @@ int main(int arg, char* argv[])
 	{
 		frameStart = SDL_GetTicks();
 		
+		InputManager::Update();
+		
 		g_game->HandleEvents();
 		g_game->Update();
 		g_game->Render();
 		
-		InputManager::Update();
+
 		InputManager::UpdatePreviousInput();
 
 		//frameTime = SDL_GetTicks() - frameStart;

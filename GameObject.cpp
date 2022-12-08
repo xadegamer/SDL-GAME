@@ -7,22 +7,17 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
+
 }
 
 void GameObject::Update()
 {
+
 }
 
-void GameObject::Render()
+void GameObject::Draw()
 {
-	SpriteRenderer* renderer = GetComponent<SpriteRenderer>();
-	renderer->name = "SpriteRenderer";
 
-	Animator* aimator = GetComponent<Animator>();
-
-	if (aimator != nullptr) aimator->Animate();
-
-	if (renderer != nullptr) renderer->Draw(aimator->GetSprite()->texture, transfrom->position, 3, transfrom->rotation, aimator->GetRect());
 }
 
 bool GameObject::CheckIfComponentExits(Component* newComponent)

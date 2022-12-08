@@ -4,19 +4,17 @@
 
 Player::Player()
 {
-	SpriteRenderer* renderer = AddComponent<SpriteRenderer>();
+	spriteRenderer = AddComponent<SpriteRenderer>();
 
-	AddComponent<Animator>()->SetSpriteRender(renderer);
-
-	Animator* anim = GetComponent<Animator>();
-
-	anim->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle_A"), 11, 5);
+	animator = AddComponent<Animator>();
+	animator->SpriteRendererSprite(spriteRenderer->GetSprite());
+	animator = GetComponent<Animator>();
+	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 5);
+	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 10);
+	animator->AddAnimationClip("Attack",AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8,  10, false)->AddAnimationEvent("Shoot Event", 5, []() {std::cout << "Shoot" << std::endl; });
 	
-	anim->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Walk"), 8, 10);
-
-	anim->AddAnimationClip("Attack",AssetManager::GetSprite("CowBoy_6_Hurt"), 6,  10, false)->AddAnimationEvent("Shoot Event", 5, []() {std::cout << "Shoot" << std::endl; });
-
-	AddComponent<RigidBody>()->gravity = 0;
+	rigidBody = AddComponent<RigidBody>();
+	rigidBody->gravity = 0;
 }
 
 Player::~Player()
@@ -24,61 +22,56 @@ Player::~Player()
 	
 }
 
-void Player::Render()
-{
-	GameObject::Render();
-}
 
 void Player::Update()
 {
-	transfrom->rotation = GetAngleFromVector(InputManager::GetMousePosition() , transfrom->position);
+	transfrom->rotation = GetAngleFromMouse(transfrom->position, animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
 
-	RigidBody* rigidBody = GetComponent<RigidBody>();
 	rigidBody->ResetForce();
 	transfrom->Translate(rigidBody->GetPosition());
 
-	GetComponent<Animator>()->ChangeAnimation("Idle");
-
-	if (InputManager::GetKey(SDL_SCANCODE_UP))
+	if (InputManager::GetKey(SDL_SCANCODE_W) == false && InputManager::GetKey(SDL_SCANCODE_S) == false && InputManager::GetKey(SDL_SCANCODE_A) == false && InputManager::GetKey(SDL_SCANCODE_D) == false)
 	{
-		std::cout << "Up" << std::endl;
+		animator->ChangeAnimation("Idle");
+		transfrom->Translate(rigidBody->GetPosition());
+	}
+
+	if (InputManager::GetKey(SDL_SCANCODE_W))
+	{
 		rigidBody->ApplyForceY(-10);
-		//transfrom->position.y -= moveSpeed;
 		GetComponent<Animator>()->ChangeAnimation("Walk");
 	}
 
-	if (InputManager::GetKey(SDL_SCANCODE_DOWN))
+	if (InputManager::GetKey(SDL_SCANCODE_S))
 	{
-		std::cout << "Down" << std::endl;
 		rigidBody->ApplyForceY(10);
-		//transfrom->position.y += moveSpeed;
 		GetComponent<Animator>()->ChangeAnimation("Walk");
 	}
 
-	if (InputManager::GetKey(SDL_SCANCODE_LEFT))
+	if (InputManager::GetKey(SDL_SCANCODE_A))
 	{
-		std::cout << "Left" << std::endl;
 		rigidBody->ApplyForceX(-10);
 		GetComponent<Animator>()->ChangeAnimation("Walk");
-		//transfrom->position.x -= moveSpeed;
 	}
 
-	if (InputManager::GetKey(SDL_SCANCODE_RIGHT))
+	if (InputManager::GetKey(SDL_SCANCODE_D))
 	{
-		std::cout << "Right" << std::endl;
 		rigidBody->ApplyForceX(10);
-		//transfrom->position.x += moveSpeed;
 		GetComponent<Animator>()->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 	{
-		GetComponent<Animator>()->ChangeAnimation("Attack");
+		std::cout << "Added Shoot" << std::endl;
+		GetComponent<Animator>()->ChangeAnimation("Attack", true);
 	}
 
 	rigidBody->Update(0.4f);
 }
 
-void Player::Clean()
+void Player::Draw()
 {
+	animator->Animate();
+
+	spriteRenderer->Draw(animator->GetSprite()->texture, transfrom->position, transfrom->rotation, animator->GetRect());
 }

@@ -1,5 +1,6 @@
 #include "InputManager.h"
 
+
 Uint8* InputManager::previousKeyboardState = nullptr;
 const Uint8* InputManager::currentKeyboardState = nullptr;
 int InputManager::keyLength = 0;
@@ -38,33 +39,33 @@ bool InputManager::GetKeyUp(SDL_Scancode key)
 	return previousKeyboardState[key] && !currentKeyboardState[key];
 }
 
-bool InputManager::GetMouseButtonDown(MOUSE_BUTTON button)
-{
-	Uint32 mask = 0;
-	
-	switch (button)
-	{
-		case InputManager::LEFT:mask = SDL_BUTTON_LMASK;break;
-		case InputManager::MIDDLE:mask = SDL_BUTTON_MMASK;break;
-		case InputManager::RIGHT:mask = SDL_BUTTON_RMASK;break;
-		case InputManager::BACK:mask = SDL_BUTTON_X1MASK;break;
-		case InputManager::FORWARD:mask = SDL_BUTTON_X2MASK;break;
-	}
-	
-	return (currentMouseState & mask);
-}
-
 bool InputManager::GetMouseButton(MOUSE_BUTTON button)
 {
 	Uint32 mask = 0;
 
 	switch (button)
 	{
-		case InputManager::LEFT:mask = SDL_BUTTON_LMASK; break;
-		case InputManager::MIDDLE:mask = SDL_BUTTON_MMASK; break;
-		case InputManager::RIGHT:mask = SDL_BUTTON_RMASK; break;
-		case InputManager::BACK:mask = SDL_BUTTON_X1MASK; break;
-		case InputManager::FORWARD:mask = SDL_BUTTON_X2MASK; break;
+	case InputManager::LEFT:mask = SDL_BUTTON_LMASK; break;
+	case InputManager::MIDDLE:mask = SDL_BUTTON_MMASK; break;
+	case InputManager::RIGHT:mask = SDL_BUTTON_RMASK; break;
+	case InputManager::BACK:mask = SDL_BUTTON_X1MASK; break;
+	case InputManager::FORWARD:mask = SDL_BUTTON_X2MASK; break;
+	}
+
+	return (currentMouseState & mask);
+}
+
+bool InputManager::GetMouseButtonDown(MOUSE_BUTTON button)
+{
+	Uint32 mask = 0;
+
+	switch (button)
+	{
+	case InputManager::LEFT:mask = SDL_BUTTON_LMASK; break;
+	case InputManager::MIDDLE:mask = SDL_BUTTON_MMASK; break;
+	case InputManager::RIGHT:mask = SDL_BUTTON_RMASK; break;
+	case InputManager::BACK:mask = SDL_BUTTON_X1MASK; break;
+	case InputManager::FORWARD:mask = SDL_BUTTON_X2MASK; break;
 	}
 
 	return !(previousMouseState & mask) && (currentMouseState & mask);
@@ -76,11 +77,11 @@ bool InputManager::GetMouseButtonUp(MOUSE_BUTTON button)
 
 	switch (button)
 	{
-		case InputManager::LEFT:mask = SDL_BUTTON_LMASK; break;
-		case InputManager::MIDDLE:mask = SDL_BUTTON_MMASK; break;
-		case InputManager::RIGHT:mask = SDL_BUTTON_RMASK; break;
-		case InputManager::BACK:mask = SDL_BUTTON_X1MASK; break;
-		case InputManager::FORWARD:mask = SDL_BUTTON_X2MASK; break;
+	case InputManager::LEFT:mask = SDL_BUTTON_LMASK; break;
+	case InputManager::MIDDLE:mask = SDL_BUTTON_MMASK; break;
+	case InputManager::RIGHT:mask = SDL_BUTTON_RMASK; break;
+	case InputManager::BACK:mask = SDL_BUTTON_X1MASK; break;
+	case InputManager::FORWARD:mask = SDL_BUTTON_X2MASK; break;
 	}
 
 	return (previousMouseState & mask) && !(currentMouseState & mask);

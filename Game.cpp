@@ -1,8 +1,6 @@
 #include "Game.h"
 
-
-
-
+#include "CollisionManager.h"
 
 Game::Game()
 {
@@ -28,6 +26,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 		player = new Player;
 
+		enemy = new Enemy(Vector2(50, 50));
+
 		cursor = AssetManager::GetSprite("Cursor");
 		
 		return true;
@@ -43,11 +43,15 @@ void Game::Render()
 
 	player->Draw();
 
+	enemy->Draw();
+
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 
 	UIManager::Draw();
 	
 	player->GetComponent<Collider>()->Draw();
+
+	enemy->GetComponent<Collider>()->Draw();
 
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }
@@ -72,6 +76,13 @@ void Game::HandleEvents()
 void Game::Update(float deltaTime)
 {
 	player->Update(deltaTime);
+
+	enemy->Update(deltaTime);
+
+	if (CollisionManager::CheckCollision(player->GetComponent<Collider>(), enemy->GetComponent<Collider>()))
+	{
+		std::cout << "Collision!\n";
+	}
 }
 
 void Game::Clean()

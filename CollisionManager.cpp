@@ -2,53 +2,101 @@
 
 const static int s_buffer = 4;
 
-bool CollisionManager::CheckCollision(SDL_Rect* A, SDL_Rect* B)
+bool CollisionManager::DoBoxToBoxCollisionCheck(SDL_Rect* A, SDL_Rect* B, int buffer = 2)
 {
-	//The sides of the rectangles
-	int leftA, leftB;
-	int rightA, rightB;
-	int topA, topB;
-	int bottomA, bottomB;
-
-	//Calculate the sides of rect A
-	leftA = A->x;
-	rightA = A->x + A->w;
-	topA = A->y;
-	bottomA = A->y + A->h;
-
-	//Calculate the sides of rect B
-	leftB = B->x;
-	rightB = B->x + B->w;
-	topB = B->y;
-	bottomB = B->y + B->h;
-
-	//If any of the sides from A are outside of B
-	if (bottomA <= topB) return false;
-
-	if (topA >= bottomB) return false;
-
-	if (rightA <= leftB) return false;
-
-	if (leftA >= rightB) return false;
-
-	//If none of the sides from A are outside B
-	return true;
+	if (A->x + A->w - buffer > B->x && A->x + buffer < B->x + B->w && A->y + A->h - buffer > B->y && A->y + buffer < B->y + B->h)
+	{
+		return true;
+	}
+	return false;
 }
 
-bool CollisionManager::CheckCollision(SDL_Rect* A, SDL_Rect* B, int buffer)
+bool CollisionManager::DoCircleToCircleCollsionCheck(SDL_Rect* a, SDL_Rect* b)
 {
-	int aHBuf = A->h / s_buffer;
-	int aWBuf = A->w / s_buffer;
-	int bHBuf = B->h / s_buffer;
-	int bWBuf = B->w / s_buffer;
-	// if the bottom of A is less than the top of B - no collision
-	if ((A->y + A->h) - aHBuf <= B->y + bHBuf) { return false; }
-	// if the top of A is more than the bottom of B = no collision
-	if (A->y + aHBuf >= (B->y + B->h) - bHBuf) { return false; }
-	// if the right of A is less than the left of B - no collision
-	if ((A->x + A->w) - aWBuf <= B->x + bWBuf) { return false; }
-	// if the left of A is more than the right of B - no collision
-	if (A->x + aWBuf >= (B->x + B->w) - bWBuf) { return false; }
-	// otherwise there has been a collision
-	return true;
+	// calculate total radius squared
+	float aRadius = a->w / 2;
+	float bRadius = b->w / 2;
+	float totalRadiusSquared = aRadius + bRadius;
+	totalRadiusSquared = totalRadiusSquared * totalRadiusSquared;
+	// if the distance between the centers of the circles is less than the sum of their radii
+	if (DistanceSquared(a->x, a->y, b->x, b->y) <= totalRadiusSquared)
+	{
+		// then the circles have collided
+		return true;
+	}
+	// otherwise the circles have not collided
+	return false;
 }
+
+bool CollisionManager::DoBoxToCircleCollsionCheck(SDL_Rect* box, SDL_Rect* circle)
+{
+	//Closest point on collision box
+	int cX, cY;
+	float circleRadius = circle->w / 2;
+
+	//Find closest x offset
+	if (circle->x < box->x)
+	{
+		cX = box->x;
+	}
+	else if (circle->x > box->x + box->w)
+	{
+		cX = box->x + box->w;
+	}
+	else
+	{
+		cX = circle->x;
+	}
+
+	//Find closest y offset
+	if (circle->y < box->y)
+	{
+		cY = box->y;
+	}
+	else if (circle->y > box->y + box->h)
+	{
+		cY = box->y + box->h;
+	}
+	else
+	{
+		cY = circle->y;
+	}
+
+	//If the closest point is inside the circle
+	if (DistanceSquared(circle->x, circle->y, cX, cY) < circleRadius * circleRadius)
+	{
+		//This box and the circle have collided
+		return true;
+	}
+
+	//If the shapes have not collided
+	return false;
+}
+
+bool CollisionManager::CheckCollision(Collider* colA, Collider* colB)
+{
+	if (colA->type == Box && colB->type == Box)
+	{
+		return DoBoxToBoxCollisionCheck(colA->colliderRect, colB->colliderRect);
+	}
+	else if (colA->type == Circle && colB->type == Circle)
+	{
+		return DoCircleToCircleCollsionCheck(colA->colliderRect, colB->colliderRect);
+	}
+	else if (colA->type == Box && colB->type == Circle)
+	{
+		return DoBoxToCircleCollsionCheck(colA->colliderRect, colB->colliderRect);
+	}
+	else if (colA->type == Circle && colB->type == Box)
+	{
+		return DoBoxToCircleCollsionCheck(colB->colliderRect, colA->colliderRect);
+	}
+}
+
+double CollisionManager::DistanceSquared(int x1, int y1, int x2, int y2)
+{
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+	return deltaX * deltaX + deltaY * deltaY;
+}
+

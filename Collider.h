@@ -10,6 +10,11 @@
 //	int r;
 //};
 
+enum  ColliderType
+{
+	Box, Circle
+};
+
 class Collider : public Component
 {
 public:
@@ -19,11 +24,13 @@ public:
 	void someFunc();
 	
 public:
+	
+	ColliderType type;
 	Transform* owner;
-	SDL_Rect collisionBox;
+	SDL_Rect* colliderRect;
 	Vector2 offset;
 
-	void SetUp(Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0));
+	void SetUp(ColliderType colType, Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0));
 	void Update();
-	void Draw();
+	virtual void Draw();
 };

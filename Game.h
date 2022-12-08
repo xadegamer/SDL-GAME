@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "SpriteRenderer.h"
 
 #include "SDLManager.h"
@@ -26,6 +27,8 @@ public:
 	GameObject newObject;
 	Player* player;
 	Sprite* cursor;
+
+	Enemy* enemy;
 	
 public:
 

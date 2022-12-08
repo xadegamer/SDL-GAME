@@ -2,34 +2,50 @@
 
 Collider::Collider()
 {
-
+	colliderRect = new SDL_Rect();
 }
 
 Collider::~Collider()
 {
+	colliderRect = nullptr;
 }
 
 void Collider::someFunc()
 {
 }
 
-void Collider::SetUp(Transform* owner, Vector2 size, Vector2 offset)
+void Collider::SetUp(ColliderType colType,Transform* owner, Vector2 size, Vector2 offset)
 {
+	this->type = colType;
 	this->owner = owner;
-	collisionBox.w = size.x;
-	collisionBox.h = size.y;
 	this->offset = offset;
+	
+	colliderRect->w = size.x;
+	colliderRect->h = size.y;
 }	
 
 void Collider::Update()
 {	
-	collisionBox.x = owner->position.x + offset.x;
-	collisionBox.y = owner->position.y + offset.y;
+	colliderRect->x = owner->position.x + offset.x;
+	colliderRect->y = owner->position.y + offset.y;
 }
 
 void Collider::Draw()
 {
-	// Draw the collision box for debugging green
 	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 255, 0, 255);
-	SDL_RenderDrawRect(SDLManager::GetRenderer(), &collisionBox);
+	
+	if (type == Box)
+	{
+		SDL_RenderDrawRect(SDLManager::GetRenderer(), colliderRect);
+	}
+	else
+	{
+		float radious = colliderRect->w / 2;
+		for (int i = 0; i < 8; i++)
+		{
+			float x = radious * cos(i * 3.14 / 4);
+			float y = radious * sin(i * 3.14 / 4);
+			SDL_RenderDrawLine(SDLManager::GetRenderer(), colliderRect->x + colliderRect->w / 2, colliderRect->y + colliderRect->h / 2, colliderRect->x + colliderRect->w / 2 + x, colliderRect->y + colliderRect->h / 2 + y);
+		}
+	}
 }

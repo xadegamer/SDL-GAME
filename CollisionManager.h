@@ -2,15 +2,22 @@
 
 #include "SDLManager.h"
 
+#include "Collider.h"
+
 class CollisionManager
 {
-public:
-	CollisionManager();
-	~CollisionManager();
-
-	bool CheckCollision(SDL_Rect* A, SDL_Rect* B);
+private:
+	CollisionManager() = delete;
+	~CollisionManager() = delete;
 	
-
-	bool CheckCollision(SDL_Rect* A, SDL_Rect* B, int buffer);
+public:
+	
+	static bool DoBoxToBoxCollisionCheck(SDL_Rect* A, SDL_Rect* B, int buffer);
+	static bool DoCircleToCircleCollsionCheck(SDL_Rect* a,SDL_Rect* b);
+	static bool DoBoxToCircleCollsionCheck(SDL_Rect* box, SDL_Rect*);
+	
+	static bool CheckCollision(Collider* colA, Collider* colB);
+	
+	static double DistanceSquared(int x1, int y1, int x2, int y2);
 };
 

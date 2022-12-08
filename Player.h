@@ -3,6 +3,7 @@
 #include "InputManager.h"
 
 
+
 class Player : public GameObject
 {
 private:
@@ -10,15 +11,16 @@ private:
 	SpriteRenderer* spriteRenderer;
 	Animator* animator;
 	RigidBody* rigidBody;
+	Collider* collider;
 	
-	float moveSpeed = 3.0f;
+	float moveSpeed = 100;
 	
 public:
 
 	Player();
 	~Player();
 	
-	void Update();
+	void Update(float deltaTime);
 	void Draw();
 };
 

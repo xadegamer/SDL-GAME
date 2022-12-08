@@ -26,5 +26,5 @@ void RigidBody::Update(float deltaTime)
 
 	// Calculate position
 	
-	position = velocity * deltaTime;
+	position = velocity;
 }

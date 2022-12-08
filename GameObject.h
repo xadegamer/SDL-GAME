@@ -8,6 +8,7 @@
 #include "Animator.h"
 #include "Transform.h"
 #include "RigidBody.h"
+#include "Collider.h"
 
 #include "Vector2.h"
 
@@ -23,7 +24,7 @@ public:
 
 	Transform* transfrom;
 
-	virtual void Update();
+	virtual void Update(float deltaTime);
 	virtual void Draw();
 
 public:

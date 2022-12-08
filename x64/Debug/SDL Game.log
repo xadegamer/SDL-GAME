@@ -1,2 +1,11 @@
-﻿  Animator.cpp
+﻿  Player.cpp
+D:\GIT Repo\SDL-GAME\MathUtility.h(13,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(12,87): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Player.cpp(13,93): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Player.cpp(14,102): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Player.cpp(20,147): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(20,89): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(30,152): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(30,98): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\GameObject.h(54): warning C4715: 'GameObject::GetComponent<Animator>': not all control paths return a value
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

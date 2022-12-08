@@ -37,7 +37,7 @@ public:
 
 	void Render();
 	
-	void Update();
+	void Update(float deltaTime);
 	
 	void HandleEvents();
 	

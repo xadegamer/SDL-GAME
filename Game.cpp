@@ -37,6 +37,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::Render()
 {
+	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 255, 255, 255, 255);
+	
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
 	player->Draw();
@@ -44,6 +46,8 @@ void Game::Render()
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 
 	UIManager::Draw();
+	
+	player->GetComponent<Collider>()->Draw();
 
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }
@@ -65,9 +69,9 @@ void Game::HandleEvents()
 	}
 }
 
-void Game::Update()
+void Game::Update(float deltaTime)
 {
-	player->Update();
+	player->Update(deltaTime);
 }
 
 void Game::Clean()

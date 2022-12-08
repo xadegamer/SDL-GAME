@@ -111,19 +111,18 @@ class Animator : public Component
 private:
 
 	bool waitTillFinish;
-	bool isChanging;
-	
+
 	std::vector<AnimationClip*> animationClips;
 	
 	AnimationClip* currentAnimationClip;
 
 	AnimationClip* lastAnimationClip;
 
-	Sprite* spriteRendererSprite;
+	Sprite* sprite;
 
 	SDL_Rect scrRect;
 
-	float timeInAnimtionState; //this is used to calculate which frame of the animation should be shown depending on time
+	float animationTimeCounter;
 	
 	int currentFrame; //this is used to calculate which frame of the animation should be shown depending on time
 	
@@ -134,13 +133,13 @@ public:
 	Animator();
 	~Animator();
 
-	void SpriteRendererSprite(Sprite* spriteRendererSprite);
+	void SetSprite(Sprite* spriteRendererSprite);
 
 	AnimationClip* AddAnimationClip(std::string name, Sprite* sprite, int numberOfCells, float animSpeed, bool loop = true);
 
 	void ChangeAnimation(std::string name, bool waitTillFinish = false);
-	
-	void Animate();
+
+	void Update(float deltaTime);
 
 	SDL_Rect& GetRect();
 

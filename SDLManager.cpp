@@ -1,7 +1,5 @@
 #include "SDLManager.h"
 
-
-
 SDL_Window* SDLManager::m_pWindow = nullptr;
 SDL_Renderer* SDLManager::m_pRenderer = nullptr;
 
@@ -25,7 +23,6 @@ bool SDLManager::Init(const char* title, int xpos, int ypos, int width, int heig
 			if (m_pRenderer != 0) // renderer init success
 			{
 				std::cout << "renderer creation success\n";
-				SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
 			}
 			else
 			{
@@ -67,19 +64,13 @@ bool SDLManager::Init(const char* title, int xpos, int ypos, int width, int heig
 		if (TTF_Init() > 0 )
 		{
 			std::cout << "SDL_ttf could not initialize!SDL_ttf Error :" << TTF_GetError();
-		}
-
-		
-
+		}	
 	}
 	else
 	{
 		std::cout << "SDL init fail\n";
 		return false; // SDL init fail
 	}
-
-	//Paint the ground red
-	SDL_SetRenderDrawColor(m_pRenderer, 0xFF, 0, 0, 0xFF);
 
 	return true;
 }

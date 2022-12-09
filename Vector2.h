@@ -14,6 +14,8 @@ public:
 	float dist(const Vector2& v) const;
 	bool empty() { return (x == 0 && y == 0) ? true : false; }
 
+	Vector2 normalize();
+
 	static Vector2 Lerp(Vector2 v1, Vector2 v2, float t);
 
 	// operators

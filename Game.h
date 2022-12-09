@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "SpriteRenderer.h"
+#include "Bullet.h""
 
 #include "SDLManager.h"
 #include "AssetManager.h"
@@ -29,6 +29,8 @@ public:
 	Sprite* cursor;
 
 	Enemy* enemy;
+
+	Bullet* bullet;
 	
 public:
 

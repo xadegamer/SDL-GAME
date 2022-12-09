@@ -4,16 +4,17 @@
 
 #include "Component.h"
 
-#include "AssetManager.h"
-#include"AudioManager.h"
-
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Transform.h"
 #include "RigidBody.h"
 #include "Collider.h"
 
+#include "AssetManager.h"
+#include"AudioManager.h"
+
 #include "Vector2.h"
+#include "MathUtility.h"
 
 class GameObject
 {

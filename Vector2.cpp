@@ -91,6 +91,14 @@ float Vector2::dist(const Vector2& v) const
 	return static_cast<float>(std::sqrt((v.x - x) * (v.x - x) + (v.y - y) * (v.y - y)));
 }
 
+Vector2 Vector2::normalize()
+{
+	float length = dist(Vector2(0, 0));
+	x /= length;
+	y /= length;
+	return *this;
+}
+
 Vector2 Vector2::Lerp(Vector2 v1, Vector2 v2, float t)
 {
 	return Vector2(v1.x + (v2.x - v1.x) * t, v1.y + (v2.y - v1.y) * t);

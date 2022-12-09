@@ -39,27 +39,6 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	else return false;
 }
 
-void Game::Render()
-{
-	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 255, 255, 255, 255);
-	
-	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
-
-	player->Draw();
-
-	enemy->Draw();
-
-	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
-
-	UIManager::Draw();
-	
-	player->GetComponent<Collider>()->Draw();
-
-	enemy->GetComponent<Collider>()->Draw();
-
-	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
-}
-
 void Game::HandleEvents()
 {
 	SDL_Event event;
@@ -75,6 +54,17 @@ void Game::HandleEvents()
 			break;
 		}
 	}
+
+	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
+	{
+		if (bullet)
+		{
+			delete bullet;
+			bullet = nullptr;
+		}
+		
+		bullet = new Bullet(player->GetComponent<Collider>()->GetPosition(), BulletType::PLAYER);
+	}
 }
 
 void Game::Update(float deltaTime)
@@ -83,10 +73,42 @@ void Game::Update(float deltaTime)
 
 	enemy->Update(deltaTime);
 
+	if (bullet) bullet->Update(deltaTime);
+
 	if (CollisionManager::CheckCollision(player->GetComponent<Collider>(), enemy->GetComponent<Collider>()))
 	{
 		std::cout << "Collision!\n";
 	}
+
+	if (bullet && CollisionManager::CheckCollision(bullet->GetComponent<Collider>(), enemy->GetComponent<Collider>()))
+	{
+		std::cout << "Hit Enemy\n";
+	}
+}
+
+void Game::Render()
+{
+	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 0, 255, 255);
+
+	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
+
+	player->Draw();
+
+	enemy->Draw();
+
+	if (bullet) bullet->Draw();
+
+	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
+
+	UIManager::Draw();
+
+	player->GetComponent<Collider>()->Draw();
+
+	enemy->GetComponent<Collider>()->Draw();
+
+	if (bullet) bullet->GetComponent<Collider>()->Draw();
+
+	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }
 
 void Game::Clean()

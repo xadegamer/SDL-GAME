@@ -1,10 +1,9 @@
 #pragma once
 #include "GameObject.h"
-#include "InputManager.h"
-
-
 
 class Player : public GameObject
+
+
 {
 private:
 	

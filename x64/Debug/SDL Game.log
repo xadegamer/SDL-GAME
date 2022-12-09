@@ -1,6 +1,5 @@
-﻿  CollisionManager.cpp
-D:\GIT Repo\SDL-GAME\CollisionManager.cpp(17,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\CollisionManager.cpp(18,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\CollisionManager.cpp(36,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\CollisionManager.cpp(95): warning C4715: 'CollisionManager::CheckCollision': not all control paths return a value
+﻿  Game.cpp
+D:\GIT Repo\SDL-GAME\Game.cpp(52,110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\Game.cpp(52,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\GameObject.h(57): warning C4715: 'GameObject::GetComponent<Collider>': not all control paths return a value
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

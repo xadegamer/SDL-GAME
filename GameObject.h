@@ -3,7 +3,10 @@
 #include <iostream>
 
 #include "Component.h"
+
 #include "AssetManager.h"
+#include"AudioManager.h"
+
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Transform.h"

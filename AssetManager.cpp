@@ -3,6 +3,8 @@
 
 std::map<std::string, Sprite*> AssetManager::sprites = std::map<std::string, Sprite*>();
 std::map<std::string, TTF_Font*> AssetManager::fonts = std::map<std::string, TTF_Font*>();
+std::map<std::string, Mix_Chunk*> AssetManager::sounds = std::map<std::string, Mix_Chunk*>();
+std::map<std::string, Mix_Music*> AssetManager::musics = std::map<std::string, Mix_Music*>();
 
 void AssetManager::Init()
 {
@@ -59,4 +61,30 @@ TTF_Font* AssetManager::GetFont(std::string filename, int size)
 	}
 
 	return fonts[fullPath];
+}
+
+Mix_Chunk* AssetManager::GetSound(std::string filename)
+{
+	std::string fullPath = "Assets/" + filename + ".wav";
+
+	if (sounds[fullPath] == nullptr)
+	{
+		Mix_Chunk* sound = Mix_LoadWAV(fullPath.c_str());
+		if (sound == 0) return nullptr; else return sounds[fullPath] = sound;
+	}
+
+	return sounds[fullPath];
+}
+
+Mix_Music* AssetManager::GetMusic(std::string filename)
+{
+	std::string fullPath = "Assets/" + filename + ".mp3";
+
+	if (musics[fullPath] == nullptr)
+	{
+		Mix_Music* music = Mix_LoadMUS(fullPath.c_str());
+		if (music == 0) return nullptr; else return musics[fullPath] = music;
+	}
+
+	return musics[fullPath];
 }

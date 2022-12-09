@@ -10,13 +10,14 @@ Player::Player()
 	animator->SetSprite(spriteRenderer->GetSprite());
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
 	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 0.05);
-	animator->AddAnimationClip("Attack",AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5, []() {std::cout << "Spawn Bullet" << std::endl; });
+	animator->AddAnimationClip("Attack",AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5,
+		[]() {std::cout << "Spawn Bullet" << std::endl; AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);});
 	
 	rigidBody = AddComponent<RigidBody>();
 	rigidBody->gravity = 0;
 
 	collider = AddComponent<Collider>();
-	collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(40, 50));
+	collider->SetUp(Circle, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(40, 50));
 }
 
 Player::~Player()

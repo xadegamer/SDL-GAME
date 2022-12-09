@@ -2,6 +2,8 @@
 
 #include "CollisionManager.h"
 
+#include "AudioManager.h"
+
 Game::Game()
 {
 }
@@ -29,6 +31,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 		enemy = new Enemy(Vector2(50, 50));
 
 		cursor = AssetManager::GetSprite("Cursor");
+
+		AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 		
 		return true;
 	}

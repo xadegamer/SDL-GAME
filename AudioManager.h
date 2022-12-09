@@ -11,7 +11,7 @@ private:
 	
 public:
 
-	static	void Init();
+	static void Init();
 	static void Close();
 
 	static void PlayMusic(Mix_Music* music, int loops);

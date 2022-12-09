@@ -2,6 +2,8 @@
 
 Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
+	tag = Tag::BULLET;
+	
 	transfrom->position = startPosition;
 
 	bulletType = type;
@@ -21,6 +23,15 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 	collider->SetUp(Circle, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(7,10));
 
 	//transfrom->rotation = GetAngleFromMouse(transfrom->position, animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
+
+	collider->AssignCollisonCallBack([](Collider* other)
+	{
+		if (other->gameObject->CompareTag(Tag::ENEMY))
+		{
+			std::cout << "Bullet Hit Enemy" << std::endl;
+		}
+	});
+
 }
 
 Bullet::~Bullet()

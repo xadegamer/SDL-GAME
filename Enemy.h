@@ -1,4 +1,5 @@
 #pragma once
+
 #include "GameObject.h"
 
 class Enemy : public GameObject
@@ -14,7 +15,7 @@ public:
 	Enemy(Vector2 startPosition);
 	~Enemy();
 
-	void Update(float deltaTime);
-	void Draw();
+	void Update(float deltaTime) override;
+	void Draw() override;
 };
 

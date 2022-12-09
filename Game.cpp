@@ -6,6 +6,7 @@
 
 Game::Game()
 {
+	
 }
 
 Game::~Game()
@@ -19,24 +20,25 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	{	
 		AssetManager::Init();
 		InputManager::Init();
-		UIManager::Init();
-		
-		isRunning = true;
-		
+		UIManager::Init();		
 		std::cout << "init success\n";
 		isRunning = true; // everything inited successfully, start the main loop
-
-		player = new Player;
-
-		enemy = new Enemy(Vector2(50, 50));
-
-		cursor = AssetManager::GetSprite("Cursor");
-
-		AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
-		
 		return true;
 	}
 	else return false;
+}
+
+void Game::SpawnGameObjects()
+{
+	player = new Player;
+	gameObjects.push_back(player);
+
+	enemy = new Enemy(Vector2(100, 100));
+	gameObjects.push_back(enemy);
+
+	cursor = AssetManager::GetSprite("cursor");
+
+	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }
 
 void Game::HandleEvents()
@@ -58,31 +60,31 @@ void Game::HandleEvents()
 	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 	{
 		if (bullet)
-		{
+		{	
+			gameObjects.erase(find(gameObjects.begin(), gameObjects.end(), bullet));
 			delete bullet;
-			bullet = nullptr;
+			bullet = nullptr;		
 		}
 		
 		bullet = new Bullet(player->GetComponent<Collider>()->GetPosition(), BulletType::PLAYER);
+		gameObjects.push_back(bullet);
 	}
 }
 
 void Game::Update(float deltaTime)
 {
-	player->Update(deltaTime);
-
-	enemy->Update(deltaTime);
-
-	if (bullet) bullet->Update(deltaTime);
-
-	if (CollisionManager::CheckCollision(player->GetComponent<Collider>(), enemy->GetComponent<Collider>()))
+	for (auto& gameObject : gameObjects) gameObject->Update(deltaTime);
+	
+	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		std::cout << "Collision!\n";
-	}
-
-	if (bullet && CollisionManager::CheckCollision(bullet->GetComponent<Collider>(), enemy->GetComponent<Collider>()))
-	{
-		std::cout << "Hit Enemy\n";
+		for (int j = i + 1; j < gameObjects.size(); j++)
+		{
+			if (CollisionManager::CheckCollision(gameObjects[i]->GetComponent<Collider>(), gameObjects[j]->GetComponent<Collider>()))
+			{
+				gameObjects[i]->GetComponent<Collider>()->OnCollision(gameObjects[j]->GetComponent<Collider>());
+				gameObjects[j]->GetComponent<Collider>()->OnCollision(gameObjects[i]->GetComponent<Collider>());
+			}
+		}
 	}
 }
 
@@ -92,21 +94,18 @@ void Game::Render()
 
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
-	player->Draw();
-
-	enemy->Draw();
-
-	if (bullet) bullet->Draw();
+	for (auto& gameObject : gameObjects) gameObject->Draw();
 
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 
 	UIManager::Draw();
 
-	player->GetComponent<Collider>()->Draw();
-
-	enemy->GetComponent<Collider>()->Draw();
-
-	if (bullet) bullet->GetComponent<Collider>()->Draw();
+	// draw only object with colliders
+	for (auto& gameObject : gameObjects)
+	{
+		Collider* collider = gameObject->GetComponent<Collider>();
+		if (collider) gameObject->GetComponent<Collider>()->Draw();
+	}
 
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }

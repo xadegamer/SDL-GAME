@@ -19,7 +19,7 @@ public:
 	Player();
 	~Player();
 	
-	void Update(float deltaTime);
-	void Draw();
+	void Update(float deltaTime) override;
+	void Draw() override;
 };
 

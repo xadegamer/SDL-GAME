@@ -1,5 +1,7 @@
 #include "Collider.h"
 
+
+
 Collider::Collider()
 {
 	colliderRect = new SDL_Rect();
@@ -30,6 +32,22 @@ void Collider::Update()
 	colliderRect->y = owner->position.y + offset.y;
 }
 
+void Collider::AssignCollisonCallBack(void(*OnCollisionEnter)(Collider* other))
+{
+	this->OnCollisionEnter = OnCollisionEnter;
+}
+
+void Collider::OnCollision(Collider* other)
+{
+
+	if (OnCollisionEnter != nullptr)OnCollisionEnter(other);
+	//if(OnCollisionEnter != nullptr && currentCollidedObject != other)
+	//{
+	//	currentCollidedObject = other;
+	//	OnCollisionEnter(other);
+	//}
+}
+
 void Collider::Draw()
 {
 	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 255, 0, 255);
@@ -41,9 +59,6 @@ void Collider::Draw()
 	else
 	{
 		float radious = colliderRect->w / 2;
-
-		//show circle collider
-
 		for (int i = 0; i < 360; i++)
 		{
 			float x = radious * cos(i * 3.14 / 180);
@@ -51,21 +66,5 @@ void Collider::Draw()
 
 			SDL_RenderDrawPoint(SDLManager::GetRenderer(), colliderRect->x + x, colliderRect->y + y);
 		}
-
-		
-		//for (int i = 0; i < 360; i++)
-		//{
-		//	float angle = i * 3.1415926535 / 180;
-		//	float x = colliderRect->x + radious * cos(angle);
-		//	float y = colliderRect->y + radious * sin(angle);
-		//	SDL_RenderDrawPoint(SDLManager::GetRenderer(), x, y);
-		//}
-
-		//for (int i = 0; i < 8; i++)
-		//{
-		//	float x = radious * cos(i * 3.14 / 4);
-		//	float y = radious * sin(i * 3.14 / 4);
-		//	SDL_RenderDrawLine(SDLManager::GetRenderer(), colliderRect->x + colliderRect->w / 2, colliderRect->y + colliderRect->h / 2, colliderRect->x + colliderRect->w / 2 + x, colliderRect->y + colliderRect->h / 2 + y);
-		//}
 	}
 }

@@ -2,6 +2,8 @@
 
 Enemy::Enemy(Vector2 startPosition)
 {
+	tag = Tag::ENEMY;
+	
 	transfrom->position = startPosition;
 	
 	spriteRenderer = AddComponent<SpriteRenderer>();
@@ -16,6 +18,20 @@ Enemy::Enemy(Vector2 startPosition)
 	
 	collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(50, 60));
 	//collider->SetUp(Circle, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
+	
+	collider->AssignCollisonCallBack([](Collider* other)
+	{
+			if (other->gameObject->CompareTag(Tag::BULLET))
+			{
+				std::cout << "Enemy Take Damage" << std::endl;
+			}
+
+			if (other->gameObject->CompareTag(Tag::PLAYER))
+			{
+				std::cout <<"Player collide with enemy" << std::endl;
+			}
+	});
+
 }
 
 Enemy::~Enemy()

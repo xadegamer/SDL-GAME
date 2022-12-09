@@ -47,6 +47,8 @@ int main(int arg, char* argv[])
 
 	g_game->Init("Chapter 1", 100, 100, 1280, 720, false);
 
+	g_game->SpawnGameObjects();
+
 	float timer = 0;
 
 	systemTimer.tick();

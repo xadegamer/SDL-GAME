@@ -1,9 +1,10 @@
 #include "Player.h"
 
-
+#include "Animator.h"
 
 Player::Player()
 {
+	tag = Tag::PLAYER;
 	spriteRenderer = AddComponent<SpriteRenderer>();
 
 	animator = AddComponent<Animator>();

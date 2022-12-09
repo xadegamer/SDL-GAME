@@ -23,7 +23,10 @@ private:
 
 	int currentFrame;
 
+	std::vector<GameObject*> gameObjects;
+
 public:
+
 	GameObject newObject;
 	Player* player;
 	Sprite* cursor;
@@ -39,6 +42,8 @@ public:
 	~Game();
 
 	bool Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+
+	void SpawnGameObjects();
 
 	void Render();
 	

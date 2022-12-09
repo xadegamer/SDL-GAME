@@ -16,6 +16,14 @@
 #include "Vector2.h"
 #include "MathUtility.h"
 
+enum Tag
+{
+	DEFAULT,
+	PLAYER,
+	ENEMY,
+	BULLET,
+};
+
 class GameObject
 {
 protected:
@@ -25,6 +33,8 @@ protected:
 public:
 	GameObject();
 	~GameObject();
+	
+	Tag tag = Tag::DEFAULT;
 
 	Transform* transfrom;
 
@@ -42,7 +52,7 @@ public:
 
 		if (CheckIfComponentExits(newComponent)) std::cout << "Already Exists" << std::endl;
 		else std::cout << "Dont Already Exists" << std::endl;
-
+		newComponent->gameObject = this;
 		components.push_back(newComponent);
 		return newCom;
 	}
@@ -56,7 +66,7 @@ public:
 			if (component != nullptr) return  component;
 		}
 	}
-
+	
 	template<class T>
 	T* RemoveComponent()
 	{
@@ -69,6 +79,12 @@ public:
 				return component;
 			}
 		}
+	}
+
+	bool CompareTag( Tag tag)
+	{
+		if (this->tag == tag) return true;
+		else return false;
 	}
 
 	void CheckComponent(Component* newCom);

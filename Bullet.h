@@ -25,7 +25,7 @@ public:
 	Bullet(Vector2 startPosition, BulletType bulletType, Vector2 direction = Vector2(0, 0));
 	~Bullet();
 
-	void Update(float deltaTime);
-	void Draw();
+	void Update(float deltaTime) override;
+	void Draw() override;
 };
 

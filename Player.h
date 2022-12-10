@@ -2,8 +2,6 @@
 #include "GameObject.h"
 
 class Player : public GameObject
-
-
 {
 private:
 	
@@ -20,6 +18,6 @@ public:
 	~Player();
 	
 	void Update(float deltaTime) override;
-	void Draw() override;
+	void Draw(Vector2 cameraPos) override;
 };
 

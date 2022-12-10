@@ -2,7 +2,7 @@
 
 GameObject::GameObject()
 {
-	transfrom = AddComponent<Transform>();
+	transform = AddComponent<Transform>();
 }
 
 GameObject::~GameObject()
@@ -15,7 +15,7 @@ void GameObject::Update(float deltaTime)
 
 }
 
-void GameObject::Draw()
+void GameObject::Draw(Vector2 cameraPos)
 {
 
 }

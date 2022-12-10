@@ -37,7 +37,7 @@ public:
 
 	void SetUp(ColliderType colType, Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0));
 
-	void Update();
+	void Update(Vector2 cameraPos);
 
 	void AssignCollisonCallBack(void (*OnCollisionEnter)(Collider* other));
 

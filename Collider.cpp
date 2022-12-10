@@ -26,10 +26,10 @@ void Collider::SetUp(ColliderType colType,Transform* owner, Vector2 size, Vector
 	colliderRect->h = size.y;
 }	
 
-void Collider::Update()
+void Collider::Update(Vector2 cameraPos)
 {	
-	colliderRect->x = owner->position.x + offset.x;
-	colliderRect->y = owner->position.y + offset.y;
+	colliderRect->x = (owner->position.x + offset.x) - cameraPos.x;
+	colliderRect->y = (owner->position.y + offset.y) - cameraPos.y;
 }
 
 void Collider::AssignCollisonCallBack(void(*OnCollisionEnter)(Collider* other))
@@ -39,8 +39,8 @@ void Collider::AssignCollisonCallBack(void(*OnCollisionEnter)(Collider* other))
 
 void Collider::OnCollision(Collider* other)
 {
-
 	if (OnCollisionEnter != nullptr)OnCollisionEnter(other);
+	
 	//if(OnCollisionEnter != nullptr && currentCollidedObject != other)
 	//{
 	//	currentCollidedObject = other;

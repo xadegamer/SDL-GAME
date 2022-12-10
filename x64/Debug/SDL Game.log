@@ -1,23 +1,12 @@
-﻿  Collider.cpp
-D:\GIT Repo\SDL-GAME\MathUtility.h(15,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.h(48,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.h(48,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(25,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(26,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(31,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(32,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(61,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(64,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(65,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(67,88): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(67,67): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Game.cpp
+﻿  Game.cpp
 D:\GIT Repo\SDL-GAME\Collider.h(48,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\Collider.h(48,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(15,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Camera.h(7,15): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
+D:\GIT Repo\SDL-GAME\Vector2.h(5): message : see declaration of 'Vector2'
 D:\GIT Repo\SDL-GAME\Game.h(7,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-D:\GIT Repo\SDL-GAME\Game.cpp(99,110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Game.cpp(99,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
-D:\GIT Repo\SDL-GAME\GameObject.h(68): warning C4715: 'GameObject::GetComponent<Collider>': not all control paths return a value
+D:\GIT Repo\SDL-GAME\Game.cpp(107,110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\Game.cpp(107,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\GameObject.h(70): warning C4715: 'GameObject::GetComponent<Collider>': not all control paths return a value
+D:\GIT Repo\SDL-GAME\GameObject.h(70): warning C4715: 'GameObject::GetComponent<SpriteRenderer>': not all control paths return a value
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

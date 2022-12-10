@@ -42,5 +42,8 @@ public:
 	Sprite* CreateSprite(std::string fileName, std::string id);
 
 	Sprite* GetSprite() { return sprite; }
+
+	
+	void DebugRect();
 };
 

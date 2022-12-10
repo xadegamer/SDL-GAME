@@ -26,6 +26,6 @@ public:
 	~Bullet();
 
 	void Update(float deltaTime) override;
-	void Draw() override;
+	void Draw(Vector2 cameraPos) override;
 };
 

@@ -16,6 +16,8 @@
 #include "Vector2.h"
 #include "MathUtility.h"
 
+#include "Camera.h"
+
 enum Tag
 {
 	DEFAULT,
@@ -36,10 +38,10 @@ public:
 	
 	Tag tag = Tag::DEFAULT;
 
-	Transform* transfrom;
+	Transform* transform;
 
 	virtual void Update(float deltaTime);
-	virtual void Draw();
+	virtual void Draw(Vector2 cameraPos);
 
 public:
 

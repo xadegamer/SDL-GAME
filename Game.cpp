@@ -4,6 +4,8 @@
 
 #include "AudioManager.h"
 
+#include "Camera.h"
+
 Game::Game()
 {
 	
@@ -38,7 +40,9 @@ void Game::SpawnGameObjects()
 
 	cursor = AssetManager::GetSprite("cursor");
 
-	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+	//AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+
+	Camera::SetUp(player);
 }
 
 void Game::HandleEvents()
@@ -48,12 +52,8 @@ void Game::HandleEvents()
 	{
 		switch (event.type)
 		{
-		case SDL_QUIT:
-			isRunning = false;
-			break;
-
-		default:
-			break;
+			case SDL_QUIT:	isRunning = false;break;
+			default:break;
 		}
 	}
 
@@ -66,7 +66,7 @@ void Game::HandleEvents()
 			bullet = nullptr;		
 		}
 		
-		bullet = new Bullet(player->GetComponent<Collider>()->GetPosition(), BulletType::PLAYER);
+		bullet = new Bullet(player->GetComponent<Collider>()->GetPosition() , BulletType::PLAYER);
 		gameObjects.push_back(bullet);
 	}
 }
@@ -74,6 +74,12 @@ void Game::HandleEvents()
 void Game::Update(float deltaTime)
 {
 	for (auto& gameObject : gameObjects) gameObject->Update(deltaTime);
+
+	//update all game objects with colliders
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetComponent<Collider>()) gameObject->GetComponent<Collider>()->Update(Vector2(Camera::GetPosition()));
+	}
 	
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
@@ -86,6 +92,8 @@ void Game::Update(float deltaTime)
 			}
 		}
 	}
+
+	Camera::Update();
 }
 
 void Game::Render()
@@ -94,7 +102,7 @@ void Game::Render()
 
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
-	for (auto& gameObject : gameObjects) gameObject->Draw();
+	for (auto& gameObject : gameObjects) gameObject->Draw(Camera::GetPosition());
 
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 
@@ -107,6 +115,14 @@ void Game::Render()
 		if (collider) gameObject->GetComponent<Collider>()->Draw();
 	}
 
+	// draw only object with colliders
+	for (auto& gameObject : gameObjects)
+	{
+		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
+		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
+	}
+
+
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }
 
@@ -114,6 +130,8 @@ void Game::Clean()
 {
 	std::cout << "cleaning game\n";
 
+	Camera::Clean();
+	for (auto& gameObject : gameObjects) delete gameObject;
 	AssetManager::Clear();
 	SDLManager::Clean();
 }

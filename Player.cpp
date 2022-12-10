@@ -19,7 +19,12 @@ Player::Player()
 
 	collider = AddComponent<Collider>();
 
-	collider->SetUp(Circle, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
+
+	collider->SetUp(Circle, transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
+	
+	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(50, 60));
+
+	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(0, 0));
 }
 
 Player::~Player()
@@ -29,13 +34,11 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-	transfrom->rotation = GetAngleFromMouse(transfrom->position, animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
+	transform->rotation = GetAngleFromMouse(transform->position - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
 
-	transfrom->Translate(rigidBody->GetPosition());
+	transform->Translate(rigidBody->GetPosition());
 
 	animator->Update(deltaTime);
-
-	collider->Update();
 
 	if (InputManager::GetKey(SDL_SCANCODE_W) == false && InputManager::GetKey(SDL_SCANCODE_S) == false && InputManager::GetKey(SDL_SCANCODE_A) == false && InputManager::GetKey(SDL_SCANCODE_D) == false)
 	{
@@ -75,7 +78,7 @@ void Player::Update(float deltaTime)
 	rigidBody->Update(deltaTime);
 }
 
-void Player::Draw()
+void Player::Draw(Vector2 cameraPos)
 {
-	spriteRenderer->Draw(animator->GetSprite()->texture, transfrom->position, transfrom->rotation, animator->GetRect());
+	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position - cameraPos, transform->rotation, animator->GetRect());
 }

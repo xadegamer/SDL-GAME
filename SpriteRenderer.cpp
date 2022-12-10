@@ -27,7 +27,8 @@ void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, S
 	//Size of object
 	destRect.w = srcRect.w;
 	destRect.h = srcRect.h ;
-	
+
+
 	SDL_RenderCopyEx(SDLManager::GetRenderer(), texture, &srcRect, &destRect, angle, NULL, flip);
 }
 
@@ -56,4 +57,10 @@ Sprite* SpriteRenderer::CreateSprite(std::string fileName, std::string id)
 	SDL_FreeSurface(pTempSurface);
 	if (pTexture != 0) return new Sprite(pTexture);
 	else return nullptr;
+}
+
+void SpriteRenderer::DebugRect()
+{
+	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 255, 0, 0, 255);
+	SDL_RenderDrawRect(SDLManager::GetRenderer(), &destRect);
 }

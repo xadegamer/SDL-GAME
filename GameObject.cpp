@@ -1,13 +1,24 @@
 #include "GameObject.h"
 
+//define the static variable
+std::vector<GameObject*> GameObject::activeGameobjects = std::vector<GameObject*>();
+
 GameObject::GameObject()
 {
+	activeGameobjects.push_back(this);
 	transform = AddComponent<Transform>();
+	std::cout << activeGameobjects.size() << endl;
 }
 
 GameObject::~GameObject()
 {
-
+	//clear componenets
+	std::cout << "Removing Gameobject Componenets" << endl;
+	for (auto& component : components)
+	{
+		delete component;
+		component = nullptr;
+	}
 }
 
 void GameObject::Update(float deltaTime)
@@ -15,7 +26,7 @@ void GameObject::Update(float deltaTime)
 
 }
 
-void GameObject::Draw(Vector2 cameraPos)
+void GameObject::Draw()
 {
 
 }
@@ -27,6 +38,23 @@ bool GameObject::CheckIfComponentExits(Component* newComponent)
 		if (typeid(*newComponent).name() == typeid(*components[i]).name()) return true;
 	}
 	return false;
+}
+
+void GameObject::Destroy(GameObject* gameObject)
+{
+	activeGameobjects.erase(find(activeGameobjects.begin(), activeGameobjects.end(), gameObject));
+	delete gameObject;
+	gameObject = nullptr;
+}
+
+void GameObject::DestroyAllGameObjects()
+{
+	for (auto& gameObject : activeGameobjects)
+	{
+		delete gameObject;
+		gameObject = nullptr;
+	}
+	activeGameobjects.clear();
 }
 
 void GameObject::CheckComponent(Component* newCom)

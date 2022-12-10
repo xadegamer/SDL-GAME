@@ -12,28 +12,31 @@
 #include "SDL.h"
 #include <vector>
 #include <stdio.h>
+#include <functional>
 
 
 struct AnimationEvent
 {
 	std::string eventName;
 	int frame;
-	void (*eventLogic)();
 	bool isFired;
 
-	AnimationEvent(std::string eventName, int frame, void (*eventLogic)())
+	std::function <void()> eventLogicFunc;
+
+	AnimationEvent(std::string eventName, int frame, std::function <void()> eventLogicFunc)
 	{
 		this->eventName = eventName;
 		this->frame = frame;
-		this->eventLogic = eventLogic;
+		this->eventLogicFunc = eventLogicFunc;
+		this->isFired = false;
 	}
 
 	void TriggerEvent()
 	{
 		if (!isFired)
 		{
-			eventLogic();
 			isFired = true;
+			eventLogicFunc();
 		}
 	}
 
@@ -81,9 +84,9 @@ public:
 		animPixelWidth = textureWidth / numberOfCells;
 	}
 
-	void AddAnimationEvent(std::string eventName, int frame, void (*eventLogic)())
+	void AddAnimationEvent(std::string eventName, int frame, std::function <void()> eventLogicFunc)
 	{
-		animationEvents.push_back(AnimationEvent(eventName, frame, eventLogic));
+		animationEvents.push_back(AnimationEvent(eventName, frame, eventLogicFunc));
 	}
 };
 

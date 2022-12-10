@@ -46,7 +46,7 @@ void Enemy::Update(float deltaTime)
 	animator->Update(deltaTime);
 }
 
-void Enemy::Draw(Vector2 cameraPos)
+void Enemy::Draw()
 {
-	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position - cameraPos, transform->rotation, animator->GetRect());
+	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());
 }

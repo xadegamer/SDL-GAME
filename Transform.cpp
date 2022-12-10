@@ -29,3 +29,13 @@ void Transform::Log()
 	std::cout << "Scale: " << scale << std::endl;
 	std::cout << "Rotation: " << rotation << std::endl;
 }
+
+Vector2 Transform::GetForward()
+{
+	return Vector2::Normalize(position);
+}
+
+Vector2 Transform::GetRight()
+{
+	return Vector2::Normalize(Vector2(position.y, -position.x));
+}

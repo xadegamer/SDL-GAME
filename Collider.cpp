@@ -1,6 +1,6 @@
 #include "Collider.h"
 
-
+#include "Camera.h"
 
 Collider::Collider()
 {
@@ -16,20 +16,29 @@ void Collider::someFunc()
 {
 }
 
-void Collider::SetUp(ColliderType colType,Transform* owner, Vector2 size, Vector2 offset)
+void Collider::SetUp(ColliderType colType,Transform* owner, Vector2 size, Vector2 offset, bool relativeToCam)
 {
 	this->type = colType;
 	this->owner = owner;
 	this->offset = offset;
+	isRelativeToCam = relativeToCam;
 	
 	colliderRect->w = size.x;
 	colliderRect->h = size.y;
 }	
 
-void Collider::Update(Vector2 cameraPos)
+void Collider::Update()
 {	
-	colliderRect->x = (owner->position.x + offset.x) - cameraPos.x;
-	colliderRect->y = (owner->position.y + offset.y) - cameraPos.y;
+	if (isRelativeToCam)
+	{
+		colliderRect->x = (owner->position.x + offset.x) - Camera::GetPosition().x;
+		colliderRect->y = (owner->position.y + offset.y) - Camera::GetPosition().y;
+	}
+	else
+	{
+		colliderRect->x = owner->position.x + offset.x;
+		colliderRect->y = owner->position.y + offset.y;
+	}
 }
 
 void Collider::AssignCollisonCallBack(void(*OnCollisionEnter)(Collider* other))
@@ -67,4 +76,14 @@ void Collider::Draw()
 			SDL_RenderDrawPoint(SDLManager::GetRenderer(), colliderRect->x + x, colliderRect->y + y);
 		}
 	}
+}
+
+Vector2 Collider::GetForward()
+{
+	return Vector2::Normalize(Vector2(colliderRect->x, colliderRect->y));
+}
+
+Vector2 Collider::GetRight()
+{
+	return Vector2::Normalize(Vector2(colliderRect->x, -colliderRect->x));
 }

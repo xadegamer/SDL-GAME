@@ -36,13 +36,12 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 			std::cout << "Bullet Hit Enemy" << std::endl;
 		}
 	});
-
 }
 
 
 Bullet::~Bullet()
 {
-
+	std::cout << "Bullet Removed" << endl;
 }
 
 void Bullet::Update(float deltaTime)
@@ -50,9 +49,23 @@ void Bullet::Update(float deltaTime)
 	transform->Translate(rigidBody->GetPosition());
 	animator->Update(deltaTime);
 	rigidBody->Update(deltaTime);
+
+	if (IsOutSideScreen())
+	{
+		GameObject::Destroy(this);
+	}
 }
 
-void Bullet::Draw(Vector2 cameraPos)
+void Bullet::Draw()
 {
-	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position - cameraPos, transform->rotation, animator->GetRect());
+	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());
+}
+
+bool Bullet::IsOutSideScreen()
+{
+	if (transform->position.x < 0 || transform->position.x > 1280 || transform->position.y < 0 || transform->position.y > 720)
+	{
+		return true;
+	}
+	return false;
 }

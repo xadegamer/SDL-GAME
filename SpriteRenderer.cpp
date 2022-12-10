@@ -1,5 +1,7 @@
 #include "SpriteRenderer.h"
 
+#include "Camera.h"
+
 SpriteRenderer::SpriteRenderer()
 {
 }
@@ -18,16 +20,22 @@ void SpriteRenderer::SetSprite(Sprite* sprite)
 	this->sprite = sprite;
 }
 
-void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect, SDL_RendererFlip flip)
+void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect, SDL_RendererFlip flip, bool relativeToCam)
 {
 	//Position in world
 	destRect.x = position.x;
 	destRect.y = position.y;
 
+	if (relativeToCam)
+	{
+		//Position in camera
+		destRect.x -= Camera::GetPosition().x;
+		destRect.y -= Camera::GetPosition().y;
+	}
+
 	//Size of object
 	destRect.w = srcRect.w;
 	destRect.h = srcRect.h ;
-
 
 	SDL_RenderCopyEx(SDLManager::GetRenderer(), texture, &srcRect, &destRect, angle, NULL, flip);
 }

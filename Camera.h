@@ -12,7 +12,7 @@ class Camera
 	Camera() = delete;
 	~Camera() = delete;
 	
-	static SDL_Rect camera;
+	static SDL_Rect viewBox;
 	static Player* player;
 
 public:

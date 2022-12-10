@@ -30,18 +30,20 @@ class GameObject
 {
 protected:
 
+	static std::vector<GameObject*> activeGameobjects;
+
 	std::vector<Component*> components;
 
 public:
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 	
 	Tag tag = Tag::DEFAULT;
 
 	Transform* transform;
 
 	virtual void Update(float deltaTime);
-	virtual void Draw(Vector2 cameraPos);
+	virtual void Draw();
 
 public:
 
@@ -53,7 +55,6 @@ public:
 		Component* newComponent = dynamic_cast<Component*>(newCom);
 
 		if (CheckIfComponentExits(newComponent)) std::cout << "Already Exists" << std::endl;
-		else std::cout << "Dont Already Exists" << std::endl;
 		newComponent->gameObject = this;
 		components.push_back(newComponent);
 		return newCom;
@@ -69,6 +70,22 @@ public:
 		}
 	}
 	
+	//Try get component
+	template<class T>
+	bool TryGetComponent( Component* component)
+	{
+		Component* newComponent = dynamic_cast<Component*>(new T);
+		for (size_t i = 0; i < components.size(); i++)
+		{
+			if (typeid(*newComponent).name() == typeid(*components[i]).name())
+			{
+				component = components[i];
+				return true;
+			}
+		}
+	}
+	
+
 	template<class T>
 	T* RemoveComponent()
 	{
@@ -92,5 +109,11 @@ public:
 	void CheckComponent(Component* newCom);
 
 	bool CheckIfComponentExits(Component* newComponent);
+
+	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
+
+	static void Destroy(GameObject* gameObject);
+
+	static void DestroyAllGameObjects();
 };
 

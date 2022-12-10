@@ -15,6 +15,18 @@ Vector2::Vector2(const Vector2& v): x(v.x), y(v.y)
 {
 }
 
+Vector2 Vector2::operator/(float f) const
+{
+	return Vector2(x / f, y / f);
+}
+
+Vector2& Vector2::operator/=(float f)
+{
+	x /= f;
+	y /= f;
+	return *this;
+}
+
 Vector2& Vector2::operator=(const Vector2& v)
 {
 	x = v.x;
@@ -102,6 +114,29 @@ Vector2 Vector2::normalize()
 Vector2 Vector2::Lerp(Vector2 v1, Vector2 v2, float t)
 {
 	return Vector2(v1.x + (v2.x - v1.x) * t, v1.y + (v2.y - v1.y) * t);
+}
+
+Vector2 Vector2::Normalize(Vector2 v)
+{
+	float length = v.dist(Vector2(0, 0));
+	return Vector2(v.x / length, v.y / length);
+}
+
+Vector2 Vector2::operator*(float f) const
+{
+	return Vector2(x * f, y * f);
+}
+
+Vector2& Vector2::operator*=(float f)
+{
+	x *= f;
+	y *= f;
+	return *this;
+}
+
+Vector2 operator*(float f, const Vector2& v)
+{
+	return Vector2(v.x * f, v.y * f);
 }
 
 Vector2 operator+(const Vector2& lv, const Vector2& rv)

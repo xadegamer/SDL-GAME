@@ -1,6 +1,10 @@
 #pragma once
 #include "GameObject.h"
 
+#include <iostream>
+
+class Game;
+
 class Player : public GameObject
 {
 private:
@@ -11,6 +15,9 @@ private:
 	Collider* collider;
 	
 	float moveSpeed = 100;
+
+	//list of bullets
+
 	
 public:
 
@@ -18,6 +25,6 @@ public:
 	~Player();
 	
 	void Update(float deltaTime) override;
-	void Draw(Vector2 cameraPos) override;
+	void Draw() override;
 };
 

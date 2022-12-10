@@ -6,6 +6,13 @@
 
 #include "Camera.h"
 
+#include <iostream>
+
+bool Game::isRunning = false;
+Player* Game::player = nullptr;
+Sprite* Game::cursor = nullptr;
+Enemy* Game::enemy = nullptr;
+
 Game::Game()
 {
 	
@@ -18,7 +25,7 @@ Game::~Game()
 bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 
-	if (SDLManager::Init(title, xpos, ypos, width, height, fullscreen))
+	if (SDLManager::Init(title, xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen))
 	{	
 		AssetManager::Init();
 		InputManager::Init();
@@ -33,10 +40,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 void Game::SpawnGameObjects()
 {
 	player = new Player;
-	gameObjects.push_back(player);
 
 	enemy = new Enemy(Vector2(100, 100));
-	gameObjects.push_back(enemy);
 
 	cursor = AssetManager::GetSprite("cursor");
 
@@ -44,6 +49,12 @@ void Game::SpawnGameObjects()
 
 	Camera::SetUp(player);
 }
+
+void Game::SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction)
+{
+	Bullet* bullet = new Bullet(startPosition, bulletType, direction);
+}
+
 
 void Game::HandleEvents()
 {
@@ -56,39 +67,30 @@ void Game::HandleEvents()
 			default:break;
 		}
 	}
-
-	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
-	{
-		if (bullet)
-		{	
-			gameObjects.erase(find(gameObjects.begin(), gameObjects.end(), bullet));
-			delete bullet;
-			bullet = nullptr;		
-		}
-		
-		bullet = new Bullet(player->GetComponent<Collider>()->GetPosition() , BulletType::PLAYER);
-		gameObjects.push_back(bullet);
-	}
 }
 
 void Game::Update(float deltaTime)
 {
-	for (auto& gameObject : gameObjects) gameObject->Update(deltaTime);
+	//update all game objects with colliders
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
+	}
 
 	//update all game objects with colliders
-	for (auto& gameObject : gameObjects)
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
-		if (gameObject->GetComponent<Collider>()) gameObject->GetComponent<Collider>()->Update(Vector2(Camera::GetPosition()));
+		if (GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>()) GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>()->Update();
 	}
 	
-	for (int i = 0; i < gameObjects.size(); i++)
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
-		for (int j = i + 1; j < gameObjects.size(); j++)
+		for (int j = i + 1; j < GameObject::GetActiveGameobjects().size(); j++)
 		{
-			if (CollisionManager::CheckCollision(gameObjects[i]->GetComponent<Collider>(), gameObjects[j]->GetComponent<Collider>()))
+			if (CollisionManager::CheckCollision(GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>(), GameObject::GetActiveGameobjects()[j]->GetComponent<Collider>()))
 			{
-				gameObjects[i]->GetComponent<Collider>()->OnCollision(gameObjects[j]->GetComponent<Collider>());
-				gameObjects[j]->GetComponent<Collider>()->OnCollision(gameObjects[i]->GetComponent<Collider>());
+				GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>()->OnCollision(GameObject::GetActiveGameobjects()[j]->GetComponent<Collider>());
+				GameObject::GetActiveGameobjects()[j]->GetComponent<Collider>()->OnCollision(GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>());
 			}
 		}
 	}
@@ -102,21 +104,21 @@ void Game::Render()
 
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
-	for (auto& gameObject : gameObjects) gameObject->Draw(Camera::GetPosition());
+	for (auto& gameObject : GameObject::GetActiveGameobjects()) gameObject->Draw();
 
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 
 	UIManager::Draw();
 
 	// draw only object with colliders
-	for (auto& gameObject : gameObjects)
+	for (auto& gameObject : GameObject::GetActiveGameobjects())
 	{
 		Collider* collider = gameObject->GetComponent<Collider>();
 		if (collider) gameObject->GetComponent<Collider>()->Draw();
 	}
 
 	// draw only object with colliders
-	for (auto& gameObject : gameObjects)
+	for (auto& gameObject : GameObject::GetActiveGameobjects())
 	{
 		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
 		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
@@ -131,15 +133,7 @@ void Game::Clean()
 	std::cout << "cleaning game\n";
 
 	Camera::Clean();
-	for (auto& gameObject : gameObjects) delete gameObject;
+	GameObject::DestroyAllGameObjects();
 	AssetManager::Clear();
 	SDLManager::Clean();
-}
-
-void Game::LoadScore()
-{
-}
-
-void Game::SaveScore(int score)
-{
 }

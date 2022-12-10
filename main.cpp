@@ -43,18 +43,16 @@ int main(int arg, char* argv[])
 {
 	float moveSpeed = 3.0f;
 
-	Game* g_game = new Game();
+	Game::Init("Chapter 1", 100, 100, 1280, 720, false);
 
-	g_game->Init("Chapter 1", 100, 100, 1280, 720, false);
-
-	g_game->SpawnGameObjects();
+	Game::SpawnGameObjects();
 
 	float timer = 0;
 
 	systemTimer.tick();
 	deltaTimer.tick();
 
-	while (g_game->IsRunning())
+	while (Game::IsRunning())
 	{
 		deltaTimer.tick();
 
@@ -67,16 +65,16 @@ int main(int arg, char* argv[])
 
 		InputManager::Update();
 
-		g_game->HandleEvents();
-		g_game->Update(deltaTimer.getDeltaTime());
-		g_game->Render();
+		Game::HandleEvents();
+		Game::Update(deltaTimer.getDeltaTime());
+		Game::Render();
 
 		InputManager::UpdatePreviousInput();
 
 		FrameCap();
 	}
 
-	g_game->Clean();
+	Game::Clean();
 
 	return 0;
 }

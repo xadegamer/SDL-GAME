@@ -26,6 +26,8 @@ public:
 	~Bullet();
 
 	void Update(float deltaTime) override;
-	void Draw(Vector2 cameraPos) override;
+	void Draw() override;
+	
+	bool IsOutSideScreen();
 };
 

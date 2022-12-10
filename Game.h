@@ -14,32 +14,24 @@
 
 #include <iostream>
 
-const int LEVEL_WIDTH = 1280;
-const int LEVEL_HEIGHT = 960;
+//The dimensions of the level
+const int LEVEL_WIDTH = 1280 * 1.2;
+const int LEVEL_HEIGHT = 960 * 1.2;
 
+//Screen dimension constants
 const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
+const int SCREEN_HEIGHT = 960;
 
 class Game
 {
 private:
-	int highscore{};
-	int lastScore{};
-	bool isRunning;
 
-	int currentFrame;
-
-	std::vector<GameObject*> gameObjects;
+	static bool isRunning;
 
 public:
-
-	GameObject newObject;
-	Player* player;
-	Sprite* cursor;
-
-	Enemy* enemy;
-
-	Bullet* bullet;
+	static Player* player;
+	static Sprite* cursor;
+	static Enemy* enemy;
 	
 public:
 
@@ -47,22 +39,22 @@ public:
 
 	~Game();
 
-	bool Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+	static bool Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 
-	void SpawnGameObjects();
+	static void Render();
+	
+	static void Update(float deltaTime);
+	
+	static void HandleEvents();
+	
+	static void Clean();
 
-	void Render();
-	
-	void Update(float deltaTime);
-	
-	void HandleEvents();
-	
-	void Clean();
+	static bool IsRunning() { return isRunning; }
 
-	bool IsRunning() { return isRunning; }
-	
-	void LoadScore();
+	static void SpawnGameObjects();
 
-	void SaveScore(int score);
+	static void SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction = Vector2(0, 0));
+
+	static void DestroyGameobject(GameObject* gameObect);
 };
 

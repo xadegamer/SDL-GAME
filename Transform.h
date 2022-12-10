@@ -5,6 +5,7 @@
 
 class Transform : public Component
 {
+private:
 	
 public:
 	Transform();
@@ -21,5 +22,11 @@ public:
 	Vector2 position;
 	Vector2 scale;
 	float rotation;
+
+	Vector2 GetForward();
+
+	Vector2 GetRight();
+
+	
 };
 

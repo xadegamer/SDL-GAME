@@ -18,6 +18,20 @@ public:
 
 	static Vector2 Lerp(Vector2 v1, Vector2 v2, float t);
 
+	static Vector2 Normalize(Vector2 v);
+
+	// float * vector functions
+	Vector2 operator*(float f) const;
+	Vector2& operator*=(float f);
+
+	// vector * float functions
+	friend Vector2 operator*(float f, const Vector2& v);
+	
+	// vector / float functions
+	Vector2 operator/(float f) const;
+	Vector2& operator/=(float f);
+	
+
 	// operators
 	Vector2& operator=(const Vector2& v);
 	Vector2 operator+(const Vector2& v);

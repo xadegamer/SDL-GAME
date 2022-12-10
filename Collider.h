@@ -19,6 +19,9 @@ enum  ColliderType
 
 class Collider : public Component
 {
+private:
+	bool isRelativeToCam;
+	
 public:
 
 	Collider();
@@ -35,9 +38,9 @@ public:
 	Transform* owner;
 	SDL_Rect* colliderRect;
 
-	void SetUp(ColliderType colType, Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0));
+	void SetUp(ColliderType colType, Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool relativeToCam = true);
 
-	void Update(Vector2 cameraPos);
+	void Update();
 
 	void AssignCollisonCallBack(void (*OnCollisionEnter)(Collider* other));
 
@@ -46,4 +49,8 @@ public:
 	virtual void Draw();
 
 	inline Vector2 GetPosition() { return Vector2(colliderRect->x, colliderRect->y); }
+
+	Vector2 GetForward();
+
+	Vector2 GetRight();
 };

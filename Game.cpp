@@ -80,8 +80,16 @@ void Game::Update(float deltaTime)
 	//update all game objects with colliders
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
-		if (GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>()) GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>()->Update();
+		Collider* collider = nullptr;
+		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider)) collider->Update();
 	}
+	
+	Collider* colliderA;
+	Collider* colliderB;
+	
+	//check collision between all game objects with colliders
+	
+	
 	
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{

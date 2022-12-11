@@ -70,21 +70,16 @@ public:
 		}
 	}
 	
-	//Try get component
 	template<class T>
-	bool TryGetComponent( Component* component)
+	bool TryGetComponent(T*& component)
 	{
-		Component* newComponent = dynamic_cast<Component*>(new T);
 		for (size_t i = 0; i < components.size(); i++)
 		{
-			if (typeid(*newComponent).name() == typeid(*components[i]).name())
-			{
-				component = components[i];
-				return true;
-			}
+			component = dynamic_cast<T*>(components[i]);
+			if (component != nullptr) return true;
 		}
+		return false;
 	}
-	
 
 	template<class T>
 	T* RemoveComponent()

@@ -13,13 +13,13 @@ Player::Player()
 	animator->SetSprite(spriteRenderer->GetSprite());
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
 	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 0.05);
-	animator->AddAnimationClip("Attack",AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5,
-		[=]() 
+	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5,
+		[=]()
 		{
 			Game::SpawnBullet(collider->GetPosition(), BulletType::PLAYER);
 			std::cout << "Spawn Bullet" << std::endl; AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
 		});
-	
+
 	rigidBody = AddComponent<RigidBody>();
 	rigidBody->gravity = 0;
 
@@ -27,18 +27,16 @@ Player::Player()
 
 
 	collider->SetUp(Circle, transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
-	
+
 	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(50, 60));
 
 	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(0, 0));
 
 	RigidBody* rb = nullptr;
-	
+
 	if (TryGetComponent <RigidBody>(rb))
 	{
-		if (rb == nullptr) std::cout << "RigidBody is null" << std::endl;
-		else std::cout << "RigidBody is not null" << std::endl;
-		std::cout << "RigidBody Found" << std::endl;
+		
 	}
 	else
 	{

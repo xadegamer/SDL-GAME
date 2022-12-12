@@ -14,6 +14,7 @@
 
 #include "Button.h"
 #include "Text.h"
+#include "Canvas.h"
 
 #include <iostream>
 
@@ -38,6 +39,7 @@ public:
 
 	static Button* button;
 	static Text* text;
+	static Canvas* canvas;
 	
 public:
 
@@ -56,6 +58,8 @@ public:
 	static void Clean();
 
 	static bool IsRunning() { return isRunning; }
+
+	static void SetUpUI();
 
 	static void SpawnGameObjects();
 

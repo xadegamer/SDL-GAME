@@ -7,16 +7,16 @@ Text::Text(std::string text, std::string fontID, SDL_Color c, Vector2 position)
 	this->color = c;
 	this->font = AssetManager::GetFont(fontID, 32);
 	
-	origin = position;
+	anchorPositon = position;
 	
 	surfaceMessage = TTF_RenderText_Solid(font, text.c_str(), color);
 	texture = SDL_CreateTextureFromSurface(SDLManager::GetRenderer(), surfaceMessage);
 	rect = { rect.x, rect.y, surfaceMessage->w, surfaceMessage->h };
 	size = Vector2(rect.w, rect.h);
 	
-	transform->position = origin - (size / 2);
-	rect.x = transform->position.x;
-	rect.y = transform->position.y;
+	centerPositon = anchorPositon - (size / 2);
+	rect.x = centerPositon.x;
+	rect.y = centerPositon.y;
 }
 
 Text::~Text()
@@ -32,9 +32,9 @@ void Text::SetText(std::string text)
 	rect = { rect.x, rect.y, surfaceMessage->w, surfaceMessage->h };
 	size = Vector2(rect.w, rect.h);
 	
-	transform->position = origin - (size / 2);
-	rect.x = transform->position.x;
-	rect.y = transform->position.y;
+	centerPositon = anchorPositon - (size / 2);
+	rect.x = centerPositon.x;
+	rect.y = centerPositon.y;
 
 	if(OnTextChange) OnTextChange();
 }
@@ -46,6 +46,6 @@ void Text::Draw()
 
 void Text::Update()
 {
-	rect.x = transform->position.x;
-	rect.y = transform->position.y;
+	rect.x = centerPositon.x;
+	rect.y = centerPositon.y;
 }

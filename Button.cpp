@@ -4,14 +4,15 @@
 Button::Button(Vector2 position, Vector2 startSize, int padding)
 {
 	layer = 0;
-	transform->position = position;
+	anchorPositon = position;
 	size = startSize;
 	this->padding = padding;
 
 	size.x += padding;
 	size.y += padding;
 
-	rect = { (int)transform->position.x, (int)transform->position.y, (int)size.x , (int)size.y};
+	centerPositon = anchorPositon - (size / 2);
+	rect = { (int)centerPositon.x, (int)centerPositon.y, (int)size.x , (int)size.y};
 	currentState = buttonState::DEFAULT;
 }
 
@@ -48,7 +49,7 @@ void Button::Draw()
 void Button::Update()
 {	
 	// check if mouse is inside button
-	if (IsPointInRect(InputManager::GetMousePosition(), transform->position, size))
+	if (IsPointInRect(InputManager::GetMousePosition(), centerPositon, size))
 	{
 		if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 		{
@@ -70,24 +71,17 @@ void Button::Update()
 
 void Button::AddText(std::string inputText, std::string fontID, SDL_Color color)
 {
-	Vector2 centerOfButton = transform->position + (size / 2);
-	
-	text = new Text(inputText, fontID, color, centerOfButton);
+	text = new Text(inputText, fontID, color, anchorPositon);
 
 	text->OnTextChange = [this]()
 	{
-		// scale button to fit text
 		if (text->size.x > size.x)
 		{
 			std::cout << "Button is too small to fit text" << std::endl;
-			size = text->size;
-			size.x += padding;
-			size.y += padding;
-			rect = { (int)transform->position.x, (int)transform->position.y, (int)size.x,(int)size.y };
 		}
 	};
 	
-	rect = { (int)transform->position.x, (int)transform->position.y, (int)size.x,(int)size.y };
+	rect = { (int)centerPositon.x, (int)centerPositon.y, (int)size.x , (int)size.y };
 }
 
 void Button::SetText(std::string inputText)

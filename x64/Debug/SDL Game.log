@@ -1,3 +1,3 @@
 ﻿  Button.cpp
-D:\GIT Repo\SDL-GAME\MathUtility.h(15,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe
+C:\Users\3ayeno06\Downloads\SDL-GAME\MathUtility.h(15,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  SDL Game.vcxproj -> C:\Users\3ayeno06\Downloads\SDL-GAME\x64\Debug\SDL Game.exe

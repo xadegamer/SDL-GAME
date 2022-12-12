@@ -12,7 +12,6 @@ public:
 	SDL_Color color;
 	TTF_Font* font;
 	SDL_Surface* surfaceMessage;
-	Vector2 origin;
 
 	//ontextchange event
 	std::function <void()> OnTextChange;

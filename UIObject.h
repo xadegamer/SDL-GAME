@@ -20,9 +20,9 @@ protected:
 public:
 	
 	Vector2 anchorPositon;
+	Vector2 centerPositon;
 	Vector2 size;
 	
-	Transform* transform;
 	SDL_Texture* texture;
 	SDL_Rect rect;
 	SDL_Color color;

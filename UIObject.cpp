@@ -4,13 +4,11 @@ std::vector<UIObject*> UIObject::activeUIObjects;
 
 UIObject::UIObject()
 {
-	transform = new Transform();
 	activeUIObjects.push_back(this);
 }
 
 UIObject::~UIObject()
 {
-	transform = nullptr;
 	SDL_DestroyTexture(texture);	
 }
 

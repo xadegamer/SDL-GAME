@@ -16,6 +16,7 @@ Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
 Button* Game::button = nullptr;
 Text* Game::text = nullptr;
+Canvas* Game::canvas = nullptr;
 
 Game::Game()
 {
@@ -41,6 +42,19 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	else return false;
 }
 
+void Game::SetUpUI()
+{
+	canvas = new Canvas("MainMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));	
+
+	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	
+	Button* startButton = new Button(midscreen, Vector2(200, 50), 0);
+	startButton->AddText("Start", "Vorgang", { 255, 255, 255, 255 });
+	startButton->OnClick = [](){ canvas->isActive = false; };
+	canvas->AddUIObject(startButton);
+	canvas->Show();
+}
+
 void Game::SpawnGameObjects()
 {
 	player = new Player;
@@ -51,7 +65,7 @@ void Game::SpawnGameObjects()
 
 	text = new Text("Test Text", "Vorgang", { 255, 255, 255, 255 }, Vector2(800, 800));
 
-	button = new Button(Vector2(500, 500), Vector2(200, 200), 0);
+	button = new Button(Vector2(500, 500), Vector2(200, 50), 0);
 
 	button->AddText("Hello World", "Vorgang", { 255, 255, 255, 255 });
 
@@ -76,11 +90,11 @@ void Game::SpawnGameObjects()
 		}
 
 		text->SetText("New Text");
-		std::cout << button->transform->position << endl;
-		std::cout << button->text->transform->position << endl;
-	};
 
-
+		if(canvas->isActive)canvas->isActive = false;
+		else canvas->isActive = true;
+		
+	}; 
 
 	//AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 
@@ -147,6 +161,8 @@ void Game::Update(float deltaTime)
 
 	if (text) text->Update();
 
+	canvas->Update();
+
 	Camera::Update();
 }
 
@@ -162,6 +178,8 @@ void Game::Render()
 
 	if (button) button->Draw();
 	if (text) text->Draw();
+
+	canvas->Draw();
 
 	// draw only object with colliders
 	for (auto& gameObject : GameObject::GetActiveGameobjects())

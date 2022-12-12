@@ -9,7 +9,6 @@
 #include <iostream>
 
 
-
 bool Game::isRunning = false;
 Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
@@ -52,6 +51,17 @@ void Game::SetUpUI()
 	startButton->AddText("Start", "Vorgang", { 255, 255, 255, 255 });
 	startButton->OnClick = [](){ canvas->isActive = false; };
 	canvas->AddUIObject(startButton);
+	
+	Button* optionButton = new Button(midscreen - Vector2(0, -100), Vector2(200, 50), 0);
+	optionButton->AddText("Options", "Vorgang", { 255, 255, 255, 255 });
+	optionButton->OnClick = []() { std::cout << "cleaning game " << std::endl; };
+	canvas->AddUIObject(optionButton);
+
+	Button* quitButton = new Button(midscreen - Vector2(0, -200), Vector2(200, 50), 0);
+	quitButton->AddText("Quit", "Vorgang", { 255, 255, 255, 255 });
+	quitButton->OnClick = []() { isRunning = false; };
+	canvas->AddUIObject(quitButton);
+	
 	canvas->Show();
 }
 
@@ -157,7 +167,7 @@ void Game::Update(float deltaTime)
 		}
 	}
 
-	if(button) button->Update();
+	if (button) button->Update();
 
 	if (text) text->Update();
 

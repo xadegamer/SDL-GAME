@@ -58,7 +58,7 @@ void UIManager::SetUpOptionCanvas()
 
 	Button* backButton = new Button(midscreen, Vector2(200, 50), 0);
 	backButton->AddText("Back", "Vorgang", { 255, 255, 255, 255 });
-	backButton->OnClick = [=]()
+	backButton->OnClick = []()
 	{
 		EnableCanvasByID("MainMenu");
 	};
@@ -75,7 +75,7 @@ void UIManager::SetUpGameCanvas()
 
 	Button* startButton = new Button(midscreen, Vector2(200, 50), 0);
 	startButton->AddText("Pause", "Vorgang", { 255, 255, 255, 255 });
-	startButton->OnClick = [=]() 
+	startButton->OnClick = []() 
 	{
 		EnableCanvasByID("MainMenu");
 	};
@@ -95,7 +95,7 @@ void UIManager::SetUpPauseCanvas()
 
 	Button* resumeButton = new Button(midscreen, Vector2(200, 50), 0);
 	resumeButton->AddText("Resume", "Vorgang", { 255, 255, 255, 255 });
-	resumeButton->OnClick = [=]() 
+	resumeButton->OnClick = []() 
 	{
 		EnableCanvasByID("GameMenu");
 	};

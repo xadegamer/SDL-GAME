@@ -9,13 +9,17 @@ class Canvas
 	static void EnableCanvasByID(std::string id);
 	
 public:
-	Canvas(std::string id, Vector2 size, Vector2 position);
+	Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackground = true);
 	~Canvas();
 	
 	SDL_Rect background;
 
 	std::string ID;
+	
 	bool isActive;
+	bool isEnable;
+	bool hasBackground;
+	
 	std::vector<UIObject*> uiObjects;
 	
 	void Show();

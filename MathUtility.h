@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-
 #include "InputManager.h"
 
 using namespace std;

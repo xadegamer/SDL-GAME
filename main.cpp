@@ -44,7 +44,6 @@ int main(int arg, char* argv[])
 	float moveSpeed = 3.0f;
 
 	Game::Init("Chapter 1", 100, 100, 1280, 720, false);
-	Game::SetUpUI();
 	Game::SpawnGameObjects();
 
 	float timer = 0;

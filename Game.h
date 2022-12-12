@@ -33,13 +33,10 @@ private:
 	static bool isRunning;
 
 public:
+	
 	static Player* player;
 	static Sprite* cursor;
 	static Enemy* enemy;
-
-	static Button* button;
-	static Text* text;
-	static Canvas* canvas;
 	
 public:
 
@@ -59,10 +56,12 @@ public:
 
 	static bool IsRunning() { return isRunning; }
 
-	static void SetUpUI();
-
 	static void SpawnGameObjects();
 
 	static void SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction = Vector2(0, 0));
+
+	static void Quit();
+	
+	static void Debug();
 };
 

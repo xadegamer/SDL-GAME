@@ -8,14 +8,10 @@
 
 #include <iostream>
 
-
 bool Game::isRunning = false;
 Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
-Button* Game::button = nullptr;
-Text* Game::text = nullptr;
-Canvas* Game::canvas = nullptr;
 
 Game::Game()
 {
@@ -33,36 +29,13 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	{	
 		AssetManager::Init();
 		InputManager::Init();
-		UIManager::Init();		
+		UIManager::Init();
+
 		std::cout << "init success\n";
 		isRunning = true; // everything inited successfully, start the main loop
 		return true;
 	}
 	else return false;
-}
-
-void Game::SetUpUI()
-{
-	canvas = new Canvas("MainMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));	
-
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	
-	Button* startButton = new Button(midscreen, Vector2(200, 50), 0);
-	startButton->AddText("Start", "Vorgang", { 255, 255, 255, 255 });
-	startButton->OnClick = [](){ canvas->isActive = false; };
-	canvas->AddUIObject(startButton);
-	
-	Button* optionButton = new Button(midscreen - Vector2(0, -100), Vector2(200, 50), 0);
-	optionButton->AddText("Options", "Vorgang", { 255, 255, 255, 255 });
-	optionButton->OnClick = []() { std::cout << "cleaning game " << std::endl; };
-	canvas->AddUIObject(optionButton);
-
-	Button* quitButton = new Button(midscreen - Vector2(0, -200), Vector2(200, 50), 0);
-	quitButton->AddText("Quit", "Vorgang", { 255, 255, 255, 255 });
-	quitButton->OnClick = []() { isRunning = false; };
-	canvas->AddUIObject(quitButton);
-	
-	canvas->Show();
 }
 
 void Game::SpawnGameObjects()
@@ -72,40 +45,7 @@ void Game::SpawnGameObjects()
 	enemy = new Enemy(Vector2(100, 100));
 
 	cursor = AssetManager::GetSprite("cursor");
-
-	text = new Text("Test Text", "Vorgang", { 255, 255, 255, 255 }, Vector2(800, 800));
-
-	button = new Button(Vector2(500, 500), Vector2(200, 50), 0);
-
-	button->AddText("Hello World", "Vorgang", { 255, 255, 255, 255 });
-
-	int i = 0;
-
-	button->OnClick = [=]() mutable
-	{
-		if (i == 0)
-		{
-			button->text->SetText("New Text");
-			i++;
-		}
-		else if (i == 1)
-		{
-			button->text->SetText("E");
-			i++;
-		}
-		else if (i == 2)
-		{
-			button->text->SetText("EEEEEEEEEEEEEEEEEEE");
-			i = 0;
-		}
-
-		text->SetText("New Text");
-
-		if(canvas->isActive)canvas->isActive = false;
-		else canvas->isActive = true;
-		
-	}; 
-
+	
 	//AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 
 	Camera::SetUp(player);
@@ -120,6 +60,27 @@ void Game::SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 dir
 	Bullet* bullet = new Bullet(spawnPos, bulletType, direction);
 }
 
+void Game::Quit()
+{
+	isRunning = false;
+}
+
+void Game::Debug()
+{
+	// draw only object with colliders
+	for (auto& gameObject : GameObject::GetActiveGameobjects())
+	{
+		Collider* collider = gameObject->GetComponent<Collider>();
+		if (collider) gameObject->GetComponent<Collider>()->Draw();
+	}
+
+	// draw only object with colliders
+	for (auto& gameObject : GameObject::GetActiveGameobjects())
+	{
+		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
+		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
+	}
+}
 
 void Game::HandleEvents()
 {
@@ -167,11 +128,7 @@ void Game::Update(float deltaTime)
 		}
 	}
 
-	if (button) button->Update();
-
-	if (text) text->Update();
-
-	canvas->Update();
+	UIManager::Update();
 
 	Camera::Update();
 }
@@ -184,27 +141,10 @@ void Game::Render()
 
 	for (auto& gameObject : GameObject::GetActiveGameobjects()) gameObject->Draw();
 
+	Debug();
+	
 	UIManager::Draw();
-
-	if (button) button->Draw();
-	if (text) text->Draw();
-
-	canvas->Draw();
-
-	// draw only object with colliders
-	for (auto& gameObject : GameObject::GetActiveGameobjects())
-	{
-		Collider* collider = gameObject->GetComponent<Collider>();
-		if (collider) gameObject->GetComponent<Collider>()->Draw();
-	}
-
-	// draw only object with colliders
-	for (auto& gameObject : GameObject::GetActiveGameobjects())
-	{
-		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
-		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
-	}
-
+		
 	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
 	
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen

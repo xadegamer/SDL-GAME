@@ -1,28 +1,36 @@
 #pragma once
 
-#include "AssetManager.h"
-#include "SDLManager.h"
-
-#include "SDL_image.h"
-#include "SDL_ttf.h"
-
 #include <iostream>
+#include <functional>
+#include <vector>
+
+class Canvas;
+class Game;
 
 class UIManager
 {
 private:
-	static	SDL_Texture* messageTexture;
-	static SDL_Rect messageRect;
-
-public:
 	UIManager() = delete;
 	~UIManager() = delete;
-
-	static void Init();
-	static void Clear();
 	
-	static void DrawMessage(std::string message, int x, int y, int size, SDL_Color color);
+public:
 
+	static std::vector<Canvas*> activeCanvases;
+	
+	static void Init();
+	
+	static void SetUpMainMenuCanvas();
+	
+	static void SetUpOptionCanvas();
+
+	static void SetUpGameCanvas();
+
+	static void SetUpPauseCanvas();
+	
 	static void Draw();
+	
+	static void Update();
+	
+	static void EnableCanvasByID(std::string id);
 };
 

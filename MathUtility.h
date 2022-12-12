@@ -36,3 +36,8 @@ static float Clamp(float value, float min, float max)
 {
 	if (value < min) return min; else if (value > max)return max; else return value;
 }
+
+static bool IsPointInRect(Vector2 point, Vector2 rectPos, Vector2 rectSize)
+{
+	return point.x > rectPos.x && point.x < rectPos.x + rectSize.x && point.y > rectPos.y && point.y < rectPos.y + rectSize.y;
+}

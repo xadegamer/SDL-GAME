@@ -8,10 +8,14 @@
 
 #include <iostream>
 
+
+
 bool Game::isRunning = false;
 Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
+Button* Game::button = nullptr;
+Text* Game::text = nullptr;
 
 Game::Game()
 {
@@ -45,6 +49,39 @@ void Game::SpawnGameObjects()
 
 	cursor = AssetManager::GetSprite("cursor");
 
+	text = new Text("Test Text", "Vorgang", { 255, 255, 255, 255 }, Vector2(800, 800));
+
+	button = new Button(Vector2(500, 500), Vector2(200, 200), 0);
+
+	button->AddText("Hello World", "Vorgang", { 255, 255, 255, 255 });
+
+	int i = 0;
+
+	button->OnClick = [=]() mutable
+	{
+		if (i == 0)
+		{
+			button->text->SetText("New Text");
+			i++;
+		}
+		else if (i == 1)
+		{
+			button->text->SetText("E");
+			i++;
+		}
+		else if (i == 2)
+		{
+			button->text->SetText("EEEEEEEEEEEEEEEEEEE");
+			i = 0;
+		}
+
+		text->SetText("New Text");
+		std::cout << button->transform->position << endl;
+		std::cout << button->text->transform->position << endl;
+	};
+
+
+
 	//AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 
 	Camera::SetUp(player);
@@ -52,7 +89,11 @@ void Game::SpawnGameObjects()
 
 void Game::SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction)
 {
-	Bullet* bullet = new Bullet(startPosition, bulletType, direction);
+	float offsetX = 10;
+	float offsetY = -80;
+	double theta = player->transform->rotation * (M_PI / 180);
+	Vector2 spawnPos = Vector2(startPosition.x + offsetX * cos(theta) - offsetY * sin(theta), startPosition.y + offsetX * sin(theta) + offsetY * cos(theta));
+	Bullet* bullet = new Bullet(spawnPos, bulletType, direction);
 }
 
 
@@ -77,31 +118,34 @@ void Game::Update(float deltaTime)
 		GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
 	}
 
-	//update all game objects with colliders
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		Collider* collider = nullptr;
-		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider)) collider->Update();
-	}
-	
-	Collider* colliderA;
-	Collider* colliderB;
-	
 	//check collision between all game objects with colliders
-	
-	
-	
+
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
-		for (int j = i + 1; j < GameObject::GetActiveGameobjects().size(); j++)
+		Collider* colliderA = nullptr;
+		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
 		{
-			if (CollisionManager::CheckCollision(GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>(), GameObject::GetActiveGameobjects()[j]->GetComponent<Collider>()))
+			for (int j = 0; j < GameObject::GetActiveGameobjects().size(); j++)
 			{
-				GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>()->OnCollision(GameObject::GetActiveGameobjects()[j]->GetComponent<Collider>());
-				GameObject::GetActiveGameobjects()[j]->GetComponent<Collider>()->OnCollision(GameObject::GetActiveGameobjects()[i]->GetComponent<Collider>());
+				Collider* colliderB = nullptr;		
+				if (GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
+				{
+					if (colliderA != colliderB)
+					{
+						if (CollisionManager::CheckCollision(colliderA, colliderB))
+						{
+							colliderA->OnCollision(colliderB);
+							colliderB->OnCollision(colliderA);
+						}
+					}
+				}
 			}
 		}
 	}
+
+	if(button) button->Update();
+
+	if (text) text->Update();
 
 	Camera::Update();
 }
@@ -114,9 +158,10 @@ void Game::Render()
 
 	for (auto& gameObject : GameObject::GetActiveGameobjects()) gameObject->Draw();
 
-	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
-
 	UIManager::Draw();
+
+	if (button) button->Draw();
+	if (text) text->Draw();
 
 	// draw only object with colliders
 	for (auto& gameObject : GameObject::GetActiveGameobjects())
@@ -132,7 +177,8 @@ void Game::Render()
 		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
 	}
 
-
+	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
+	
 	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
 }
 

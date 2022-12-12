@@ -44,6 +44,7 @@ Enemy::~Enemy()
 void Enemy::Update(float deltaTime)
 {
 	animator->Update(deltaTime);
+	collider->Update();
 }
 
 void Enemy::Draw()

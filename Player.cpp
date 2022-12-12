@@ -102,6 +102,8 @@ void Player::Update(float deltaTime)
 	}
 
 	rigidBody->Update(deltaTime);
+
+	collider->Update();
 }
 
 void Player::Draw()

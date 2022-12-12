@@ -1,7 +1,11 @@
 #pragma once
 #include "GameObject.h"
 
+#include "TimeManager.h"
+
 #include <iostream>
+
+extern TimeManager systemTimer;
 
 class Game;
 

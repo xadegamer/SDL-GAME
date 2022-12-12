@@ -19,11 +19,17 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{f5bc54db-e233-4680-b76a-81074e2c89b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Managers">
-      <UniqueIdentifier>{fd8f1971-3067-483b-bcfa-3056b7e4c84f}</UniqueIdentifier>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{5c0dac81-f5d2-4b76-b337-229e2c1368ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Managers">
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{62b2929b-cec0-4b45-a930-420b75348a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Statics">
       <UniqueIdentifier>{6dc03786-b066-4c1d-81ab-6add70ad353a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Statics">
+      <UniqueIdentifier>{fd8f1971-3067-483b-bcfa-3056b7e4c84f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,31 +70,43 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="AssetManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
     <ClCompile Include="SDLManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files\Statics</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,31 +150,43 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="AssetManager.h">
-      <Filter>Header Files\Managers</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">
-      <Filter>Header Files\Managers</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
-      <Filter>Header Files\Managers</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
     <ClInclude Include="SDLManager.h">
-      <Filter>Header Files\Managers</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
     <ClInclude Include="TimeManager.h">
-      <Filter>Header Files\Managers</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>Header Files\Managers</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Header Files\Statics</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

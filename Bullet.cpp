@@ -49,6 +49,7 @@ void Bullet::Update(float deltaTime)
 	transform->Translate(rigidBody->GetPosition());
 	animator->Update(deltaTime);
 	rigidBody->Update(deltaTime);
+	collider->Update();
 
 	if (IsOutSideScreen())
 	{
@@ -63,7 +64,7 @@ void Bullet::Draw()
 
 bool Bullet::IsOutSideScreen()
 {
-	if (transform->position.x < 0 || transform->position.x > 1280 || transform->position.y < 0 || transform->position.y > 720)
+	if (transform->position.x < 0 || transform->position.x > 1280 * 1.2 || transform->position.y < 0 || transform->position.y > 960 * 1.2)
 	{
 		return true;
 	}

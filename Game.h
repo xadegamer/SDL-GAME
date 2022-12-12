@@ -12,6 +12,9 @@
 #include "SpriteRenderer.h"
 #include "InputManager.h"
 
+#include "Button.h"
+#include "Text.h"
+
 #include <iostream>
 
 //The dimensions of the level
@@ -32,6 +35,9 @@ public:
 	static Player* player;
 	static Sprite* cursor;
 	static Enemy* enemy;
+
+	static Button* button;
+	static Text* text;
 	
 public:
 
@@ -54,7 +60,5 @@ public:
 	static void SpawnGameObjects();
 
 	static void SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction = Vector2(0, 0));
-
-	static void DestroyGameobject(GameObject* gameObect);
 };
 

@@ -77,18 +77,11 @@ Vector2& Vector2::operator*(float scaler)
 	return *this;
 }
 
-Vector2& Vector2::operator/(const Vector2& v)
+Vector2 Vector2::operator/(const Vector2& v)
 {
 	x /= v.x;
 	y /= v.y;
-	return *this;
-}
-
-Vector2& Vector2::operator/(float scaler)
-{
-	x /= scaler;
-	y /= scaler;
-	return *this;
+	return Vector2{ x, y };
 }
 
 bool   Vector2::operator==(const Vector2& v) const

@@ -24,6 +24,8 @@ public:
 	~Player();
 	
 	void Update(float deltaTime) override;
+
+	void LateUpdate(float deltaTime) override;
 	
 	void OnCollisionEnter(Collider* other) override;
 

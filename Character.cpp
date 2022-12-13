@@ -13,11 +13,6 @@ Character::~Character()
 {
 }
 
-void Character::Update(float deltaTime)
-{
-	
-}
-
 void Character::Draw()
 {
 	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());

@@ -97,14 +97,12 @@ void Game::HandleEvents()
 
 void Game::Update(float deltaTime)
 {
-	//update all game objects with colliders
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
 		GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
 	}
-
+	
 	//check collision between all game objects with colliders
-
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
 		Collider* colliderA = nullptr;
@@ -126,6 +124,11 @@ void Game::Update(float deltaTime)
 				}
 			}
 		}
+	}
+
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		GameObject::GetActiveGameobjects()[i]->LateUpdate(deltaTime);
 	}
 
 	UIManager::Update(deltaTime);

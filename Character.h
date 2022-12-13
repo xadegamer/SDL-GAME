@@ -18,7 +18,6 @@ public:
 	Character();
 	~Character();
 
-	virtual void Update(float deltaTime) override;
 	void Draw() override;
 };
 

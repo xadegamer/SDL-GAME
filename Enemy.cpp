@@ -8,11 +8,13 @@ Enemy::Enemy(Vector2 startPosition)
 	
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
 
-	boxCollider = AddComponent<BoxCollider>();
+	//boxCollider = AddComponent<BoxCollider>();
+	//boxCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(50, 60));
+	//boxCollider->OnCollisionEnterEvent = [=](Collider* other){OnCollisionEnter(other);};
 
-	boxCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(50, 60));
-
-	boxCollider->OnCollisionEnterEvent = [=](Collider* other){OnCollisionEnter(other);};
+	circleCollider = AddComponent<CircleCollider>();
+	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
+	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 }
 
 Enemy::~Enemy()
@@ -23,7 +25,7 @@ Enemy::~Enemy()
 void Enemy::Update(float deltaTime)
 {
 	animator->Update(deltaTime);
-	boxCollider->Update();
+	circleCollider->Update();
 }
 
 void Enemy::OnCollisionEnter(Collider* other)

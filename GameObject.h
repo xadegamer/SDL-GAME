@@ -44,6 +44,7 @@ public:
 	Transform* transform;
 
 	virtual void Update(float deltaTime) {};
+	virtual void LateUpdate(float deltaTime) {};
 	virtual void Draw() {};
 
 public:

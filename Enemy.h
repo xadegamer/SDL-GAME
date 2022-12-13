@@ -8,7 +8,8 @@ class Enemy : public Character
 {
 private:
 	BoxCollider* boxCollider;
-
+	CircleCollider* circleCollider;
+	
 public:
 
 	Enemy(Vector2 startPosition);

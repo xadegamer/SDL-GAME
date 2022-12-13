@@ -28,8 +28,6 @@ void Player::Update(float deltaTime)
 {
 	transform->rotation = GetAngleFromMouse(transform->position - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
 
-	transform->Translate(rigidBody->GetPosition());
-
 	animator->Update(deltaTime);
 
 	//clamp player position to level bound with scale
@@ -75,15 +73,24 @@ void Player::Update(float deltaTime)
 	{
 		GetComponent<Animator>()->ChangeAnimation("Attack", true);
 	}
-
-	rigidBody->Update(deltaTime);
-
+	
 	circleCollider->Update();
+}
+
+void Player::LateUpdate(float deltaTime)
+{
+	rigidBody->Update(deltaTime);
+	transform->Translate(rigidBody->GetPosition());
 }
 
 void Player::OnCollisionEnter(Collider* other)
 {
-	
+	if (!other->isTrigger)
+	{
+		Vector2 direction = transform->position - other->gameObject->transform->position;
+		direction.normalize();
+		transform->position += direction * 1.5;
+	}
 }
 
 void Player::OnTriggerEnter(Collider* other)

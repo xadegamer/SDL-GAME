@@ -6,6 +6,7 @@
 class Transform : public Component
 {
 private:
+	Vector2 lastSafePosition;
 	
 public:
 	Transform();
@@ -26,7 +27,5 @@ public:
 	Vector2 GetForward();
 
 	Vector2 GetRight();
-
-	
 };
 

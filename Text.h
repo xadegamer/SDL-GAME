@@ -13,7 +13,6 @@ public:
 	TTF_Font* font;
 	SDL_Surface* surfaceMessage;
 
-	//ontextchange event
 	std::function <void()> OnTextChange;
 	
 	Text(std::string text, std::string fontID, SDL_Color c, Vector2 position);

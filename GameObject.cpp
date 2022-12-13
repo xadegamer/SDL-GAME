@@ -21,16 +21,6 @@ GameObject::~GameObject()
 	}
 }
 
-void GameObject::Update(float deltaTime)
-{
-
-}
-
-void GameObject::Draw()
-{
-
-}
-
 bool GameObject::CheckIfComponentExits(Component* newComponent)
 {
 	for (size_t i = 0; i < components.size(); i++)

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GameObject.h"
+#include "BoxCollider.h"
+#include "CircleCollider.h"
 
 enum class BulletType
 {
@@ -15,7 +17,7 @@ private:
 	SpriteRenderer* spriteRenderer;
 	RigidBody* rigidBody;
 	Animator* animator;
-	Collider* collider;
+	CircleCollider* circleCollider;
 	float moveSpeed = 500;
 
 public:
@@ -26,7 +28,12 @@ public:
 	~Bullet();
 
 	void Update(float deltaTime) override;
-	void Draw() override;
+	void Draw() override;	
+	
+	void OnCollisionEnter(Collider* other) override;
+
+	void OnTriggerEnter(Collider* other) override;
+
 	
 	bool IsOutSideScreen();
 };

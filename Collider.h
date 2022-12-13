@@ -3,24 +3,13 @@
 #include "SDLManager.h"
 #include "GameObject.h"
 #include "AssetManager.h"
-//A circle stucture
-//struct Circle
-//{
-//	int x, y;
-//	int r;
-//};
-
 #include <stdio.h>
-
-enum  ColliderType
-{
-	Box, Circle
-};
+#include <functional>
 
 class Collider : public Component
 {
 private:
-	bool isRelativeToCam;
+
 	
 public:
 
@@ -28,29 +17,31 @@ public:
 	~Collider();
 	void someFunc();
 	Vector2 offset;
-	void (*OnCollisionEnter)(Collider* other);
-
+	bool isTrigger;
 	Collider* currentCollidedObject = nullptr;
+
+	std::function <void(Collider* other)> OnCollisionEnterEvent;
+	std::function <void(Collider* other)> OnTriggerEnterEvent;
 	
 public:
 	
-	ColliderType type;
 	Transform* owner;
 	SDL_Rect* colliderRect;
-
-	void SetUp(ColliderType colType, Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool relativeToCam = true);
+	bool isStatic;
+	
+	virtual void SetUp(Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool relativeToCam = false);
 
 	void Update();
 
-	void AssignCollisonCallBack(void (*OnCollisionEnter)(Collider* other));
+	virtual void Draw() {};
 
 	void OnCollision(Collider* other);
-		
-	virtual void Draw();
 
 	inline Vector2 GetPosition() { return Vector2(colliderRect->x, colliderRect->y); }
 
 	Vector2 GetForward();
 
 	Vector2 GetRight();
+
+	inline SDL_Rect* GetColliderRect() { return colliderRect; }
 };

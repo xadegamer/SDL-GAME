@@ -1,14 +1,13 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Character.h"
+#include "BoxCollider.h"
+#include "CircleCollider.h"
 
-class Enemy : public GameObject
+class Enemy : public Character
 {
 private:
-	SpriteRenderer* spriteRenderer;
-	RigidBody* rigidBody;
-	Animator* animator;
-	Collider* collider;
+	BoxCollider* boxCollider;
 
 public:
 
@@ -16,6 +15,9 @@ public:
 	~Enemy();
 
 	void Update(float deltaTime) override;
-	void Draw() override;
+
+	void OnCollisionEnter(Collider* other) override;
+
+	void OnTriggerEnter(Collider* other) override;
 };
 

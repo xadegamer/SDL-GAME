@@ -4,44 +4,19 @@
 
 #include  "Game.h"
 
-Player::Player()
+Player::Player(Vector2 startPosition)
 {
+	transform->position = startPosition;
+	
 	tag = Tag::PLAYER;
-	spriteRenderer = AddComponent<SpriteRenderer>();
 
-	animator = AddComponent<Animator>();
-	animator->SetSprite(spriteRenderer->GetSprite());
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
 	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 0.05);
-	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5,
-		[=]()
-		{
-			Game::SpawnBullet(collider->GetPosition(), BulletType::PLAYER);
-			std::cout << "Spawn Bullet" << std::endl; AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
-		});
+	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5, [=]() {OnShootEvent(); });
 
-	rigidBody = AddComponent<RigidBody>();
-	rigidBody->gravity = 0;
-
-	collider = AddComponent<Collider>();
-
-
-	collider->SetUp(Circle, transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
-
-	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(50, 60));
-
-	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(0, 0));
-
-	RigidBody* rb = nullptr;
-
-	if (TryGetComponent <RigidBody>(rb))
-	{
-		
-	}
-	else
-	{
-		std::cout << "RigidBody Not Found" << std::endl;
-	}
+	circleCollider = AddComponent<CircleCollider>();
+	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
+	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 }
 
 Player::~Player()
@@ -103,10 +78,21 @@ void Player::Update(float deltaTime)
 
 	rigidBody->Update(deltaTime);
 
-	collider->Update();
+	circleCollider->Update();
 }
 
-void Player::Draw()
+void Player::OnCollisionEnter(Collider* other)
 {
-	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());
+	
+}
+
+void Player::OnTriggerEnter(Collider* other)
+{
+	
+}
+
+void Player::OnShootEvent()
+{
+	Game::SpawnBullet(circleCollider->GetPosition(), BulletType::PLAYER);
+	std::cout << "Spawn Bullet" << std::endl; AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
 }

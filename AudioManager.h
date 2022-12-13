@@ -14,8 +14,8 @@ public:
 	static void Init();
 	static void Close();
 
-	static void PlayMusic(Mix_Music* music, int loops);
-	static void PlaySoundEffect(Mix_Chunk* soundEffect, int loops);
+	static void PlayMusic(Mix_Music* music, bool loops = true);
+	static void PlaySoundEffect(Mix_Chunk* soundEffect, bool loops =  false);
 
 	static void PauseMusic();
 	static void ResumeMusic();

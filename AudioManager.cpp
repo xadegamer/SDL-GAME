@@ -10,12 +10,12 @@ void AudioManager::Close()
 	Mix_CloseAudio();
 }
 
-void AudioManager::PlayMusic(Mix_Music* music, int loops)
+void AudioManager::PlayMusic(Mix_Music* music, bool loops)
 {
 	Mix_PlayMusic(music, loops);
 }
 
-void AudioManager::PlaySoundEffect(Mix_Chunk* soundEffect, int loops)
+void AudioManager::PlaySoundEffect(Mix_Chunk* soundEffect, bool loops)
 {
 	Mix_PlayChannel(-1, soundEffect, loops);
 }

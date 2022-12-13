@@ -16,12 +16,11 @@ void Collider::someFunc()
 {
 }
 
-void Collider::SetUp(ColliderType colType,Transform* owner, Vector2 size, Vector2 offset, bool relativeToCam)
+void Collider::SetUp(Transform* owner, Vector2 size, Vector2 offset, bool isStatic)
 {
-	this->type = colType;
 	this->owner = owner;
 	this->offset = offset;
-	isRelativeToCam = relativeToCam;
+	this->isStatic = isStatic;
 	
 	colliderRect->w = size.x;
 	colliderRect->h = size.y;
@@ -29,53 +28,29 @@ void Collider::SetUp(ColliderType colType,Transform* owner, Vector2 size, Vector
 
 void Collider::Update()
 {	
-	if (isRelativeToCam)
-	{
-		colliderRect->x = (owner->position.x + offset.x) - Camera::GetPosition().x;
-		colliderRect->y = (owner->position.y + offset.y) - Camera::GetPosition().y;
-	}
-	else
+	if (isStatic)
 	{
 		colliderRect->x = owner->position.x + offset.x;
 		colliderRect->y = owner->position.y + offset.y;
 	}
-}
-
-void Collider::AssignCollisonCallBack(void(*OnCollisionEnter)(Collider* other))
-{
-	this->OnCollisionEnter = OnCollisionEnter;
+	else
+	{
+		colliderRect->x = (owner->position.x + offset.x) - Camera::GetPosition().x;
+		colliderRect->y = (owner->position.y + offset.y) - Camera::GetPosition().y;
+	}
 }
 
 void Collider::OnCollision(Collider* other)
 {
-	if (OnCollisionEnter != nullptr)OnCollisionEnter(other);
+	if (OnCollisionEnterEvent != nullptr)OnCollisionEnterEvent(other);
+	
+	if (other->isTrigger && OnTriggerEnterEvent != nullptr) OnTriggerEnterEvent(other);
 	
 	//if(OnCollisionEnter != nullptr && currentCollidedObject != other)
 	//{
 	//	currentCollidedObject = other;
 	//	OnCollisionEnter(other);
 	//}
-}
-
-void Collider::Draw()
-{
-	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 255, 0, 255);
-	
-	if (type == Box)
-	{
-		SDL_RenderDrawRect(SDLManager::GetRenderer(), colliderRect);
-	}
-	else
-	{
-		float radious = colliderRect->w / 2;
-		for (int i = 0; i < 360; i++)
-		{
-			float x = radious * cos(i * 3.14 / 180);
-			float y = radious * sin(i * 3.14 / 180);
-
-			SDL_RenderDrawPoint(SDLManager::GetRenderer(), colliderRect->x + x, colliderRect->y + y);
-		}
-	}
 }
 
 Vector2 Collider::GetForward()

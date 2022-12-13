@@ -40,7 +40,7 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::SpawnGameObjects()
 {
-	player = new Player;
+	player = new Player(Vector2(500, 500));
 
 	enemy = new Enemy(Vector2(100, 100));
 
@@ -128,7 +128,7 @@ void Game::Update(float deltaTime)
 		}
 	}
 
-	UIManager::Update();
+	UIManager::Update(deltaTime);
 
 	Camera::Update();
 }

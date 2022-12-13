@@ -53,12 +53,17 @@ void Button::Update()
 	{
 		if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 		{
-			if (OnClick != nullptr) OnClick();
+			if (OnClick) OnClick();
 			currentState = buttonState::PRESSED;
 		}
 		else
 		{
-			currentState = buttonState::HOVERED;
+			if (currentState != buttonState::HOVERED)
+			{
+				if (OnMouseOver) OnMouseOver();
+				
+				currentState = buttonState::HOVERED;
+			}
 		}
 	}
 	else

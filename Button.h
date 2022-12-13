@@ -24,6 +24,7 @@ public:
 	Text* text;
 	int padding;
 	std::function <void()> OnClick;
+	std::function <void()> OnMouseOver;
 
 	void AddText(std::string text, std::string fontID, SDL_Color color);
 	

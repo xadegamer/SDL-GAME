@@ -19,23 +19,15 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 	if (bulletType == BulletType::PLAYER) direction = GetDirectionToMouse(transform->position - Camera::GetPosition() );
 	rigidBody->ApplyForce(direction * moveSpeed);
 
-	collider = AddComponent<Collider>();
+	circleCollider = AddComponent<CircleCollider>();
 	
-	collider->SetUp(Circle, transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(7, 10));
+	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(7, 10));
 
 	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(50, 60));
 	
-	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(0, 0));
-
 	//transfrom->rotation = GetAngleFromMouse(transfrom->position, animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
 
-	collider->AssignCollisonCallBack([](Collider* other)
-	{
-		if (other->gameObject->CompareTag(Tag::ENEMY))
-		{
-			std::cout << "Bullet Hit Enemy" << std::endl;
-		}
-	});
+	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 }
 
 
@@ -49,7 +41,7 @@ void Bullet::Update(float deltaTime)
 	transform->Translate(rigidBody->GetPosition());
 	animator->Update(deltaTime);
 	rigidBody->Update(deltaTime);
-	collider->Update();
+	circleCollider->Update();
 
 	if (IsOutSideScreen())
 	{
@@ -60,6 +52,18 @@ void Bullet::Update(float deltaTime)
 void Bullet::Draw()
 {
 	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());
+}
+
+void Bullet::OnCollisionEnter(Collider* other)
+{
+	if (other->gameObject->CompareTag(Tag::ENEMY))
+	{
+		std::cout << "Bullet Hit Enemy" << std::endl;
+	}
+}
+
+void Bullet::OnTriggerEnter(Collider* other)
+{
 }
 
 bool Bullet::IsOutSideScreen()

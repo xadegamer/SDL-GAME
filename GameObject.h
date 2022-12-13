@@ -8,7 +8,6 @@
 #include "Animator.h"
 #include "Transform.h"
 #include "RigidBody.h"
-#include "Collider.h"
 
 #include "AssetManager.h"
 #include"AudioManager.h"
@@ -17,6 +16,8 @@
 #include "MathUtility.h"
 
 #include "Camera.h"
+
+class Collider;
 
 enum Tag
 {
@@ -42,8 +43,8 @@ public:
 
 	Transform* transform;
 
-	virtual void Update(float deltaTime);
-	virtual void Draw();
+	virtual void Update(float deltaTime) {};
+	virtual void Draw() {};
 
 public:
 
@@ -105,10 +106,14 @@ public:
 
 	bool CheckIfComponentExits(Component* newComponent);
 
+	virtual void OnCollisionEnter(Collider* other) {};
+
+	virtual void OnTriggerEnter(Collider* other) {};
+	
 	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
 
 	static void Destroy(GameObject* gameObject);
 
-	static void DestroyAllGameObjects();
+	static void DestroyAllGameObjects();	
 };
 

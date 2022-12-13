@@ -24,11 +24,13 @@ Canvas::~Canvas()
 void Canvas::Show()
 {
 	isActive = true;
+	isEnable = true;
 }
 
 void Canvas::Hide()
 {
 	isActive = false;
+	isEnable = false;
 }
 
 void Canvas::AddUIObject(UIObject* uiObject)
@@ -52,7 +54,7 @@ void Canvas::Draw()
 
 void Canvas::Update()
 {
-	if (isActive) for (auto& uiObject : uiObjects) uiObject->Update();
+	if (isActive && isEnable) for (auto& uiObject : uiObjects) uiObject->Update();
 }
 
 void Canvas::EnableCanvasByID(std::string id)

@@ -2,7 +2,8 @@
 
 #include "SDLManager.h"
 
-#include "Collider.h"
+#include "BoxCollider.h"
+#include "CircleCollider.h"
 
 class CollisionManager
 {

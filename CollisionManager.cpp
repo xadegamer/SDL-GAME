@@ -75,21 +75,27 @@ bool CollisionManager::DoBoxToCircleCollsionCheck(SDL_Rect* box, SDL_Rect* circl
 
 bool CollisionManager::CheckCollision(Collider* colA, Collider* colB)
 {
-	if (colA->type == Box && colB->type == Box)
+	BoxCollider* boxA = dynamic_cast<BoxCollider*>(colA);
+	BoxCollider* boxB = dynamic_cast<BoxCollider*>(colB);
+
+	CircleCollider* circleA = dynamic_cast<CircleCollider*>(colA);
+	CircleCollider* circleB = dynamic_cast<CircleCollider*>(colB);
+
+	if (boxA != nullptr && boxB != nullptr)
 	{
-		return DoBoxToBoxCollisionCheck(colA->colliderRect, colB->colliderRect);
+		return DoBoxToBoxCollisionCheck(boxA->GetColliderRect(), boxB->GetColliderRect(), s_buffer);
 	}
-	else if (colA->type == Circle && colB->type == Circle)
+	else if (circleA != nullptr && circleB != nullptr)
 	{
-		return DoCircleToCircleCollsionCheck(colA->colliderRect, colB->colliderRect);
+		return DoCircleToCircleCollsionCheck(circleA->GetColliderRect(), circleB->GetColliderRect());
 	}
-	else if (colA->type == Box && colB->type == Circle)
+	else if (boxA != nullptr && circleB != nullptr)
 	{
-		return DoBoxToCircleCollsionCheck(colA->colliderRect, colB->colliderRect);
+		return DoBoxToCircleCollsionCheck(boxA->GetColliderRect(), circleB->GetColliderRect());
 	}
-	else if (colA->type == Circle && colB->type == Box)
+	else if (circleA != nullptr && boxB != nullptr)
 	{
-		return DoBoxToCircleCollsionCheck(colB->colliderRect, colA->colliderRect);
+		return DoBoxToCircleCollsionCheck(boxB->GetColliderRect(), circleA->GetColliderRect());
 	}
 }
 

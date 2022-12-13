@@ -3,6 +3,8 @@
 #include "Game.h"
 
 std::vector<Canvas*> UIManager::activeCanvases;
+float UIManager::refreshRate = 0.01f;
+float UIManager::currrentRefreshRate = 0.0f;
 
 void UIManager::Init()
 {
@@ -23,22 +25,27 @@ void UIManager::SetUpMainMenuCanvas()
 
 	Button* startButton = new Button(midscreen, Vector2(200, 50), 0);
 	startButton->AddText("Start", "Vorgang", { 255, 255, 255, 255 });
+	startButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	startButton->OnClick = []()
 	{
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
 	canvas->AddUIObject(startButton);
 
 	Button* optionButton = new Button(midscreen - Vector2(0, -100), Vector2(200, 50), 0);
 	optionButton->AddText("Options", "Vorgang", { 255, 255, 255, 255 });
+	optionButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	optionButton->OnClick = []() 
 	{
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("OptionsMenu");
 	};
 	canvas->AddUIObject(optionButton);
 
 	Button* quitButton = new Button(midscreen - Vector2(0, -200), Vector2(200, 50), 0);
 	quitButton->AddText("Quit", "Vorgang", { 255, 255, 255, 255 });
+	quitButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	quitButton->OnClick = Game::Quit;
 	canvas->AddUIObject(quitButton);
 
@@ -58,8 +65,10 @@ void UIManager::SetUpOptionCanvas()
 
 	Button* backButton = new Button(midscreen, Vector2(200, 50), 0);
 	backButton->AddText("Back", "Vorgang", { 255, 255, 255, 255 });
+	backButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	backButton->OnClick = []()
 	{
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
 	canvas->AddUIObject(backButton);
@@ -72,14 +81,17 @@ void UIManager::SetUpGameCanvas()
 	Canvas* canvas = new Canvas("GameMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0),false);
 
 	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Vector2 topRightScreenCorner = Vector2(SCREEN_WIDTH, 0);
 
-	Button* startButton = new Button(midscreen, Vector2(200, 50), 0);
-	startButton->AddText("Pause", "Vorgang", { 255, 255, 255, 255 });
-	startButton->OnClick = []() 
+	Button* pauseButton = new Button(topRightScreenCorner - Vector2(50, -50), Vector2(50, 50), 0);
+	pauseButton->AddText("||", "Vorgang", { 255, 255, 255, 255 });
+	pauseButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
+	pauseButton->OnClick = []()
 	{
-		EnableCanvasByID("MainMenu");
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		EnableCanvasByID("PauseMenu");
 	};
-	canvas->AddUIObject(startButton);
+	canvas->AddUIObject(pauseButton);
 
 	activeCanvases.push_back(canvas);
 }
@@ -95,16 +107,20 @@ void UIManager::SetUpPauseCanvas()
 
 	Button* resumeButton = new Button(midscreen, Vector2(200, 50), 0);
 	resumeButton->AddText("Resume", "Vorgang", { 255, 255, 255, 255 });
+	resumeButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	resumeButton->OnClick = []() 
 	{
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
 	canvas->AddUIObject(resumeButton);
 
 	Button* menuButton = new Button(midscreen - Vector2(0, -100), Vector2(200, 50), 0);
 	menuButton->AddText("Menu", "Vorgang", { 255, 255, 255, 255 });
+	menuButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	menuButton->OnClick = []() 
 	{
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
 	canvas->AddUIObject(menuButton);
@@ -117,13 +133,20 @@ void UIManager::Draw()
 	for (auto& canvas : activeCanvases) canvas->Draw();
 }
 
-void UIManager::Update()
+void UIManager::Update(float deltaTime)
 {
-	for (auto& canvas : activeCanvases) canvas->Update();
+	currrentRefreshRate += deltaTime;
+	
+	if (currrentRefreshRate > refreshRate)
+	{
+		for (auto& canvas : activeCanvases) canvas->Update();
+		currrentRefreshRate = 0;
+	}
 }
 
 void UIManager::EnableCanvasByID(std::string id)
 {
+	std::cout << "Enabling canvas: " << id << std::endl;
 	for (auto& canvas : activeCanvases)
 	{
 		if (canvas->ID == id) canvas->Show(); else canvas->Hide();

@@ -27,8 +27,6 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	if (SDLManager::Init(title, xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen))
 	{	
-		AssetManager::Init();
-		InputManager::Init();
 		UIManager::Init();
 
 		std::cout << "init success\n";
@@ -157,8 +155,8 @@ void Game::Clean()
 {
 	std::cout << "cleaning game\n";
 
+	UIManager::Clean();
 	Camera::Clean();
 	GameObject::DestroyAllGameObjects();
-	AssetManager::Clear();
 	SDLManager::Clean();
 }

@@ -1,6 +1,10 @@
 #include "UIManager.h"
 #include "Canvas.h"
 #include "Game.h"
+#include "Button.h"
+#include "Text.h"
+#include "Canvas.h"
+#include "Slider.h"
 
 std::vector<Canvas*> UIManager::activeCanvases;
 float UIManager::refreshRate = 0.01f;
@@ -82,7 +86,8 @@ void UIManager::SetUpGameCanvas()
 
 	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	Vector2 topRightScreenCorner = Vector2(SCREEN_WIDTH, 0);
-
+	Vector2 topLeftScreenCorner = Vector2(0, 0);
+	
 	Button* pauseButton = new Button(topRightScreenCorner - Vector2(50, -50), Vector2(50, 50), 0);
 	pauseButton->AddText("||", "Vorgang", { 255, 255, 255, 255 });
 	pauseButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
@@ -92,6 +97,21 @@ void UIManager::SetUpGameCanvas()
 		EnableCanvasByID("PauseMenu");
 	};
 	canvas->AddUIObject(pauseButton);
+
+	Slider* slider = new Slider(topLeftScreenCorner + Vector2(200, 50), Vector2(300,30), 0);
+	slider->AddText("100", "Vorgang", { 255, 255, 255, 255 });
+	canvas->AddUIObject(slider);
+
+	//To Remove
+	Button* testButton = new Button(midscreen - Vector2(600, -600), Vector2(100, 100), 0);
+	testButton->AddText("Test", "Vorgang", { 255, 255, 255, 255 });
+	testButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
+	testButton->OnClick = [=]()
+	{
+		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);	
+		slider->SetValue(slider->GetValue() + .1f);
+	};
+	canvas->AddUIObject(testButton);
 
 	activeCanvases.push_back(canvas);
 }
@@ -151,4 +171,14 @@ void UIManager::EnableCanvasByID(std::string id)
 	{
 		if (canvas->ID == id) canvas->Show(); else canvas->Hide();
 	}
+}
+
+void UIManager::Clean()
+{
+	for (auto& canvas : activeCanvases)
+	{
+		delete canvas;
+		canvas = nullptr;
+	}
+	activeCanvases.clear();
 }

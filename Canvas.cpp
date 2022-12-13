@@ -1,13 +1,11 @@
 #include "Canvas.h"
 
-std::vector<Canvas*> Canvas::activeCanvases;
-
 Canvas::Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackground)
 {
 	ID = id;
 	this->hasBackground = hasBackground;
 	background = { (int)position.x, (int)position.y, (int)size.x, (int)size.y };
-	activeCanvases.push_back(this);
+	backgroundSprite = AssetManager::GetSprite("background");
 }
 
 Canvas::~Canvas()
@@ -17,8 +15,8 @@ Canvas::~Canvas()
 		delete uiObjects;
 		uiObjects = nullptr;
 	}
-
 	uiObjects.clear();
+	backgroundSprite = nullptr;
 }
 
 void Canvas::Show()
@@ -44,10 +42,14 @@ void Canvas::Draw()
 	{
 		if (hasBackground)
 		{
-			SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 0, 0, 0);
-			SDL_RenderFillRect(SDLManager::GetRenderer(), &background);
-		}
-		
+			// render background sprite
+			if (backgroundSprite != nullptr) SDL_RenderCopy(SDLManager::GetRenderer(), backgroundSprite->texture, NULL, &background);
+			else
+			{
+				SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 0, 0, 0);
+				SDL_RenderFillRect(SDLManager::GetRenderer(), &background);
+			}
+		}	
 		for (auto& uiObject : uiObjects) uiObject->Draw();
 	}
 }
@@ -55,12 +57,4 @@ void Canvas::Draw()
 void Canvas::Update()
 {
 	if (isActive && isEnable) for (auto& uiObject : uiObjects) uiObject->Update();
-}
-
-void Canvas::EnableCanvasByID(std::string id)
-{
-	for (auto& canvas : activeCanvases)
-	{
-		if (canvas->ID == id) canvas->Show(); else canvas->Hide();
-	}
 }

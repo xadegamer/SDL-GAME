@@ -7,16 +7,11 @@
 #include "Transform.h"
 #include "InputManager.h"
 
-
 #include <iostream>
 #include <functional>
 
 class UIObject
 {
-protected:
-	
-	static std::vector<UIObject*> activeUIObjects;
-	
 public:
 	
 	Vector2 anchorPositon;
@@ -35,8 +30,5 @@ public:
 
 	virtual void Draw();
 	virtual void Update();
-
-	static void Destroy(UIObject*  uiObject);
-	static void DestroyAll();
 };
 

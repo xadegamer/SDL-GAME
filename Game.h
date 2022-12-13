@@ -12,10 +12,6 @@
 #include "SpriteRenderer.h"
 #include "InputManager.h"
 
-#include "Button.h"
-#include "Text.h"
-#include "Canvas.h"
-
 #include <iostream>
 
 //The dimensions of the level

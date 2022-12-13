@@ -37,5 +37,7 @@ public:
 	static void Update(float deltaTime);
 	
 	static void EnableCanvasByID(std::string id);
+
+	static void Clean();
 };
 

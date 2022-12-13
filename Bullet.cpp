@@ -59,6 +59,7 @@ void Bullet::OnCollisionEnter(Collider* other)
 	if (other->gameObject->CompareTag(Tag::ENEMY))
 	{
 		std::cout << "Bullet Hit Enemy" << std::endl;
+		GameObject::Destroy(this);
 	}
 }
 

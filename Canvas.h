@@ -5,14 +5,12 @@
 
 class Canvas
 {
-	static std::vector<Canvas*> activeCanvases;
-	static void EnableCanvasByID(std::string id);
-	
 public:
 	Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackground = true);
 	~Canvas();
 	
 	SDL_Rect background;
+	Sprite* backgroundSprite;
 
 	std::string ID;
 	

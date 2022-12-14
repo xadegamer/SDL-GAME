@@ -11,7 +11,6 @@ void Engine::Start()
 	InputManager::Init();
 	
 	Game::Init("Chapter 1", 100, 100, 1280, 720, false);
-	Game::SpawnGameObjects();
 
 	systemTimer.tick();
 	deltaTimer.tick();

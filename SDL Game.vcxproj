@@ -161,6 +161,7 @@
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="Toggle.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIObject.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TimeManager.h" />
+    <ClInclude Include="Toggle.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIObject.h" />

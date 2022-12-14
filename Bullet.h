@@ -33,8 +33,6 @@ public:
 	
 	void OnCollisionEnter(Collider* other) override;
 
-	void OnTriggerEnter(Collider* other) override;
-
 	bool IsOutSideScreen();
 
 	inline BulletType GetBulletType() { return bulletType; }

@@ -19,8 +19,7 @@ Player::Player(Vector2 startPosition, float maxhealth)
 	circleCollider = AddComponent<CircleCollider>();
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
-	circleCollider->OnTriggerEnterEvent = [=](Collider* other) {OnTriggerEnter(other); };
-
+	
 	health->SetHealth(maxhealth);
 }
 
@@ -102,11 +101,6 @@ void Player::OnCollisionEnter(Collider* other)
 	}
 }
 
-void Player::OnTriggerEnter(Collider* other)
-{
-	
-}
-
 void Player::OnShootEvent()
 {
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
@@ -141,10 +135,18 @@ void Player::OnTakeDamage()
 
 void Player::OnHeal()
 {
+	
 }
 
 void Player::OnDeath()
 {
 	canMove = false;
 	animator->ChangeAnimation("Die", true);	
+}
+
+void Player::OnDead()
+{
+	Character::OnDead();
+	Game::ChangeGameState(GameState::GameOver);
+	UIManager::EnableCanvasByID("GameOverMenu");
 }

@@ -31,8 +31,6 @@ public:
 	
 	void OnCollisionEnter(Collider* other) override;
 
-	void OnTriggerEnter(Collider* other) override;
-
 	void OnShootEvent();
 	
 	void OnHealthChange(float health) override;
@@ -42,5 +40,7 @@ public:
 	void OnHeal() override;
 
 	void OnDeath() override;
+	
+	void OnDead() override;
 };
 

@@ -22,7 +22,6 @@ public:
 	Collider* currentCollidedObject = nullptr;
 	SDL_Rect* colliderRect;
 	std::function <void(Collider* other)> OnCollisionEnterEvent;
-	std::function <void(Collider* other)> OnTriggerEnterEvent;
 	
 public:
 	

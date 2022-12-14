@@ -11,7 +11,9 @@ private:
 	CircleCollider* circleCollider;
 	
 	float fireRate = 3;
-	float fireTimer;
+	float fireTimer = 0;
+	float despawnRate = 6;
+	float despawnTimer = 0;
 	
 public:
 
@@ -22,8 +24,6 @@ public:
 
 	void OnCollisionEnter(Collider* other) override;
 
-	void OnTriggerEnter(Collider* other) override;
-
 	void OnShootEvent() override;
 
 	void OnTakeDamage() override;
@@ -31,5 +31,7 @@ public:
 	void OnDeath() override;
 	
 	void Patrol();
+
+	void EnemyDespawn();
 };
 

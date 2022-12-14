@@ -40,6 +40,8 @@ public:
 
 	virtual void OnDeath() {};
 
+	virtual void OnDead();
+
 	Vector2 GetBulletSpawnLocation(Vector2 playerPos);
 
 	void SpawnBullet(Vector2 spawnPos, Vector2 direction, BulletType type);

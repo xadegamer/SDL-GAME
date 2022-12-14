@@ -17,7 +17,7 @@ Character::Character()
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
 	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 0.05);
 	animator->AddAnimationClip("Hurt", AssetManager::GetSprite("CowBoy_6_Hurt"), 6, 0.01, false);
-	animator->AddAnimationClip("Die", AssetManager::GetSprite("CowBoy_6_Die"), 5, 0.05, false)->AddAnimationEvent("Shoot Event", 4, [=]() {isDead = true; });
+	animator->AddAnimationClip("Die", AssetManager::GetSprite("CowBoy_6_Die"), 5, 0.05, false)->AddAnimationEvent("Shoot Event", 4, [=]() {OnDead(); });
 	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.02, false)->AddAnimationEvent("Shoot Event", 5, [=]() {OnShootEvent(); });
 }
 
@@ -32,6 +32,11 @@ Character::~Character()
 void Character::Draw()
 {
 	spriteRenderer->Draw(animator->GetSprite()->texture, transform->GetPosition(), transform->GetRotation(), animator->GetRect());
+}
+
+void Character::OnDead()
+{
+	isDead = true;
 }
 
 Vector2 Character::GetBulletSpawnLocation(Vector2 playerPos)

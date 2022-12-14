@@ -112,8 +112,6 @@ public:
 	bool CheckIfComponentExits(Component* newComponent);
 
 	virtual void OnCollisionEnter(Collider* other) {};
-
-	virtual void OnTriggerEnter(Collider* other) {};
 	
 	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
 

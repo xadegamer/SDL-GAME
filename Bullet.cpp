@@ -28,7 +28,6 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight));
 
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
-	circleCollider->OnTriggerEnterEvent = [=](Collider* other) {OnTriggerEnter(other); };
 }
 
 
@@ -67,11 +66,6 @@ void Bullet::OnCollisionEnter(Collider* other)
 		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
 		Destroy(this);
 	}
-}
-
-void Bullet::OnTriggerEnter(Collider* other)
-{
-	
 }
 
 bool Bullet::IsOutSideScreen()

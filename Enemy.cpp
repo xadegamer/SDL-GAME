@@ -19,7 +19,6 @@ Enemy::Enemy(Vector2 startPosition, float maxhealth)
 	circleCollider = AddComponent<CircleCollider>();
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
-	circleCollider->OnTriggerEnterEvent = [=](Collider* other) {OnTriggerEnter(other); };
 	
 	health->SetHealth(maxhealth);
 }
@@ -31,7 +30,11 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
-	if (isDead) return;
+	if (isDead)
+	{
+		EnemyDespawn();
+		return;
+	}
 	
 	animator->Update(deltaTime);
 	
@@ -58,16 +61,12 @@ void Enemy::OnCollisionEnter(Collider* other)
 	}
 }
 
-void Enemy::OnTriggerEnter(Collider* other)
-{
-	
-}
-
 void Enemy::OnShootEvent()
 {
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
 	Vector2 direction = GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
 	SpawnBullet(spawnPosition, direction, BulletType::ENEMY);
+	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
 }
 
 void Enemy::OnTakeDamage()
@@ -79,10 +78,9 @@ void Enemy::OnTakeDamage()
 void Enemy::OnDeath()
 {
 	canMove = false;
-	animator->ChangeAnimation("Die", true);
 	circleCollider->SetIsEnabled(false);
 	circleCollider->OnCollisionEnterEvent = nullptr;
-	Destroy(this);
+	animator->ChangeAnimation("Die", true);
 }
 
 void Enemy::Patrol()
@@ -93,4 +91,13 @@ void Enemy::Patrol()
 		fireTimer = 0;
 	}
 	else fireTimer += Engine::deltaTimer.getDeltaTime();
+}
+
+void Enemy::EnemyDespawn()
+{
+	if (despawnTimer >= despawnRate)
+	{
+		Destroy(this);
+	}
+	else despawnTimer += Engine::deltaTimer.getDeltaTime();
 }

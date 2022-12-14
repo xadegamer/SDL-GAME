@@ -23,14 +23,21 @@ const int LEVEL_HEIGHT = 960 * 1.2;
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 960;
 
+enum class GameState
+{
+	PlayMode, PauseMode, MainMenu, GameOver
+};
+
 class Game
 {
 private:
 
 	static bool isRunning;
+	static bool showDebug;
 
 public:
 	
+	static GameState gameState;
 	static Player* player;
 	static Sprite* cursor;
 	static Enemy* enemy;
@@ -56,8 +63,18 @@ public:
 
 	static void SpawnGameObjects();
 
+	static void HandleCollision();
+	
+	static void StartGame();
+
+	static void ResetGame();
+
 	static void Quit();
 	
+	static void ChangeGameState(GameState state);
+
+	static void ToggleDebug(bool toggle);
+
 	static void Debug();
 };
 

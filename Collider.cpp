@@ -29,17 +29,15 @@ void Collider::SetUp(Transform* owner, Vector2 size, bool isStatic)
 
 void Collider::OnCollision(Collider* other)
 {
-	if (!isEnabled) return;
+	//if (currentCollidedObject == other) return;
 		
-	if (other == nullptr || this == nullptr) return;
+	if (other == nullptr || !isEnabled) return;
 
 	if (OnCollisionEnterEvent != nullptr) OnCollisionEnterEvent(other);
 	
-	if (other == nullptr || this == nullptr) return;
+	if (other == nullptr || !isEnabled) return;
+
 	
-	//if (other->isTrigger && OnTriggerEnterEvent != nullptr) OnTriggerEnterEvent(other);
-	
-	//if (currentCollidedObject == other) return;
 	//currentCollidedObject = other;
 }
 

@@ -13,6 +13,9 @@ Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
 Prop* Game::prop = nullptr;
+bool Game::showDebug = true;
+
+GameState Game::gameState = GameState::MainMenu;
 
 Game::Game()
 {
@@ -29,7 +32,7 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	if (SDLManager::Init(title, xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen))
 	{	
 		UIManager::Init();
-
+		cursor = AssetManager::GetSprite("cursor");
 		std::cout << "init success\n";
 		isRunning = true; // everything inited successfully, start the main loop
 		return true;
@@ -42,8 +45,6 @@ void Game::SpawnGameObjects()
 	player = new Player(Vector2(500, 500), 100);
 
 	enemy = new Enemy(Vector2(900, 200), 100);
-
-	cursor = AssetManager::GetSprite("cursor");
 	
 	prop = new Prop(Vector2(300,300), "BarrelSmall", ColliderType::CIRCLE, true, false);
 	
@@ -52,9 +53,63 @@ void Game::SpawnGameObjects()
 	Camera::SetUp(player);
 }
 
+void Game::HandleCollision()
+{
+	//check collision between all game objects with colliders
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		Collider* colliderA = nullptr;
+		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
+		{
+			for (int j = 0; j < GameObject::GetActiveGameobjects().size(); j++)
+			{
+				Collider* colliderB = nullptr;
+				if (GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
+				{
+					if (colliderA != colliderB && colliderA->GetIsEnabled() && colliderB->GetIsEnabled())
+					{
+						if (CollisionManager::CheckCollision(colliderA, colliderB))
+						{
+							if (colliderA == nullptr || colliderB == nullptr || !colliderA->GetIsEnabled() || !colliderB->GetIsEnabled()) continue;
+							colliderA->OnCollision(colliderB);
+							if (colliderA == nullptr || colliderB == nullptr || !colliderA->GetIsEnabled() || !colliderB->GetIsEnabled()) continue;
+							colliderB->OnCollision(colliderA);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void Game::StartGame()
+{
+	GameObject::DestroyAllGameObjects();
+	SpawnGameObjects();
+	ChangeGameState(GameState::PlayMode);
+}
+
+void Game::ResetGame()
+{
+	//GameObject::DestroyAllGameObjects();
+	//StartGame();
+}
+
 void Game::Quit()
 {
 	isRunning = false;
+}
+
+void Game::ChangeGameState(GameState state)
+{
+	gameState = state;
+
+	if (gameState == GameState::MainMenu || gameState == GameState::GameOver) ResetGame();
+}
+
+void Game::ToggleDebug(bool toggle)
+{
+	showDebug = toggle;
 }
 
 void Game::Debug()
@@ -89,45 +144,24 @@ void Game::HandleEvents()
 
 void Game::Update(float deltaTime)
 {
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	if (gameState == GameState::PlayMode)
 	{
-		GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
-	}
-	
-	//check collision between all game objects with colliders
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		Collider* colliderA = nullptr;
-		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 		{
-			for (int j = 0; j < GameObject::GetActiveGameobjects().size(); j++)
-			{
-				Collider* colliderB = nullptr;		
-				if (GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
-				{
-					if (colliderA != colliderB)
-					{
-						if (CollisionManager::CheckCollision(colliderA, colliderB))
-						{
-							if (colliderA == nullptr || colliderB == nullptr) break;
-							colliderA->OnCollision(colliderB);
-							if (colliderA == nullptr || colliderB == nullptr) break;
-							colliderB->OnCollision(colliderA);
-						}
-					}
-				}
-			}
+			GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
 		}
-	}
 
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		GameObject::GetActiveGameobjects()[i]->LateUpdate(deltaTime);
+		HandleCollision();
+
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		{
+			GameObject::GetActiveGameobjects()[i]->LateUpdate(deltaTime);
+		}
+
+		Camera::Update();
 	}
 
 	UIManager::Update(deltaTime);
-
-	Camera::Update();
 }
 
 void Game::Render()
@@ -136,22 +170,25 @@ void Game::Render()
 
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
-
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	if (gameState == GameState::PlayMode)
 	{
-		SpriteRenderer* spriteRenderer = nullptr;
-		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 1)
-		GameObject::GetActiveGameobjects()[i]->Draw();		
-	}
+		// loop throught all game objects and render them according to spriterenderer sorting order
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		{
+			SpriteRenderer* spriteRenderer = nullptr;
+			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 1)
+				GameObject::GetActiveGameobjects()[i]->Draw();
+		}
 
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		SpriteRenderer* spriteRenderer = nullptr;
-		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 2)
-			GameObject::GetActiveGameobjects()[i]->Draw();
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		{
+			SpriteRenderer* spriteRenderer = nullptr;
+			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 2)
+				GameObject::GetActiveGameobjects()[i]->Draw();
+		}
+
+		if(showDebug) Debug();
 	}
-	
-	Debug();
 	
 	UIManager::Draw();
 		

@@ -17,8 +17,8 @@ void Camera::Update()
 {
 	if (player)
 	{
-		viewBox.x = (player->transform->position.x + player->GetComponent<Collider>()->colliderRect->w / 2) - SCREEN_WIDTH / 2;
-		viewBox.y = (player->transform->position.y + player->GetComponent<Collider>()->colliderRect->h / 2) - SCREEN_HEIGHT / 2;
+		viewBox.x = (player->GetTransform()->GetPosition().x + player->GetComponent<Collider>()->colliderRect->w / 2) - SCREEN_WIDTH / 2;
+		viewBox.y = (player->GetTransform()->GetPosition().y + player->GetComponent<Collider>()->colliderRect->h / 2) - SCREEN_HEIGHT / 2;
 
 		if (viewBox.x < 0) { viewBox.x = 0; }
 		if (viewBox.y < 0) { viewBox.y = 0; }

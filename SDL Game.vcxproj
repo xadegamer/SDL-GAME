@@ -185,7 +185,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Health.h" />
-    <ClInclude Include="Helper.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Player.h" />

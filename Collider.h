@@ -18,18 +18,18 @@ public:
 	void someFunc();
 	Vector2 offset;
 	bool isTrigger;
+	bool isStatic;
 	Collider* currentCollidedObject = nullptr;
-
+	SDL_Rect* colliderRect;
 	std::function <void(Collider* other)> OnCollisionEnterEvent;
 	std::function <void(Collider* other)> OnTriggerEnterEvent;
 	
 public:
 	
 	Transform* owner;
-	SDL_Rect* colliderRect;
-	bool isStatic;
-	
-	virtual void SetUp(Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool relativeToCam = false);
+
+
+	virtual void SetUp(Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool isStatic = false);
 
 	void Update();
 

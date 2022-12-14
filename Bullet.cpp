@@ -4,7 +4,7 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
 	tag = Tag::BULLET;
 	
-	transform->position = startPosition + Camera::GetPosition();
+	transform->SetPosition(startPosition + Camera::GetPosition());
 
 	bulletType = type;
 	
@@ -15,8 +15,8 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("Bullet"), 3, 0.05);
 
 	rigidBody = AddComponent<RigidBody>();
-	rigidBody->gravity = 0;
-	if (bulletType == BulletType::PLAYER) direction = GetDirectionToMouse(transform->position - Camera::GetPosition() );
+	rigidBody->SetGravity(0);
+	if (bulletType == BulletType::PLAYER) direction = GetDirectionToMouse(transform->GetPosition() - Camera::GetPosition());
 	rigidBody->ApplyForce(direction * moveSpeed);
 
 	circleCollider = AddComponent<CircleCollider>();
@@ -52,7 +52,7 @@ void Bullet::Update(float deltaTime)
 
 void Bullet::Draw()
 {
-	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());
+	spriteRenderer->Draw(animator->GetSprite()->texture, transform->GetPosition(), transform->GetRotation(), animator->GetRect());
 }
 
 void Bullet::OnCollisionEnter(Collider* other)
@@ -70,7 +70,7 @@ void Bullet::OnTriggerEnter(Collider* other)
 
 bool Bullet::IsOutSideScreen()
 {
-	if (transform->position.x < 0 || transform->position.x > 1280 * 1.2 || transform->position.y < 0 || transform->position.y > 960 * 1.2)
+	if (transform->GetPosition().x < 0 || transform->GetPosition().x > 1280 * 1.2 || transform->GetPosition().y < 0 || transform->GetPosition().y > 960 * 1.2)
 	{
 		return true;
 	}

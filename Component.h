@@ -6,9 +6,11 @@ class GameObject;
 
 class Component
 {
+private:
+	
+	std::string name;
 	
 public:
-	std::string name;
 	GameObject* gameObject;
 	virtual void someFunc();
 };

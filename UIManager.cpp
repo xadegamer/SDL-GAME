@@ -169,7 +169,7 @@ void UIManager::EnableCanvasByID(std::string id)
 	std::cout << "Enabling canvas: " << id << std::endl;
 	for (auto& canvas : activeCanvases)
 	{
-		if (canvas->ID == id) canvas->Show(); else canvas->Hide();
+		if (canvas->GetID() == id) canvas->Show(); else canvas->Hide();
 	}
 }
 
@@ -185,6 +185,6 @@ void UIManager::Clean()
 
 Canvas* UIManager::GetCanvasByID(std::string id)
 {
-	for (auto& canvas : activeCanvases) if (canvas->ID == id) return canvas;
+	for (auto& canvas : activeCanvases) if (canvas->GetID() == id) return canvas;
 	return nullptr;
 }

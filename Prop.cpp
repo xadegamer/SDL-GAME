@@ -3,7 +3,7 @@
 Prop::Prop(Vector2 position, std::string spriteName, ColliderType colliderType, bool isStatic, bool isTrigger)
 {
 	tag = Tag::PROP;
-	transform->position = position;
+	transform->SetPosition(position);
 	
 	spriteRenderer = AddComponent<SpriteRenderer>();
 	spriteRenderer->SetSprite(AssetManager::GetSprite(spriteName));
@@ -45,5 +45,5 @@ void Prop::Update(float deltaTime)
 
 void Prop::Draw()
 {
-	spriteRenderer->Draw(transform->position);
+	spriteRenderer->Draw(transform->GetPosition());
 }

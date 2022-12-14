@@ -7,6 +7,17 @@
 
 class RigidBody : public Component
 {
+	
+private:
+
+	float gravity;
+	Vector2 position;
+	Vector2 velocity;
+	float mass;
+	Vector2 force;
+	Vector2 friction;
+	Vector2 acceleration;
+	
 public:
 	RigidBody();
 	~RigidBody();
@@ -38,27 +49,7 @@ public:
 	inline Vector2 GetPosition() { return position; }
 	inline Vector2 GetVelocity() { return velocity; }
 	inline Vector2 GetAcceleration() { return acceleration; }
-
-	// Gravity
 	
-	
-	// Update
 	void Update(float deltaTime);
-
-public:
-	
-	float gravity;
-
-	Vector2 position;
-	Vector2 velocity;
-
-private:	
-		
-	float mass;
-	
-	Vector2 force;	
-	Vector2 friction;
-	
-	Vector2 acceleration;
 };
 

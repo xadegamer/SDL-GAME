@@ -95,15 +95,15 @@ bool CollisionManager::CheckCollision(Collider* colA, Collider* colB)
 	}
 	else if (circleA != nullptr && circleB != nullptr)
 	{
-		return DoCircleToCircleCollsionCheck(circleA->GetColliderRect(), circleA->radius, circleB->GetColliderRect(), circleB->radius);
+		return DoCircleToCircleCollsionCheck(circleA->GetColliderRect(), circleA->GetRadius(), circleB->GetColliderRect(), circleB->GetRadius());
 	}
 	else if (boxA != nullptr && circleB != nullptr)
 	{
-		return DoBoxToCircleCollsionCheck(boxA->GetColliderRect(), circleB->GetColliderRect(), circleB->radius);
+		return DoBoxToCircleCollsionCheck(boxA->GetColliderRect(), circleB->GetColliderRect(), circleB->GetRadius());
 	}
 	else if (circleA != nullptr && boxB != nullptr)
 	{
-		return DoBoxToCircleCollsionCheck(boxB->GetColliderRect(), circleA->GetColliderRect(), circleA->radius);
+		return DoBoxToCircleCollsionCheck(boxB->GetColliderRect(), circleA->GetColliderRect(), circleA->GetRadius());
 	}
 }
 

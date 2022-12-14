@@ -81,7 +81,7 @@ void Button::AddText(std::string id,std::string inputText, std::string fontID, S
 
 	text->OnTextChange = [this]()
 	{
-		if (text->size.x > size.x)
+		if (text->GetSize().x > size.x)
 		{
 			std::cout << "Button is too small to fit text" << std::endl;
 		}

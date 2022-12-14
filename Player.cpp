@@ -10,7 +10,7 @@
 
 Player::Player(Vector2 startPosition, float maxhealth)
 {
-	transform->position = startPosition;
+	transform->SetPosition(startPosition);
 	
 	tag = Tag::PLAYER;
 	
@@ -28,13 +28,13 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-	transform->rotation = GetAngleFromMouse(transform->position - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
+	transform->SetRotation( GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 
 	animator->Update(deltaTime);
 
 	//clamp player position to level bound with scale
-	 transform->position.x = Clamp(transform->position.x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), 1280 + (animator->GetCurrentAnimationClip()->animPixelWidth / 2));
-	 transform->position.y = Clamp(transform->position.y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), 960 + (animator->GetCurrentAnimationClip()->animPixelHeight / 2));
+	 transform->SetXPosition( Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), 1280 + (animator->GetCurrentAnimationClip()->animPixelWidth / 2)) );
+	 transform->SetYPosition( Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), 960 + (animator->GetCurrentAnimationClip()->animPixelHeight / 2)) );
 	
 	////Left and Right
 	//if ((transform->position.x < 0) transform->position.x = 0; else if (transform->position.x > 1280) transform->position.x = 1280;
@@ -89,9 +89,9 @@ void Player::OnCollisionEnter(Collider* other)
 {
 	if (!other->isTrigger)
 	{
-		Vector2 direction = transform->position - other->gameObject->transform->position;
+		Vector2 direction = transform->GetPosition() - other->gameObject->GetTransform()->GetPosition();
 		direction.normalize();
-		transform->position += direction * 1.5;
+		transform->SetPosition(transform->GetPosition() += direction * 1.5);
 	}
 
 	if (other->gameObject->CompareTag(Tag::PROP))

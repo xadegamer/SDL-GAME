@@ -25,14 +25,14 @@ void Collider::SetUp(Transform* owner, Vector2 size, Vector2 offset, bool isStat
 	colliderRect->w = size.x;
 	colliderRect->h = size.y;
 
-	colliderRect->x = owner->position.x + offset.x;
-	colliderRect->y = owner->position.y + offset.y;
+	colliderRect->x = owner->GetPosition().x + offset.x;
+	colliderRect->y = owner->GetPosition().y + offset.y;
 }	
 
 void Collider::Update()
 {	
-	colliderRect->x = (owner->position.x + offset.x) - Camera::GetPosition().x;
-	colliderRect->y = (owner->position.y + offset.y) - Camera::GetPosition().y;
+	colliderRect->x = (owner->GetPosition().x + offset.x) - Camera::GetPosition().x;
+	colliderRect->y = (owner->GetPosition().y + offset.y) - Camera::GetPosition().y;
 }
 
 void Collider::OnCollision(Collider* other)

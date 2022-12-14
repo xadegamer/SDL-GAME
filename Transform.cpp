@@ -23,13 +23,6 @@ void Transform::TranslateY(float y)
 	position.y += y;
 }
 
-void Transform::Log()
-{
-	std::cout << "Position: " << position << std::endl;
-	std::cout << "Scale: " << scale << std::endl;
-	std::cout << "Rotation: " << rotation << std::endl;
-}
-
 Vector2 Transform::GetForward()
 {
 	return Vector2::Normalize(position);

@@ -9,9 +9,9 @@
 #include "MathUtility.h"
 
 class Health : public Component
-{
-	
+{	
 private:
+	
 	float health;
 	float maxHealth;
 

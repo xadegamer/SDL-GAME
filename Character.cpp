@@ -6,7 +6,7 @@ Character::Character()
 	animator = AddComponent<Animator>();
 	animator->SetSprite(spriteRenderer->GetSprite());
 	rigidBody = AddComponent<RigidBody>();
-	rigidBody->gravity = 0;
+	rigidBody->SetGravity(0);
 	
 	health = AddComponent<Health>();
 	health->OnHealthChangeEvent = [=](float health) {OnHealthChange(health); };
@@ -25,5 +25,5 @@ Character::~Character()
 
 void Character::Draw()
 {
-	spriteRenderer->Draw(animator->GetSprite()->texture, transform->position, transform->rotation, animator->GetRect());
+	spriteRenderer->Draw(animator->GetSprite()->texture, transform->GetPosition(), transform->GetRotation(), animator->GetRect());
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #define _INPUTMANAGER
-#include "Helper.h"
+#include "SDLManager.h"
 #include "Vector2.h"
 
 class InputManager

@@ -36,18 +36,20 @@ protected:
 	static std::vector<GameObject*> activeGameobjects;
 
 	std::vector<Component*> components;
+	Tag tag = Tag::DEFAULT;
+	Transform* transform;
 
 public:
 	GameObject();
 	virtual ~GameObject();
 	
-	Tag tag = Tag::DEFAULT;
-
-	Transform* transform;
-
 	virtual void Update(float deltaTime) {};
 	virtual void LateUpdate(float deltaTime) {};
 	virtual void Draw() {};
+
+	inline Transform* GetTransform() { return transform; }
+	inline Tag GetTag() { return tag; }
+	inline void SetTag(Tag tag) { this->tag = tag; }
 
 public:
 

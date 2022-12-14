@@ -63,7 +63,7 @@ UIObject* Canvas::GetUIObjectByID(std::string id)
 {
 	for (auto& uiObject : uiObjects)
 	{
-		if (uiObject->ID == id) return uiObject;
+		if (uiObject->GetID() == id) return uiObject;
 	}
 	return nullptr;
 }

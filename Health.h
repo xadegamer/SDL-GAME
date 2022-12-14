@@ -18,6 +18,8 @@ private:
 public:
 
 	std::function <void(float normalisedHealth)> OnHealthChangeEvent;
+	std::function <void()> OnTakeDamageEvent;
+	std::function <void()> OnHealEvent;
 	std::function <void()> OnDeathEvent;
 	
 	Health();

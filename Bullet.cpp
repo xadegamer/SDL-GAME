@@ -1,5 +1,7 @@
 #include "Bullet.h"
 
+#include "Health.h"
+
 Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
 	tag = Tag::BULLET;
@@ -57,9 +59,9 @@ void Bullet::Draw()
 
 void Bullet::OnCollisionEnter(Collider* other)
 {
-	if (other->gameObject->CompareTag(Tag::ENEMY))
+	if (other->GetGameObject()->CompareTag(Tag::ENEMY))
 	{
-		std::cout << "Bullet Hit Enemy" << std::endl;
+		other->owner->GetGameObject()->GetComponent<Health>()->TakeDamage(20);
 		GameObject::Destroy(this);
 	}
 }

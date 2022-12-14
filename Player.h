@@ -37,6 +37,10 @@ public:
 	
 	void OnHealthChange(float health) override;
 
+	void OnTakeDamage() override;
+	
+	void OnHeal() override;
+
 	void OnDeath() override;
 };
 

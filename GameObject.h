@@ -61,7 +61,7 @@ public:
 		Component* newComponent = dynamic_cast<Component*>(newCom);
 
 		if (CheckIfComponentExits(newComponent)) std::cout << "Already Exists" << std::endl;
-		newComponent->gameObject = this;
+		newComponent->SetGameObject(this);
 		components.push_back(newComponent);
 		return newCom;
 	}

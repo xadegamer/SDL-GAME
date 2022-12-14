@@ -10,6 +10,8 @@ Character::Character()
 	
 	health = AddComponent<Health>();
 	health->OnHealthChangeEvent = [=](float health) {OnHealthChange(health); };
+	health->OnTakeDamageEvent = [=]() {OnTakeDamage(); };
+	health->OnHealEvent = [=]() {OnHeal(); };
 	health->OnDeathEvent = [=]() {OnDeath(); };
 
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);

@@ -89,12 +89,12 @@ void Player::OnCollisionEnter(Collider* other)
 {
 	if (!other->isTrigger)
 	{
-		Vector2 direction = transform->GetPosition() - other->gameObject->GetTransform()->GetPosition();
+		Vector2 direction = transform->GetPosition() - other->GetGameObject()->GetTransform()->GetPosition();
 		direction.normalize();
 		transform->SetPosition(transform->GetPosition() += direction * 1.5);
 	}
 
-	if (other->gameObject->CompareTag(Tag::PROP))
+	if (other->GetGameObject()->CompareTag(Tag::PROP))
 	{
 		health->TakeDamage(10);
 		std::cout << "Hit Prob" << std::endl;
@@ -132,6 +132,14 @@ void Player::OnHealthChange(float currentHealth)
 		healthString = healthString.substr(0, healthString.find("."));
 		slider->SetText(healthString);
 	}
+}
+
+void Player::OnTakeDamage()
+{
+}
+
+void Player::OnHeal()
+{
 }
 
 void Player::OnDeath()

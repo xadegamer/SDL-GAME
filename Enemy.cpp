@@ -28,7 +28,7 @@ Enemy::~Enemy()
 void Enemy::Update(float deltaTime)
 {
 	animator->Update(deltaTime);
-	circleCollider->Update();
+	boxCollider->Update();
 
 	transform->SetRotation( GetAngleFromTraget(transform->GetPosition() - Camera::GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 	animator->ChangeAnimation("Idle");
@@ -37,12 +37,12 @@ void Enemy::Update(float deltaTime)
 
 void Enemy::OnCollisionEnter(Collider* other)
 {
-	if (other->gameObject->CompareTag(Tag::BULLET))
+	if (other->GetGameObject()->CompareTag(Tag::BULLET))
 	{
 		std::cout << "Enemy Take Damage" << std::endl;
 	}
 
-	if (other->gameObject->CompareTag(Tag::PLAYER))
+	if (other->GetGameObject()->CompareTag(Tag::PLAYER))
 	{
 		std::cout << "Player collide with enemy" << std::endl;
 	}
@@ -55,10 +55,10 @@ void Enemy::OnTriggerEnter(Collider* other)
 
 void Enemy::OnShootEvent()
 {
-	Vector2 direction = GetDirectionToTarget(circleCollider->GetCentre(), Game::player->GetComponent<Collider>()->GetCentre());
-	std::cout << "Enemy Shoot: Position: " << circleCollider->GetCentre() << "Centre: " << direction << std::endl;
+	Vector2 direction = GetDirectionToTarget(boxCollider->GetCentre(), Game::player->GetComponent<Collider>()->GetCentre());
+	std::cout << "Enemy Shoot: Position: " << boxCollider->GetCentre() << "Centre: " << direction << std::endl;
 
-	Game::SpawnBullet(circleCollider->GetCentre(), BulletType::ENEMY, direction);
+	Game::SpawnBullet(boxCollider->GetCentre(), BulletType::ENEMY, direction);
 }
 
 void Enemy::Patrol()

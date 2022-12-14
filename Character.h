@@ -28,6 +28,10 @@ public:
 	virtual void OnShootEvent() {};
 
 	virtual void OnHealthChange(float health) {};
+	
+	virtual void OnTakeDamage() {};
+	
+	virtual void OnHeal() {};
 
 	virtual void OnDeath() {};
 

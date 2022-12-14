@@ -2,7 +2,12 @@
 
 #include "GameObject.h"
 
-void Component::someFunc() 
+Component::Component()
+{
+	isEnabled = true;
+}
+
+void Component::someFunc()
 {
 
 }

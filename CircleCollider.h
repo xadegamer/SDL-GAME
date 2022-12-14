@@ -11,7 +11,6 @@ public:
 	void SetUp(Transform* owner, Vector2 size, float radiousMutiplier = 1, bool isStatic = false);
 	void Update() override;
 	void Draw() override;
-
-	inline float GetRadius() { return radius; }
+	inline float GetRadius() { return radius; };
 };
 

@@ -11,10 +11,15 @@ Health::~Health()
 
 void Health::TakeDamage(float damage)
 {
+	if (health == 0) return;
+	
 	health = Clamp(health - damage, 0, maxHealth);
 	if(OnHealthChangeEvent) OnHealthChangeEvent(health / maxHealth);
-	if (health <= 0) if (OnDeathEvent)OnDeathEvent(); else if (OnTakeDamageEvent) OnTakeDamageEvent();
-
+	if (health <= 0)
+	{
+		if (OnDeathEvent)OnDeathEvent();
+	}
+	else { if (OnTakeDamageEvent)OnTakeDamageEvent(); }
 }
 
 void Health::Heal(float healAmount)

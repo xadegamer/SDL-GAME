@@ -13,10 +13,13 @@ Player::Player(Vector2 startPosition, float maxhealth)
 	transform->SetPosition(startPosition);
 	
 	tag = Tag::PLAYER;
+
+	spriteRenderer->SetSortingOrder(2);
 	
 	circleCollider = AddComponent<CircleCollider>();
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
+	circleCollider->OnTriggerEnterEvent = [=](Collider* other) {OnTriggerEnter(other); };
 
 	health->SetHealth(maxhealth);
 }
@@ -28,8 +31,11 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-	transform->SetRotation( GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
+	if (isDead) return;
 	animator->Update(deltaTime);
+
+	transform->SetRotation( GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
+
 
 	//clamp player position to level bound with scale
 	 transform->SetXPosition( Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), 1280 + (animator->GetCurrentAnimationClip()->animPixelWidth / 2)) );
@@ -40,6 +46,7 @@ void Player::Update(float deltaTime)
 	////Top and Bottom
 	//if (transform->position.y < 0) transform->position.y = 0; else if (transform->position.y > 960)transform->position.y = 960;
 
+	 if (!canMove) return;
 	if (InputManager::GetKey(SDL_SCANCODE_W) == false && InputManager::GetKey(SDL_SCANCODE_S) == false && InputManager::GetKey(SDL_SCANCODE_A) == false && InputManager::GetKey(SDL_SCANCODE_D) == false)
 	{
 		rigidBody->ResetForce();
@@ -80,6 +87,7 @@ void Player::Update(float deltaTime)
 
 void Player::LateUpdate(float deltaTime)
 {
+	if (isDead && !canMove) return;
 	rigidBody->Update(deltaTime);
 	transform->Translate(rigidBody->GetPosition());
 }
@@ -110,11 +118,7 @@ void Player::OnShootEvent()
 
 void Player::OnHealthChange(float currentHealth)
 {
-	if(currentHealth != 1)
-	animator->ChangeAnimation("Hurt", true);
-	
-	Canvas* GameCanvas = UIManager::GetCanvasByID("GameMenu");
-	
+	Canvas* GameCanvas = UIManager::GetCanvasByID("GameMenu");	
 	if (GameCanvas != nullptr)
 	{
 		UIObject* sliderObj = GameCanvas->GetUIObjectByID("HealthSlider");
@@ -132,6 +136,7 @@ void Player::OnHealthChange(float currentHealth)
 
 void Player::OnTakeDamage()
 {
+	animator->ChangeAnimation("Hurt", true);
 }
 
 void Player::OnHeal()
@@ -140,5 +145,6 @@ void Player::OnHeal()
 
 void Player::OnDeath()
 {
-	
+	canMove = false;
+	animator->ChangeAnimation("Die", true);	
 }

@@ -6,13 +6,20 @@ class GameObject;
 
 class Component
 {
-private:
+protected:
 	
 	std::string name;
 	GameObject* gameObject;
+	bool isEnabled;
+	
 public:
+	
+	Component();
 	inline GameObject* GetGameObject() { return gameObject; }
 	inline void SetGameObject(GameObject* gameObject) { this->gameObject = gameObject; }
 	virtual void someFunc();
+	
+	inline bool GetIsEnabled() { return isEnabled; }
+	inline void SetIsEnabled(bool isEnabled) { this->isEnabled = isEnabled; }
 };
 

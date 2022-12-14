@@ -26,6 +26,7 @@ class SpriteRenderer : public Component
 private:
 	Sprite* sprite;
 	SDL_Rect destRect;
+	int sortingOrder;
 
 public:
 	SpriteRenderer();
@@ -44,6 +45,9 @@ public:
 	Sprite* CreateSprite(std::string fileName, std::string id);
 
 	Sprite* GetSprite() { return sprite; }
+
+	int GetSortingOrder() { return sortingOrder; }
+	void SetSortingOrder(int sortingOrder) { this->sortingOrder = sortingOrder; }
 
 	void DebugRect();
 };

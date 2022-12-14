@@ -23,22 +23,24 @@ void Collider::SetUp(Transform* owner, Vector2 size, bool isStatic)
 	
 	colliderRect->w = size.x;
 	colliderRect->h = size.y;
-
 	colliderRect->x = owner->GetPosition().x;
 	colliderRect->y = owner->GetPosition().y;
 }	
 
 void Collider::OnCollision(Collider* other)
 {
-	if (OnCollisionEnterEvent != nullptr)OnCollisionEnterEvent(other);
+	if (!isEnabled) return;
+		
+	if (other == nullptr || this == nullptr) return;
+
+	if (OnCollisionEnterEvent != nullptr) OnCollisionEnterEvent(other);
 	
-	if (other->isTrigger && OnTriggerEnterEvent != nullptr) OnTriggerEnterEvent(other);
+	if (other == nullptr || this == nullptr) return;
 	
-	//if(OnCollisionEnter != nullptr && currentCollidedObject != other)
-	//{
-	//	currentCollidedObject = other;
-	//	OnCollisionEnter(other);
-	//}
+	//if (other->isTrigger && OnTriggerEnterEvent != nullptr) OnTriggerEnterEvent(other);
+	
+	//if (currentCollidedObject == other) return;
+	//currentCollidedObject = other;
 }
 
 Vector2 Collider::GetForward()

@@ -45,7 +45,7 @@ void Game::SpawnGameObjects()
 
 	cursor = AssetManager::GetSprite("cursor");
 	
-	prop = new Prop(Vector2(300,300), "Barrel", ColliderType::CIRCLE, true, false);
+	prop = new Prop(Vector2(300,300), "BarrelSmall", ColliderType::CIRCLE, true, false);
 	
 	//AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 
@@ -66,12 +66,12 @@ void Game::Debug()
 		if (collider) gameObject->GetComponent<Collider>()->Draw();
 	}
 
-	// draw only object with colliders
-	for (auto& gameObject : GameObject::GetActiveGameobjects())
-	{
-		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
-		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
-	}
+	//// draw only object with colliders
+	//for (auto& gameObject : GameObject::GetActiveGameobjects())
+	//{
+	//	SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
+	//	if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
+	//}
 }
 
 void Game::HandleEvents()
@@ -109,7 +109,9 @@ void Game::Update(float deltaTime)
 					{
 						if (CollisionManager::CheckCollision(colliderA, colliderB))
 						{
+							if (colliderA == nullptr || colliderB == nullptr) break;
 							colliderA->OnCollision(colliderB);
+							if (colliderA == nullptr || colliderB == nullptr) break;
 							colliderB->OnCollision(colliderA);
 						}
 					}
@@ -134,8 +136,21 @@ void Game::Render()
 
 	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
 
-	for (auto& gameObject : GameObject::GetActiveGameobjects()) gameObject->Draw();
 
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		SpriteRenderer* spriteRenderer = nullptr;
+		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 1)
+		GameObject::GetActiveGameobjects()[i]->Draw();		
+	}
+
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		SpriteRenderer* spriteRenderer = nullptr;
+		if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 2)
+			GameObject::GetActiveGameobjects()[i]->Draw();
+	}
+	
 	Debug();
 	
 	UIManager::Draw();

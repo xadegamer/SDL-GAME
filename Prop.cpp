@@ -3,18 +3,18 @@
 Prop::Prop(Vector2 position, std::string spriteName, ColliderType colliderType, bool isStatic, bool isTrigger)
 {
 	tag = Tag::PROP;
+
 	transform->SetPosition(position);
 	
 	spriteRenderer = AddComponent<SpriteRenderer>();
+	spriteRenderer->SetSortingOrder(1);
 	spriteRenderer->SetSprite(AssetManager::GetSprite(spriteName));
-
-	spriteRenderer->GetSprite()->textureHeight /= 2;
-	spriteRenderer->GetSprite()->textureWidth /= 2;
 
 	if (colliderType == ColliderType::BOX)
 	{
 		collider = AddComponent<BoxCollider>();
-		collider->SetUp(transform, Vector2(spriteRenderer->GetSprite()->textureWidth, spriteRenderer->GetSprite()->textureHeight));
+		BoxCollider* boxCollider = static_cast<BoxCollider*>(collider);
+		boxCollider->SetUp(transform, Vector2(spriteRenderer->GetSprite()->textureWidth, spriteRenderer->GetSprite()->textureHeight));
 
 	}
 	else if (colliderType == ColliderType::CIRCLE)

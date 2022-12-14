@@ -20,6 +20,9 @@ protected:
 	float maxHealth;
 	float moveSpeed = 100;
 	
+	bool canMove = true;
+	bool isDead = false;
+	
 public:
 
 	Character();

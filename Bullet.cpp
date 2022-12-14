@@ -5,12 +5,13 @@
 Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
 	tag = Tag::BULLET;
-	
+
 	transform->SetPosition(startPosition);
 
 	bulletType = type;
 	
 	spriteRenderer = AddComponent<SpriteRenderer>();
+	spriteRenderer->SetSortingOrder(1);
 
 	animator = AddComponent<Animator>();
 	animator->SetSprite(spriteRenderer->GetSprite());
@@ -27,12 +28,13 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight));
 
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
+	circleCollider->OnTriggerEnterEvent = [=](Collider* other) {OnTriggerEnter(other); };
 }
 
 
 Bullet::~Bullet()
 {
-
+	circleCollider->OnCollisionEnterEvent = nullptr;
 }
 
 void Bullet::Update(float deltaTime)
@@ -58,12 +60,12 @@ void Bullet::OnCollisionEnter(Collider* other)
 	if (other->GetGameObject()->CompareTag(Tag::ENEMY) && bulletType == BulletType::PLAYER)
 	{
 		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
-		GameObject::Destroy(this);
+		Destroy(this);
 	}
 	else if (other->GetGameObject()->CompareTag(Tag::PLAYER) && bulletType == BulletType::ENEMY)
 	{
 		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
-		GameObject::Destroy(this);
+		Destroy(this);
 	}
 }
 

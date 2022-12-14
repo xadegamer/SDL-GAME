@@ -35,9 +35,20 @@ void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, S
 
 	//Size of object
 	destRect.w = srcRect.w;
-	destRect.h = srcRect.h ;
+	destRect.h = srcRect.h;
 
 	SDL_RenderCopyEx(SDLManager::GetRenderer(), texture, &srcRect, &destRect, angle, NULL, flip);
+}
+
+void SpriteRenderer::Draw(Vector2 position, SDL_RendererFlip flip)
+{
+	destRect.w = sprite->textureWidth;
+	destRect.h = sprite->textureHeight;
+	destRect.x = position.x;
+	destRect.y = position.y;
+	destRect.x -= Camera::GetPosition().x;
+	destRect.y -= Camera::GetPosition().y;
+	SDL_RenderCopy(SDLManager::GetRenderer(), sprite->texture, NULL, &destRect);
 }
 
 void SpriteRenderer::CursorBlit(SDL_Texture* texture, int x, int y, bool center)

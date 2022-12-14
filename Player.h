@@ -5,6 +5,8 @@
 
 #include "TimeManager.h"
 
+#include "UIManager.h"
+
 #include <iostream>
 
 extern TimeManager systemTimer;
@@ -20,7 +22,7 @@ private:
 	
 public:
 
-	Player(Vector2 startPosition);
+	Player(Vector2 startPosition, float maxhealth);
 	~Player();
 	
 	void Update(float deltaTime) override;
@@ -32,5 +34,9 @@ public:
 	void OnTriggerEnter(Collider* other) override;
 
 	void OnShootEvent();
+	
+	void OnHealthChange(float health) override;
+
+	void OnDeath() override;
 };
 

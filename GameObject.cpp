@@ -7,13 +7,10 @@ GameObject::GameObject()
 {
 	activeGameobjects.push_back(this);
 	transform = AddComponent<Transform>();
-	std::cout << activeGameobjects.size() << endl;
 }
 
 GameObject::~GameObject()
 {
-	//clear componenets
-	std::cout << "Removing Gameobject Componenets" << endl;
 	for (auto& component : components)
 	{
 		delete component;

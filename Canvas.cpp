@@ -4,7 +4,7 @@ Canvas::Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackgroun
 {
 	ID = id;
 	this->hasBackground = hasBackground;
-	background = { (int)position.x, (int)position.y, (int)size.x, (int)size.y };
+	rect = { (int)position.x, (int)position.y, (int)size.x, (int)size.y };
 	backgroundSprite = AssetManager::GetSprite("background");
 }
 
@@ -43,11 +43,11 @@ void Canvas::Draw()
 		if (hasBackground)
 		{
 			// render background sprite
-			if (backgroundSprite != nullptr) SDL_RenderCopy(SDLManager::GetRenderer(), backgroundSprite->texture, NULL, &background);
+			if (backgroundSprite != nullptr) SDL_RenderCopy(SDLManager::GetRenderer(), backgroundSprite->texture, NULL, &rect);
 			else
 			{
 				SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 0, 0, 0);
-				SDL_RenderFillRect(SDLManager::GetRenderer(), &background);
+				SDL_RenderFillRect(SDLManager::GetRenderer(), &rect);
 			}
 		}	
 		for (auto& uiObject : uiObjects) uiObject->Draw();
@@ -57,4 +57,13 @@ void Canvas::Draw()
 void Canvas::Update()
 {
 	if (isActive && isEnable) for (auto& uiObject : uiObjects) uiObject->Update();
+}
+
+UIObject* Canvas::GetUIObjectByID(std::string id)
+{
+	for (auto& uiObject : uiObjects)
+	{
+		if (uiObject->ID == id) return uiObject;
+	}
+	return nullptr;
 }

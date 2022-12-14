@@ -10,9 +10,12 @@ private:
 	BoxCollider* boxCollider;
 	CircleCollider* circleCollider;
 	
+	float fireRate = 3;
+	float fireTimer;
+	
 public:
 
-	Enemy(Vector2 startPosition);
+	Enemy(Vector2 startPosition, float maxhealth);
 	~Enemy();
 
 	void Update(float deltaTime) override;
@@ -20,5 +23,9 @@ public:
 	void OnCollisionEnter(Collider* other) override;
 
 	void OnTriggerEnter(Collider* other) override;
+
+	void OnShootEvent() override;
+	
+	void Patrol();
 };
 

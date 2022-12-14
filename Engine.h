@@ -13,6 +13,7 @@ const float ANIMATION_INTERVAL = 0.05;
 class Engine
 {
 private:
+
 	Engine() = delete;
 	~Engine() = delete;
 	static void FrameCap();

@@ -11,65 +11,73 @@ bool CollisionManager::DoBoxToBoxCollisionCheck(SDL_Rect* A, SDL_Rect* B, int bu
 	return false;
 }
 
-bool CollisionManager::DoCircleToCircleCollsionCheck(SDL_Rect* a, SDL_Rect* b)
+bool CollisionManager::DoCircleToCircleCollsionCheck(SDL_Rect* a, float radiousA, SDL_Rect* b, float radiousB)
 {
-	// calculate total radius squared
-	float aRadius = a->w / 2;
-	float bRadius = b->w / 2;
-	float totalRadiusSquared = aRadius + bRadius;
+	float totalRadiusSquared = radiousA + radiousB;
 	totalRadiusSquared = totalRadiusSquared * totalRadiusSquared;
+
+	Vector2 circleCentreA = Vector2(a->x + a->w / 2, a->y + a->h / 2);
+
+	Vector2 circleCentreB = Vector2(b->x + b->w / 2, b->y + b->h / 2);
 	// if the distance between the centers of the circles is less than the sum of their radii
-	if (DistanceSquared(a->x, a->y, b->x, b->y) <= totalRadiusSquared)
+	if (DistanceSquared(circleCentreA.x, circleCentreA.y, circleCentreB.x, circleCentreB.y) < totalRadiusSquared)
 	{
-		// then the circles have collided
+		// the circles have collided
 		return true;
 	}
+	
 	// otherwise the circles have not collided
 	return false;
 }
 
-bool CollisionManager::DoBoxToCircleCollsionCheck(SDL_Rect* box, SDL_Rect* circle)
+bool CollisionManager::DoBoxToCircleCollsionCheck(SDL_Rect* box, SDL_Rect* circle, float radious)
 {
 	//Closest point on collision box
 	int cX, cY;
-	float circleRadius = circle->w / 2;
+
+	Vector2 circleCentre = Vector2(circle->x + circle->w / 2, circle->y + circle->h / 2);
+
+	Vector2 boxCentre = Vector2(box->x + box->w / 2, box->y + box->h / 2);
 
 	//Find closest x offset
-	if (circle->x < box->x)
+	if (circleCentre.x < box->x)
 	{
 		cX = box->x;
 	}
-	else if (circle->x > box->x + box->w)
+	else if (circleCentre.x > box->x + box->w)
 	{
 		cX = box->x + box->w;
 	}
 	else
 	{
-		cX = circle->x;
+		cX = circleCentre.x;
 	}
-
+	
 	//Find closest y offset
-	if (circle->y < box->y)
+	
+	if (circleCentre.y < box->y)
 	{
 		cY = box->y;
 	}
-	else if (circle->y > box->y + box->h)
+	else if (circleCentre.y > box->y + box->h)
 	{
 		cY = box->y + box->h;
 	}
 	else
 	{
-		cY = circle->y;
+		cY = circleCentre.y;
 	}
-
+	
 	//If the closest point is inside the circle
-	if (DistanceSquared(circle->x, circle->y, cX, cY) < circleRadius * circleRadius)
+	
+	if (DistanceSquared(circleCentre.x, circleCentre.y, cX, cY) < radious * radious)
 	{
 		//This box and the circle have collided
 		return true;
 	}
-
+	
 	//If the shapes have not collided
+	
 	return false;
 }
 
@@ -87,15 +95,15 @@ bool CollisionManager::CheckCollision(Collider* colA, Collider* colB)
 	}
 	else if (circleA != nullptr && circleB != nullptr)
 	{
-		return DoCircleToCircleCollsionCheck(circleA->GetColliderRect(), circleB->GetColliderRect());
+		return DoCircleToCircleCollsionCheck(circleA->GetColliderRect(), circleA->radius, circleB->GetColliderRect(), circleB->radius);
 	}
 	else if (boxA != nullptr && circleB != nullptr)
 	{
-		return DoBoxToCircleCollsionCheck(boxA->GetColliderRect(), circleB->GetColliderRect());
+		return DoBoxToCircleCollsionCheck(boxA->GetColliderRect(), circleB->GetColliderRect(), circleB->radius);
 	}
 	else if (circleA != nullptr && boxB != nullptr)
 	{
-		return DoBoxToCircleCollsionCheck(boxB->GetColliderRect(), circleA->GetColliderRect());
+		return DoBoxToCircleCollsionCheck(boxB->GetColliderRect(), circleA->GetColliderRect(), circleA->radius);
 	}
 }
 

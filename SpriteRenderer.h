@@ -36,6 +36,8 @@ public:
 	void SetSprite(Sprite* sprite);
 
 	void Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect,SDL_RendererFlip flip = SDL_FLIP_NONE, bool relativeToCam = true);
+
+	void Draw(Vector2 position, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	
 	void CursorBlit(SDL_Texture* texture, int x, int y, bool center);
 
@@ -43,7 +45,6 @@ public:
 
 	Sprite* GetSprite() { return sprite; }
 
-	
 	void DebugRect();
 };
 

@@ -24,11 +24,11 @@ void UIManager::SetUpMainMenuCanvas()
 
 	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-	Text* title = new Text("Top Down Game", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
+	Text* title = new Text("TitleText", "Top Down Game", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
 
-	Button* startButton = new Button(midscreen, Vector2(200, 50), 0);
-	startButton->AddText("Start", "Vorgang", { 255, 255, 255, 255 });
+	Button* startButton = new Button("StartButton",midscreen, Vector2(200, 50), 0);
+	startButton->AddText("StartButtonText","Start", "Vorgang", { 255, 255, 255, 255 });
 	startButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	startButton->OnClick = []()
 	{
@@ -37,8 +37,8 @@ void UIManager::SetUpMainMenuCanvas()
 	};
 	canvas->AddUIObject(startButton);
 
-	Button* optionButton = new Button(midscreen - Vector2(0, -100), Vector2(200, 50), 0);
-	optionButton->AddText("Options", "Vorgang", { 255, 255, 255, 255 });
+	Button* optionButton = new Button("OptionButton",midscreen - Vector2(0, -100), Vector2(200, 50), 0);
+	optionButton->AddText("OptionButtonText","Options", "Vorgang", { 255, 255, 255, 255 });
 	optionButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	optionButton->OnClick = []() 
 	{
@@ -47,8 +47,8 @@ void UIManager::SetUpMainMenuCanvas()
 	};
 	canvas->AddUIObject(optionButton);
 
-	Button* quitButton = new Button(midscreen - Vector2(0, -200), Vector2(200, 50), 0);
-	quitButton->AddText("Quit", "Vorgang", { 255, 255, 255, 255 });
+	Button* quitButton = new Button("QuitButton",midscreen - Vector2(0, -200), Vector2(200, 50), 0);
+	quitButton->AddText("QuitButtonText", "Quit", "Vorgang", { 255, 255, 255, 255 });
 	quitButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	quitButton->OnClick = Game::Quit;
 	canvas->AddUIObject(quitButton);
@@ -64,11 +64,11 @@ void UIManager::SetUpOptionCanvas()
 
 	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-	Text* title = new Text("Options", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
+	Text* title = new Text("TitleText","Options", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
 
-	Button* backButton = new Button(midscreen, Vector2(200, 50), 0);
-	backButton->AddText("Back", "Vorgang", { 255, 255, 255, 255 });
+	Button* backButton = new Button("BackButton",midscreen, Vector2(200, 50), 0);
+	backButton->AddText("BackButtonText","Back", "Vorgang", { 255, 255, 255, 255 });
 	backButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	backButton->OnClick = []()
 	{
@@ -88,8 +88,8 @@ void UIManager::SetUpGameCanvas()
 	Vector2 topRightScreenCorner = Vector2(SCREEN_WIDTH, 0);
 	Vector2 topLeftScreenCorner = Vector2(0, 0);
 	
-	Button* pauseButton = new Button(topRightScreenCorner - Vector2(50, -50), Vector2(50, 50), 0);
-	pauseButton->AddText("||", "Vorgang", { 255, 255, 255, 255 });
+	Button* pauseButton = new Button("PauseButton",topRightScreenCorner - Vector2(50, -50), Vector2(50, 50), 0);
+	pauseButton->AddText("PauseButtonText","||", "Vorgang", { 255, 255, 255, 255 });
 	pauseButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	pauseButton->OnClick = []()
 	{
@@ -98,13 +98,13 @@ void UIManager::SetUpGameCanvas()
 	};
 	canvas->AddUIObject(pauseButton);
 
-	Slider* slider = new Slider(topLeftScreenCorner + Vector2(200, 50), Vector2(300,30), 0);
-	slider->AddText("100", "Vorgang", { 255, 255, 255, 255 });
+	Slider* slider = new Slider("HealthSlider",topLeftScreenCorner + Vector2(200, 50), Vector2(300,30), 0);
+	slider->AddText("HealthSliderText","100", "Vorgang", { 255, 255, 255, 255 });
 	canvas->AddUIObject(slider);
 
 	//To Remove
-	Button* testButton = new Button(midscreen - Vector2(600, -600), Vector2(100, 100), 0);
-	testButton->AddText("Test", "Vorgang", { 255, 255, 255, 255 });
+	Button* testButton = new Button("TestButton",midscreen - Vector2(600, -600), Vector2(100, 100), 0);
+	testButton->AddText("TestButtonText","Test", "Vorgang", { 255, 255, 255, 255 });
 	testButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	testButton->OnClick = [=]()
 	{
@@ -122,11 +122,11 @@ void UIManager::SetUpPauseCanvas()
 
 	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-	Text* title = new Text("Paused", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
+	Text* title = new Text("PauseMenuTitle","Paused", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
 
-	Button* resumeButton = new Button(midscreen, Vector2(200, 50), 0);
-	resumeButton->AddText("Resume", "Vorgang", { 255, 255, 255, 255 });
+	Button* resumeButton = new Button("ResumeButton",midscreen, Vector2(200, 50), 0);
+	resumeButton->AddText("ResumeButtonText","Resume", "Vorgang", { 255, 255, 255, 255 });
 	resumeButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	resumeButton->OnClick = []() 
 	{
@@ -135,8 +135,8 @@ void UIManager::SetUpPauseCanvas()
 	};
 	canvas->AddUIObject(resumeButton);
 
-	Button* menuButton = new Button(midscreen - Vector2(0, -100), Vector2(200, 50), 0);
-	menuButton->AddText("Menu", "Vorgang", { 255, 255, 255, 255 });
+	Button* menuButton = new Button("MenuButton",midscreen - Vector2(0, -100), Vector2(200, 50), 0);
+	menuButton->AddText("MenuButtonText","Menu", "Vorgang", { 255, 255, 255, 255 });
 	menuButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	menuButton->OnClick = []() 
 	{
@@ -181,4 +181,10 @@ void UIManager::Clean()
 		canvas = nullptr;
 	}
 	activeCanvases.clear();
+}
+
+Canvas* UIManager::GetCanvasByID(std::string id)
+{
+	for (auto& canvas : activeCanvases) if (canvas->ID == id) return canvas;
+	return nullptr;
 }

@@ -1,8 +1,9 @@
 #include "Button.h"
 
 
-Button::Button(Vector2 position, Vector2 startSize, int padding)
+Button::Button(std::string id, Vector2 position, Vector2 startSize, int padding)
 {
+	this->ID = id;
 	layer = 0;
 	anchorPositon = position;
 	size = startSize;
@@ -74,9 +75,9 @@ void Button::Update()
 	if (text != nullptr) text->Update();
 }
 
-void Button::AddText(std::string inputText, std::string fontID, SDL_Color color)
+void Button::AddText(std::string id,std::string inputText, std::string fontID, SDL_Color color)
 {
-	text = new Text(inputText, fontID, color, anchorPositon);
+	text = new Text(id, inputText, fontID, color, anchorPositon);
 
 	text->OnTextChange = [this]()
 	{

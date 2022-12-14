@@ -43,5 +43,7 @@ public:
 
 	Vector2 GetRight();
 
+	Vector2 GetCentre();
+
 	inline SDL_Rect* GetColliderRect() { return colliderRect; }
 };

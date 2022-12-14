@@ -6,7 +6,6 @@ using namespace std;
 
 #define PI 3.14159265358979323846
 
-
 static float GetAngleFromTraget(Vector2 position, Vector2 target, float width, float height)
 {
 	float x = target.x - (position.x + width / 2);

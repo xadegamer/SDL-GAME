@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h""
+#include "Prop.h"
 
 #include "SDLManager.h"
 #include "AssetManager.h"
@@ -33,6 +34,7 @@ public:
 	static Player* player;
 	static Sprite* cursor;
 	static Enemy* enemy;
+	static Prop* prop;
 	
 public:
 

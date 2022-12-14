@@ -1,3 +1,11 @@
-﻿  Canvas.cpp
-D:\GIT Repo\SDL-GAME\MathUtility.h(14,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+﻿  Character.cpp
+D:\GIT Repo\SDL-GAME\MathUtility.h(13,12): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Camera.h(7,15): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
+D:\GIT Repo\SDL-GAME\Vector2.h(5): message : see declaration of 'Vector2'
+D:\GIT Repo\SDL-GAME\Health.h(31,37): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\Character.cpp(15,87): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Character.cpp(16,93): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Character.cpp(17,93): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Character.cpp(18,91): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\GIT Repo\SDL-GAME\Character.cpp(19,103): warning C4305: 'argument': truncation from 'double' to 'float'
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

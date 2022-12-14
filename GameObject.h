@@ -9,6 +9,7 @@
 #include "Transform.h"
 #include "RigidBody.h"
 
+
 #include "AssetManager.h"
 #include"AudioManager.h"
 
@@ -25,6 +26,7 @@ enum Tag
 	PLAYER,
 	ENEMY,
 	BULLET,
+	PROP,
 };
 
 class GameObject

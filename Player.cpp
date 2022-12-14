@@ -4,19 +4,21 @@
 
 #include  "Game.h"
 
-Player::Player(Vector2 startPosition)
+#include "Canvas.h"
+
+#include "Slider.h"
+
+Player::Player(Vector2 startPosition, float maxhealth)
 {
 	transform->position = startPosition;
 	
 	tag = Tag::PLAYER;
-
-	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
-	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 0.05);
-	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.03, false)->AddAnimationEvent("Shoot Event", 5, [=]() {OnShootEvent(); });
-
+	
 	circleCollider = AddComponent<CircleCollider>();
-	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2), Vector2(90, 120));
+	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
+
+	health->SetHealth(maxhealth);
 }
 
 Player::~Player()
@@ -48,30 +50,30 @@ void Player::Update(float deltaTime)
 	if (InputManager::GetKey(SDL_SCANCODE_W))
 	{
 		rigidBody->ApplyForceY(-moveSpeed);
-		GetComponent<Animator>()->ChangeAnimation("Walk");
+		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_S))
 	{
 		rigidBody->ApplyForceY(moveSpeed);
-		GetComponent<Animator>()->ChangeAnimation("Walk");
+		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_A))
 	{
 		rigidBody->ApplyForceX(-moveSpeed);
-		GetComponent<Animator>()->ChangeAnimation("Walk");
+		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_D))
 	{
 		rigidBody->ApplyForceX(moveSpeed);
-		GetComponent<Animator>()->ChangeAnimation("Walk");
+		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 	{
-		GetComponent<Animator>()->ChangeAnimation("Attack", true);
+		animator->ChangeAnimation("Attack", true);
 	}
 	
 	circleCollider->Update();
@@ -91,6 +93,12 @@ void Player::OnCollisionEnter(Collider* other)
 		direction.normalize();
 		transform->position += direction * 1.5;
 	}
+
+	if (other->gameObject->CompareTag(Tag::PROP))
+	{
+		health->TakeDamage(10);
+		std::cout << "Hit Prob" << std::endl;
+	}
 }
 
 void Player::OnTriggerEnter(Collider* other)
@@ -100,6 +108,33 @@ void Player::OnTriggerEnter(Collider* other)
 
 void Player::OnShootEvent()
 {
-	Game::SpawnBullet(circleCollider->GetPosition(), BulletType::PLAYER);
-	std::cout << "Spawn Bullet" << std::endl; AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
+	Game::SpawnBullet(circleCollider->GetCentre(), BulletType::PLAYER);
+	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
+}
+
+void Player::OnHealthChange(float currentHealth)
+{
+	if(currentHealth != 1)
+	animator->ChangeAnimation("Hurt", true);
+	
+	Canvas* GameCanvas = UIManager::GetCanvasByID("GameMenu");
+	
+	if (GameCanvas != nullptr)
+	{
+		UIObject* sliderObj = GameCanvas->GetUIObjectByID("HealthSlider");
+		if (!sliderObj) return;
+		Slider* slider = dynamic_cast<Slider*>(sliderObj);
+		if (!slider) return;
+		slider->SetValue(currentHealth);
+
+		//remove decima
+		std::string healthString = std::to_string(health->GetHealth());
+		healthString = healthString.substr(0, healthString.find("."));
+		slider->SetText(healthString);
+	}
+}
+
+void Player::OnDeath()
+{
+	
 }

@@ -2,8 +2,9 @@
 
 
 
-Slider::Slider(Vector2 position, Vector2 size, int padding)
+Slider::Slider(std::string id, Vector2 position, Vector2 size, int padding)
 {
+	ID = id;
 	value = 0;
 	minValue = 0;
 	maxValue = 1;
@@ -49,9 +50,9 @@ void Slider::Update()
 	
 }
 
-void Slider::AddText(std::string text, std::string fontID, SDL_Color color)
+void Slider::AddText(std::string id,std::string text, std::string fontID, SDL_Color color)
 {
-	this->text = new Text(text, fontID, color, Vector2(centerPositon.x + size.x / 2, centerPositon.y + size.y / 2));
+	this->text = new Text(id, text, fontID, color, Vector2(centerPositon.x + size.x / 2, centerPositon.y + size.y / 2));
 }
 
 void Slider::SetValue(float value)

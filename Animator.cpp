@@ -23,7 +23,6 @@ AnimationClip* Animator::AddAnimationClip(std::string name, Sprite* sprite, int 
 	AnimationClip* animClip = new AnimationClip(name, sprite, numberOfCells, animSpeed, loop);
 	animationClips.push_back(animClip);
 	if (currentAnimationClip == nullptr) SwitchAnimation(animClip);
-	std::cout << "Added Clip" << std::endl;
 	return animClip;
 }
 

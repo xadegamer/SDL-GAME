@@ -15,7 +15,7 @@ protected:
 	
 public:
 	
-	Button(Vector2 position, Vector2 size, int padding = 0);
+	Button(std::string id, Vector2 position, Vector2 size, int padding = 0);
 	~Button() override;
 
 	void Draw() override;
@@ -26,7 +26,7 @@ public:
 	std::function <void()> OnClick;
 	std::function <void()> OnMouseOver;
 
-	void AddText(std::string text, std::string fontID, SDL_Color color);
+	void AddText(std::string id,std::string text, std::string fontID, SDL_Color color);
 	
 	void SetText(std::string text);
 };

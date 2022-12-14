@@ -3,12 +3,9 @@
 
 class CircleCollider : public Collider
 {
-private:
-	float radious;
-
 public:
-	void SetUp(Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool isStatic = false) override;
-
+	float radius;
+	void SetUp(Transform* owner, Vector2 size, float radiousMutiplier = 1, Vector2 offset = Vector2(0, 0), bool isStatic = false);
 	void Draw() override;
 };
 

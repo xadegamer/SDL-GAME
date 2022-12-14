@@ -12,6 +12,7 @@ bool Game::isRunning = false;
 Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
+Prop* Game::prop = nullptr;
 
 Game::Game()
 {
@@ -38,11 +39,13 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::SpawnGameObjects()
 {
-	player = new Player(Vector2(500, 500));
+	player = new Player(Vector2(500, 500), 100);
 
-	enemy = new Enemy(Vector2(100, 100));
+	enemy = new Enemy(Vector2(900, 200), 100);
 
 	cursor = AssetManager::GetSprite("cursor");
+	
+	prop = new Prop(Vector2(300,300), "Barrel", ColliderType::CIRCLE, true, false);
 	
 	//AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 

@@ -24,20 +24,15 @@ void Collider::SetUp(Transform* owner, Vector2 size, Vector2 offset, bool isStat
 	
 	colliderRect->w = size.x;
 	colliderRect->h = size.y;
+
+	colliderRect->x = owner->position.x + offset.x;
+	colliderRect->y = owner->position.y + offset.y;
 }	
 
 void Collider::Update()
 {	
-	if (isStatic)
-	{
-		colliderRect->x = owner->position.x + offset.x;
-		colliderRect->y = owner->position.y + offset.y;
-	}
-	else
-	{
-		colliderRect->x = (owner->position.x + offset.x) - Camera::GetPosition().x;
-		colliderRect->y = (owner->position.y + offset.y) - Camera::GetPosition().y;
-	}
+	colliderRect->x = (owner->position.x + offset.x) - Camera::GetPosition().x;
+	colliderRect->y = (owner->position.y + offset.y) - Camera::GetPosition().y;
 }
 
 void Collider::OnCollision(Collider* other)
@@ -61,4 +56,9 @@ Vector2 Collider::GetForward()
 Vector2 Collider::GetRight()
 {
 	return Vector2::Normalize(Vector2(colliderRect->x, -colliderRect->x));
+}
+
+Vector2 Collider::GetCentre()
+{
+	return Vector2(colliderRect->x + colliderRect->w / 2, colliderRect->y + colliderRect->h / 2);
 }

@@ -7,6 +7,8 @@
 #include "AssetManager.h"
 
 class Canvas;
+class Slider;
+class UIObject;
 class Game;
 
 class UIManager
@@ -39,5 +41,7 @@ public:
 	static void EnableCanvasByID(std::string id);
 
 	static void Clean();
+	
+	static Canvas* GetCanvasByID(std::string id);
 };
 

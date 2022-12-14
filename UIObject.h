@@ -14,6 +14,8 @@ class UIObject
 {
 public:
 	
+	std::string ID;
+	
 	Vector2 anchorPositon;
 	Vector2 centerPositon;
 	Vector2 size;

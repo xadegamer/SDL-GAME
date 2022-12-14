@@ -3,16 +3,13 @@
 #include "SDLManager.h"
 #include "UIObject.h"
 
-class Canvas
+class Canvas : public UIObject
 {
 public:
 	Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackground = true);
 	~Canvas();
 	
-	SDL_Rect background;
 	Sprite* backgroundSprite;
-
-	std::string ID;
 	
 	bool isActive;
 	bool isEnable;
@@ -29,5 +26,7 @@ public:
 	void Draw();
 
 	void Update();
+
+	UIObject* GetUIObjectByID(std::string id);
 };
 

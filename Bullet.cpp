@@ -20,8 +20,9 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 	rigidBody->ApplyForce(direction * moveSpeed);
 
 	circleCollider = AddComponent<CircleCollider>();
+	circleCollider->isTrigger = true;
 	
-	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(7, 10));
+	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight));
 
 	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(50, 60));
 	
@@ -33,7 +34,7 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 
 Bullet::~Bullet()
 {
-	std::cout << "Bullet Removed" << endl;
+
 }
 
 void Bullet::Update(float deltaTime)

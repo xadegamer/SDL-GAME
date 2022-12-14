@@ -25,6 +25,10 @@ public:
 	void OnTriggerEnter(Collider* other) override;
 
 	void OnShootEvent() override;
+
+	void OnTakeDamage() override;
+	
+	void OnDeath() override;
 	
 	void Patrol();
 };

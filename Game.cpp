@@ -52,15 +52,6 @@ void Game::SpawnGameObjects()
 	Camera::SetUp(player);
 }
 
-void Game::SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction)
-{
-	float offsetX = 10;
-	float offsetY = -80;
-	double theta = player->GetTransform()->GetRotation() * (M_PI / 180);
-	Vector2 spawnPos = Vector2(startPosition.x + offsetX * cos(theta) - offsetY * sin(theta), startPosition.y + offsetX * sin(theta) + offsetY * cos(theta));
-	Bullet* bullet = new Bullet(spawnPos, bulletType, direction);
-}
-
 void Game::Quit()
 {
 	isRunning = false;

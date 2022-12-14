@@ -5,6 +5,8 @@
 
 #include "Health.h"
 
+#include "Bullet.h"
+
 #include <iostream>
 
 class Character : public GameObject
@@ -34,6 +36,10 @@ public:
 	virtual void OnHeal() {};
 
 	virtual void OnDeath() {};
+
+	Vector2 GetBulletSpawnLocation(Vector2 playerPos);
+
+	void SpawnBullet(Vector2 spawnPos, Vector2 direction, BulletType type);
 
 	inline Health* GetHealth() { return health; }
 };

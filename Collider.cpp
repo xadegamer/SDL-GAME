@@ -16,24 +16,17 @@ void Collider::someFunc()
 {
 }
 
-void Collider::SetUp(Transform* owner, Vector2 size, Vector2 offset, bool isStatic)
+void Collider::SetUp(Transform* owner, Vector2 size, bool isStatic)
 {
 	this->owner = owner;
-	this->offset = offset;
 	this->isStatic = isStatic;
 	
 	colliderRect->w = size.x;
 	colliderRect->h = size.y;
 
-	colliderRect->x = owner->GetPosition().x + offset.x;
-	colliderRect->y = owner->GetPosition().y + offset.y;
+	colliderRect->x = owner->GetPosition().x;
+	colliderRect->y = owner->GetPosition().y;
 }	
-
-void Collider::Update()
-{	
-	colliderRect->x = (owner->GetPosition().x + offset.x) - Camera::GetPosition().x;
-	colliderRect->y = (owner->GetPosition().y + offset.y) - Camera::GetPosition().y;
-}
 
 void Collider::OnCollision(Collider* other)
 {

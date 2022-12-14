@@ -30,7 +30,8 @@ void Enemy::Update(float deltaTime)
 	animator->Update(deltaTime);
 	boxCollider->Update();
 
-	transform->SetRotation( GetAngleFromTraget(transform->GetPosition() - Camera::GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
+	//transform->SetRotation( GetAngleFromTraget(transform->GetPosition() - Camera::GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
+	transform->SetRotation(GetAngleFromTraget(transform->GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth));
 	animator->ChangeAnimation("Idle");
 	Patrol();
 }
@@ -55,10 +56,17 @@ void Enemy::OnTriggerEnter(Collider* other)
 
 void Enemy::OnShootEvent()
 {
-	Vector2 direction = GetDirectionToTarget(boxCollider->GetCentre(), Game::player->GetComponent<Collider>()->GetCentre());
-	std::cout << "Enemy Shoot: Position: " << boxCollider->GetCentre() << "Centre: " << direction << std::endl;
+	Vector2 spawnPosition = GetBulletSpawnLocation(boxCollider->GetCentre());
+	Vector2 direction = GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
+	SpawnBullet(spawnPosition, direction, BulletType::ENEMY);
+}
 
-	Game::SpawnBullet(boxCollider->GetCentre(), BulletType::ENEMY, direction);
+void Enemy::OnTakeDamage()
+{
+}
+
+void Enemy::OnDeath()
+{
 }
 
 void Enemy::Patrol()
@@ -68,8 +76,5 @@ void Enemy::Patrol()
 		GetComponent<Animator>()->ChangeAnimation("Attack", true);
 		fireTimer = 0;
 	}
-	else
-	{
-		fireTimer += Engine::deltaTimer.getDeltaTime();
-	}
+	else fireTimer += Engine::deltaTimer.getDeltaTime();
 }

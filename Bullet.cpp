@@ -6,7 +6,7 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
 	tag = Tag::BULLET;
 	
-	transform->SetPosition(startPosition + Camera::GetPosition());
+	transform->SetPosition(startPosition);
 
 	bulletType = type;
 	
@@ -18,17 +18,13 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 
 	rigidBody = AddComponent<RigidBody>();
 	rigidBody->SetGravity(0);
-	if (bulletType == BulletType::PLAYER) direction = GetDirectionToMouse(transform->GetPosition() - Camera::GetPosition());
+
 	rigidBody->ApplyForce(direction * moveSpeed);
 
 	circleCollider = AddComponent<CircleCollider>();
 	circleCollider->isTrigger = true;
 	
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight));
-
-	//collider->SetUp(Box, transfrom, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), Vector2(50, 60));
-	
-	//transfrom->rotation = GetAngleFromMouse(transfrom->position, animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth);
 
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 }
@@ -59,15 +55,21 @@ void Bullet::Draw()
 
 void Bullet::OnCollisionEnter(Collider* other)
 {
-	if (other->GetGameObject()->CompareTag(Tag::ENEMY))
+	if (other->GetGameObject()->CompareTag(Tag::ENEMY) && bulletType == BulletType::PLAYER)
 	{
-		other->owner->GetGameObject()->GetComponent<Health>()->TakeDamage(20);
+		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
+		GameObject::Destroy(this);
+	}
+	else if (other->GetGameObject()->CompareTag(Tag::PLAYER) && bulletType == BulletType::ENEMY)
+	{
+		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
 		GameObject::Destroy(this);
 	}
 }
 
 void Bullet::OnTriggerEnter(Collider* other)
 {
+	
 }
 
 bool Bullet::IsOutSideScreen()

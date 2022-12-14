@@ -56,8 +56,6 @@ public:
 
 	static void SpawnGameObjects();
 
-	static void SpawnBullet(Vector2 startPosition, BulletType bulletType, Vector2 direction = Vector2(0, 0));
-
 	static void Quit();
 	
 	static void Debug();

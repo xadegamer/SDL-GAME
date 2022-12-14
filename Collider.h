@@ -28,10 +28,9 @@ public:
 	
 	Transform* owner;
 
+	virtual void SetUp(Transform* owner, Vector2 size, bool isStatic = false);
 
-	virtual void SetUp(Transform* owner, Vector2 size, Vector2 offset = Vector2(0, 0), bool isStatic = false);
-
-	void Update();
+	virtual void Update() {};
 
 	virtual void Draw() {};
 

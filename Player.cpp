@@ -29,7 +29,6 @@ Player::~Player()
 void Player::Update(float deltaTime)
 {
 	transform->SetRotation( GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
-
 	animator->Update(deltaTime);
 
 	//clamp player position to level bound with scale
@@ -93,12 +92,6 @@ void Player::OnCollisionEnter(Collider* other)
 		direction.normalize();
 		transform->SetPosition(transform->GetPosition() += direction * 1.5);
 	}
-
-	if (other->GetGameObject()->CompareTag(Tag::PROP))
-	{
-		health->TakeDamage(10);
-		std::cout << "Hit Prob" << std::endl;
-	}
 }
 
 void Player::OnTriggerEnter(Collider* other)
@@ -108,7 +101,10 @@ void Player::OnTriggerEnter(Collider* other)
 
 void Player::OnShootEvent()
 {
-	Game::SpawnBullet(circleCollider->GetCentre(), BulletType::PLAYER);
+	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
+	Vector2 direction = GetDirectionToMouse(spawnPosition - Camera::GetPosition());
+	SpawnBullet(spawnPosition, direction, BulletType::PLAYER);
+
 	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
 }
 

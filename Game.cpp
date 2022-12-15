@@ -45,7 +45,9 @@ void Game::SpawnGameObjects()
 {
 	tileMap = new TileMap((LEVEL_WIDTH / 89) + 1,( LEVEL_HEIGHT/ 89) + 1, 89);
 	
-	player = GameObject::Instantiate(new Player(100), Vector2(500, 500));
+	Vector2 playerPos = tileMap->GetTilePositionById("P");
+	std::cout << "Player pos: " << playerPos.x << ", " << playerPos.y << std::endl;
+	player = GameObject::Instantiate(new Player(100), playerPos);
 
 	Camera::SetUp(player);
 
@@ -103,6 +105,8 @@ void Game::StartGame()
 
 void Game::ResetGame()
 {
+	delete tileMap;
+	tileMap = nullptr;
 	GameObject::DestroyAllGameObjects();
 }
 
@@ -146,11 +150,6 @@ void Game::Debug()
 	//	SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
 	//	if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
 	//}
-}
-
-void Game::SaveMapToFile()
-{
-	tileMap->SaveMaptoFile();
 }
 
 void Game::HandleEvents()

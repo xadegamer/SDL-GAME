@@ -1,8 +1,10 @@
 ﻿  TileMap.cpp
 D:\GIT Repo\SDL-GAME\Camera.h(7,15): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
 D:\GIT Repo\SDL-GAME\Vector2.h(5): message : see declaration of 'Vector2'
-D:\GIT Repo\SDL-GAME\TileMap.cpp(67,17): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-D:\GIT Repo\SDL-GAME\TileMap.cpp(67,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\TileMap.cpp(68,16): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-D:\GIT Repo\SDL-GAME\TileMap.cpp(68,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\TileMap.cpp(73,38): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+D:\GIT Repo\SDL-GAME\TileMap.cpp(73,38): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\TileMap.cpp(73,78): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+D:\GIT Repo\SDL-GAME\TileMap.cpp(73,78): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\TileMap.cpp(134,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\TileMap.cpp(134,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

@@ -2,21 +2,26 @@
 
 #include "Camera.h"
 
+
 TileMap::TileMap(int width, int height, int tileSize)
 {
 	this->width = width;
 	this->height = height;
 	this->tileSize = tileSize;
 	this->numTiles = width * height;
-	this->tiles = new Tile * [width];
+	
+	tiles.resize(width);
 	for (int i = 0; i < width; i++)
 	{
-		this->tiles[i] = new Tile[height];
+		tiles[i].resize(height);
 	}
 
-	grassSprite = AssetManager::GetSprite("Grass");
-	asphaltSprite = AssetManager::GetSprite("Asphalt");
+	grassSprite = AssetManager::GetSprite("grass");
 	
+	asphaltCentreSprite = AssetManager::GetSprite("Asphalt_Centre");
+	asphaltCentreLeftSprite = AssetManager::GetSprite("Asphalt_Centre_Left");
+	asphaltCentreRightSprite = AssetManager::GetSprite("Asphalt_Centre_Right");
+
 	LoadMap();
 }
 
@@ -24,9 +29,13 @@ TileMap::~TileMap()
 {
 	for (int i = 0; i < width; i++)
 	{
-		delete[] tiles[i];
+		for (int j = 0; j < height; j++)
+		{
+			delete tiles[i][j];
+		}
 	}
-	delete[] tiles;
+
+	tiles.clear();
 }
 
 void TileMap::LoadMap()
@@ -43,7 +52,8 @@ void TileMap::LoadMap()
 			{
 				std::string tileID;
 				mapFile >> tileID;
-				tiles[i][j].id = tileID;
+
+				tiles[i][j] = new Tile(tileID, GetSprite(tileID));
 			}
 		}
 		mapFile.close();
@@ -56,20 +66,13 @@ void TileMap::LoadMap()
 
 void TileMap::DrawMap()
 {
-	for (int y = 0; y < height; y++)
+	for (int x = 0; x < width; x++)
 	{
-		for (int x = 0; x < width; x++)
-		{ 
-			Sprite* sprite = tiles[x][y].id == "S" ? grassSprite : asphaltSprite;
-			
-			SDL_Rect destRect = 
-			{
-			x * tileSize - Camera::GetPosition().x,
-			y* tileSize - Camera::GetPosition().y,
-			sprite->textureWidth,
-			sprite->textureHeight
-			};
-			SDL_RenderCopy(SDLManager::GetRenderer(), sprite->texture, NULL, &destRect);
+		for (int y = 0; y < height; y++)
+		{			
+			SDL_Rect destRect = {x * tileSize - Camera::GetPosition().x, y * tileSize - Camera::GetPosition().y,
+			tiles[x][y]->sprite->textureWidth,	tiles[x][y]->sprite->textureHeight};
+			SDL_RenderCopy(SDLManager::GetRenderer(), tiles[x][y]->sprite->texture, NULL, &destRect);
 		}
 	}
 }
@@ -80,13 +83,57 @@ void TileMap::SaveMaptoFile()
 	std::ofstream mapFile(mapPath);
 	if (mapFile.is_open())
 	{
-		for (int y = 0; y < height; y++)
+		for (int i = 0; i < width; i++)
 		{
-			for (int x = 0; x < width; x++)
+			for (int j = 0; j < height; j++)
 			{
-				mapFile << tiles[x][y].id << " ";
+				mapFile << tiles[i][j]->id << " ";
 			}
 			mapFile << std::endl;
 		}
+		mapFile.close();
 	}
+	else
+	{
+		std::cout << "Unable to open file";
+	}
+}
+
+Sprite* TileMap::GetSprite(std::string id)
+{
+	if (id == "F")
+	{
+		return grassSprite;
+	}
+	else if (id == "S")
+	{
+		return asphaltCentreSprite;
+	}
+	else if (id == "L")
+	{
+		return asphaltCentreLeftSprite;
+	}
+	else if (id == "R")
+	{
+		return asphaltCentreRightSprite;
+	}
+	else
+	{
+		return grassSprite;
+	}
+}
+
+Vector2 TileMap::GetTilePositionById(std::string id)
+{
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			if (tiles[i][j]->id == id)
+			{
+				return Vector2(i * tileSize, j * tileSize);
+			}
+		}
+	}
+	return Vector2(-1, -1);
 }

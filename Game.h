@@ -82,7 +82,5 @@ public:
 	static void ToggleDebug(bool toggle);
 
 	static void Debug();
-
-	static void SaveMapToFile();
 };
 

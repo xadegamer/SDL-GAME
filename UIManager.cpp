@@ -47,7 +47,6 @@ void UIManager::SetUpMainMenuCanvas()
 	optionButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	optionButton->OnClick = []() 
 	{
-		Game::SaveMapToFile();
 		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("OptionsMenu");
 	};

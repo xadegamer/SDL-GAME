@@ -27,7 +27,7 @@ void AssetManager::Clear()
 
 Sprite* AssetManager::GetSprite(std::string filename)
 {
-	std::string fullPath = "Assets/" + filename + ".png";
+	std::string fullPath = "Assets/Art/" + filename + ".png";
 
 	if (sprites[fullPath] == nullptr)
 	{
@@ -52,7 +52,7 @@ Sprite* AssetManager::GetSprite(std::string filename)
 
 TTF_Font* AssetManager::GetFont(std::string filename, int size)
 {
-	std::string fullPath = "Assets/" + filename + ".ttf";
+	std::string fullPath = "Assets/Fonts/" + filename + ".ttf";
 
 	if (fonts[fullPath] == nullptr)
 	{
@@ -65,7 +65,7 @@ TTF_Font* AssetManager::GetFont(std::string filename, int size)
 
 Mix_Chunk* AssetManager::GetSound(std::string filename)
 {
-	std::string fullPath = "Assets/" + filename + ".wav";
+	std::string fullPath = "Assets/Audio/" + filename + ".wav";
 
 	if (sounds[fullPath] == nullptr)
 	{
@@ -78,7 +78,7 @@ Mix_Chunk* AssetManager::GetSound(std::string filename)
 
 Mix_Music* AssetManager::GetMusic(std::string filename)
 {
-	std::string fullPath = "Assets/" + filename + ".mp3";
+	std::string fullPath = "Assets/Audio/" + filename + ".mp3";
 
 	if (musics[fullPath] == nullptr)
 	{

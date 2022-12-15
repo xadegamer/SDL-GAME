@@ -142,7 +142,10 @@
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GasCylinder.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +252,10 @@
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GasCylinder.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

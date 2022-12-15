@@ -42,7 +42,6 @@ void Enemy::Update(float deltaTime)
 	
 	circleCollider->Update();
 
-	//transform->SetRotation( GetAngleFromTraget(transform->GetPosition() - Camera::GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 	transform->SetRotation(MathUtility::GetAngleFromTraget(transform->GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth));
 	animator->ChangeAnimation("Idle");
 	Patrol();
@@ -87,7 +86,7 @@ void Enemy::Patrol()
 {
 	if (fireTimer >= fireRate)
 	{
-		animator->ChangeAnimation("Attack", true);
+		if(!isDead) animator->ChangeAnimation("Attack", true);
 		fireTimer = 0;
 	}
 	else fireTimer += Engine::deltaTimer.getDeltaTime();

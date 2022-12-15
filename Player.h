@@ -18,7 +18,7 @@ class Player : public Character
 private:
 	
 	CircleCollider* circleCollider;
-	float moveSpeed = 100;
+	float moveSpeed = 150;
 	
 public:
 

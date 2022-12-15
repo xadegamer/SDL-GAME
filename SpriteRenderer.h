@@ -42,7 +42,7 @@ public:
 	
 	void CursorBlit(SDL_Texture* texture, int x, int y, bool center);
 
-	Sprite* CreateSprite(std::string fileName, std::string id);
+	static Sprite* CreateSprite(std::string fileName, std::string id);
 
 	Sprite* GetSprite() { return sprite; }
 

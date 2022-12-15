@@ -46,11 +46,19 @@ void Game::SpawnGameObjects()
 
 	Camera::SetUp(player);
 
-	enemy = GameObject::Instantiate(new Enemy(100), Vector2(600, 200));
+	//enemy = GameObject::Instantiate(new Enemy(100), Vector2(600, 200));
+
+	//GameObject::InstantiateRandomPositionOnScreen(new Enemy(100));
 	
 	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(300, 300));
 
-	GameObject::InstantiateRandomPositionOnScreen(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false));
+	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(400, 300));
+	
+	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(500, 300));
+	
+	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(600, 300));
+
+	//GameObject::InstantiateRandomPositionOnScreen(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false));
 	
 	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }

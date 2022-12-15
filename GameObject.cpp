@@ -27,6 +27,16 @@ bool GameObject::CheckIfComponentExits(Component* newComponent)
 	return false;
 }
 
+bool GameObject::GameObjectInRange(Vector2 position, float range)
+{
+	for (size_t i = 0; i < activeGameobjects.size(); i++)
+	{
+		float distance = Vector2::Distance(activeGameobjects[i]->GetTransform()->GetPosition(), position);
+		if (distance < range) return true;
+	}
+	return false;
+}
+
 void GameObject::Destroy(GameObject* gameObject)
 {
 	activeGameobjects.erase(find(activeGameobjects.begin(), activeGameobjects.end(), gameObject));

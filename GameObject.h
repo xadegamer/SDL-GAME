@@ -104,6 +104,7 @@ public:
 	static T* InstantiateRandomPositionInLevel(T* prefab)
 	{
 		Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
+		//while (GameObjectInRange(randomPosition, 5)) randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
 		return Instantiate(prefab, randomPosition);
 	}
 
@@ -112,29 +113,9 @@ public:
 	{
 		SDL_Rect cameraRect = Camera::GetViewBox();
 		Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
-		return Instantiate(prefab, randomPosition);
-	}
 
-	template<class T>
-	static T* InstantiateRandomPositionInLevelWithDistanceFromPosition(T* prefab, Vector2 objectPosition, float distance)
-	{
-		Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
-		while (Vector2::Distance(randomPosition, objectPosition) < distance)
-		{
-			Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
-		}
-		return Instantiate(prefab, randomPosition);
-	}
+		//while (GameObjectInRange(randomPosition, 5)) randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
 
-	template<class T>
-	static T* InstantiateRandomPositionOnScreenWithDistanceFromPosition(T* prefab, Vector2 objectPosition, float distance)
-	{
-		SDL_Rect cameraRect = Camera::GetViewBox();
-		Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
-		while (Vector2::Distance(randomPosition, objectPosition) < distance)
-		{
-			Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
-		}
 		return Instantiate(prefab, randomPosition);
 	}
 
@@ -156,6 +137,8 @@ public:
 	void CheckComponent(Component* newCom);
 
 	bool CheckIfComponentExits(Component* newComponent);
+
+	static bool GameObjectInRange(Vector2 position, float range);
 
 	virtual void OnCollisionEnter(Collider* other) {};
 	

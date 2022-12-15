@@ -53,33 +53,27 @@ void Enemy::Update(float deltaTime)
 	
 	circleCollider->Update();
 
-	//debug current state
-	std::cout << currentEnemyState << std::endl;
-
 	switch (currentEnemyState)
 	{
-	case PATROL:
-		PatrolState(deltaTime);
-		break;
-	case CHASE:
-		ChaseState(deltaTime);
-		break;
-	case DEAD: break;
-	default:break;
+		case PATROL:
+			PatrolState(deltaTime);
+			break;
+		case CHASE:
+			ChaseState(deltaTime);
+			break;
+		case DEAD: break;
+		default:break;
 	}
 }
 
 void Enemy::OnCollisionEnter(Collider* other)
 {
-	if (other->GetGameObject()->CompareTag(Tag::BULLET))
-	{
-		std::cout << "Enemy Take Damage" << std::endl;
-	}
-
-	if (other->GetGameObject()->CompareTag(Tag::PLAYER))
-	{
-		std::cout << "Player collide with enemy" << std::endl;
-	}
+	//if (!other->isTrigger)
+	//{
+	//	Vector2 direction = transform->GetPosition() - other->GetGameObject()->GetTransform()->GetPosition();
+	//	direction.normalize();
+	//	transform->SetPosition(transform->GetPosition() += direction * 1.5);
+	//}
 }
 
 void Enemy::OnShootEvent()

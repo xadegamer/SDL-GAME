@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Bullet.h""
 #include "Prop.h"
+#include "GasCylinder.h"
 
 #include "SDLManager.h"
 #include "AssetManager.h"
@@ -16,8 +17,8 @@
 #include <iostream>
 
 //The dimensions of the level
-const int LEVEL_WIDTH = 1280 * 1.2;
-const int LEVEL_HEIGHT = 960 * 1.2;
+const int LEVEL_WIDTH = 2560;
+const int LEVEL_HEIGHT = 1920;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1280;
@@ -68,6 +69,8 @@ public:
 	static void StartGame();
 
 	static void ResetGame();
+
+	static void RetryGame();
 
 	static void Quit();
 	

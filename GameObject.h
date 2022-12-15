@@ -26,7 +26,7 @@ enum Tag
 	PLAYER,
 	ENEMY,
 	BULLET,
-	PROP,
+	Gas_Cylinder
 };
 
 class GameObject
@@ -38,6 +38,7 @@ protected:
 	std::vector<Component*> components;
 	Tag tag = Tag::DEFAULT;
 	Transform* transform;
+	bool isDestroyed = false;
 
 public:
 	GameObject();
@@ -54,10 +55,8 @@ public:
 public:
 
 	template<class T>
-	T* AddComponent()
+	T* AddComponent(T* newCom)
 	{
-		T* newCom = new T;
-
 		Component* newComponent = dynamic_cast<Component*>(newCom);
 
 		if (CheckIfComponentExits(newComponent)) std::cout << "Already Exists" << std::endl;
@@ -101,6 +100,53 @@ public:
 		}
 	}
 
+	template<class T>
+	static T* InstantiateRandomPositionInLevel(T* prefab)
+	{
+		Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
+		return Instantiate(prefab, randomPosition);
+	}
+
+	template<class T>
+	static T* InstantiateRandomPositionOnScreen(T* prefab)
+	{
+		SDL_Rect cameraRect = Camera::GetViewBox();
+		Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
+		return Instantiate(prefab, randomPosition);
+	}
+
+	template<class T>
+	static T* InstantiateRandomPositionInLevelWithDistanceFromPosition(T* prefab, Vector2 objectPosition, float distance)
+	{
+		Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
+		while (Vector2::Distance(randomPosition, objectPosition) < distance)
+		{
+			Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
+		}
+		return Instantiate(prefab, randomPosition);
+	}
+
+	template<class T>
+	static T* InstantiateRandomPositionOnScreenWithDistanceFromPosition(T* prefab, Vector2 objectPosition, float distance)
+	{
+		SDL_Rect cameraRect = Camera::GetViewBox();
+		Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
+		while (Vector2::Distance(randomPosition, objectPosition) < distance)
+		{
+			Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
+		}
+		return Instantiate(prefab, randomPosition);
+	}
+
+	template<class T>
+	static T* Instantiate(T* prefab, Vector2 position, float rotation = 0.0f)
+	{
+		T* newObject = new T(*prefab);
+		newObject->GetTransform()->SetPosition(position);
+		newObject->GetTransform()->SetRotation(rotation);
+		return newObject;
+	}
+
 	bool CompareTag( Tag tag)
 	{
 		if (this->tag == tag) return true;
@@ -114,9 +160,12 @@ public:
 	virtual void OnCollisionEnter(Collider* other) {};
 	
 	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
+	
+	inline bool IsDestroyed() { return isDestroyed;}
 
 	static void Destroy(GameObject* gameObject);
 
 	static void DestroyAllGameObjects();	
-};
 
+	static GameObject* FindGameObjectWithTag(Tag tag);
+};

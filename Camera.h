@@ -21,5 +21,7 @@ public:
 	static void Update();
 	static Vector2 GetPosition();
 	static void Clean();
+
+	static SDL_Rect GetViewBox() { return viewBox; }
 };
 

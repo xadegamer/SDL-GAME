@@ -50,7 +50,7 @@ void Button::Draw()
 void Button::Update()
 {	
 	// check if mouse is inside button
-	if (IsPointInRect(InputManager::GetMousePosition(), centerPositon, size))
+	if (MathUtility::IsPointInRect(InputManager::GetMousePosition(), centerPositon, size))
 	{
 		if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 		{

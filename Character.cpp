@@ -2,13 +2,13 @@
 
 Character::Character()
 {
-	spriteRenderer = AddComponent<SpriteRenderer>();
-	animator = AddComponent<Animator>();
+	spriteRenderer = AddComponent<SpriteRenderer>(new SpriteRenderer);
+	animator = AddComponent<Animator>(new Animator);
 	animator->SetSprite(spriteRenderer->GetSprite());
-	rigidBody = AddComponent<RigidBody>();
+	rigidBody = AddComponent<RigidBody>(new RigidBody);
 	rigidBody->SetGravity(0);
 	
-	health = AddComponent<Health>();
+	health = AddComponent<HealthComponent>(new HealthComponent);
 	health->OnHealthChangeEvent = [=](float health) {OnHealthChange(health); };
 	health->OnTakeDamageEvent = [=]() {OnTakeDamage(); };
 	health->OnHealEvent = [=]() {OnHeal(); };

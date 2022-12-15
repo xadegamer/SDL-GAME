@@ -17,7 +17,7 @@ private:
 	
 public:
 
-	Enemy(Vector2 startPosition, float maxhealth);
+	Enemy(float maxhealth);
 	~Enemy();
 
 	void Update(float deltaTime) override;

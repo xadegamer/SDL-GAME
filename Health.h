@@ -8,7 +8,7 @@
 #include "Vector2.h"
 #include "MathUtility.h"
 
-class Health : public Component
+class HealthComponent : public Component
 {	
 private:
 	
@@ -22,8 +22,8 @@ public:
 	std::function <void()> OnHealEvent;
 	std::function <void()> OnDeathEvent;
 	
-	Health();
-	~Health();
+	HealthComponent();
+	~HealthComponent();
 
 	void TakeDamage(float damage);
 	void Heal(float healAmount);

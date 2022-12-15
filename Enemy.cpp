@@ -4,10 +4,10 @@
 
 #include "Engine.h"
 
-Enemy::Enemy(Vector2 startPosition, float maxhealth)
+#include "VfxEffect.h"
+
+Enemy::Enemy(float maxhealth)
 {
-	transform->SetPosition(startPosition);
-	
 	tag = Tag::ENEMY;
 
 	spriteRenderer->SetSortingOrder(1);
@@ -16,7 +16,7 @@ Enemy::Enemy(Vector2 startPosition, float maxhealth)
 	//boxCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 0.5f);
 	//boxCollider->OnCollisionEnterEvent = [=](Collider* other){OnCollisionEnter(other);};
 
-	circleCollider = AddComponent<CircleCollider>();
+	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 	
@@ -43,7 +43,7 @@ void Enemy::Update(float deltaTime)
 	circleCollider->Update();
 
 	//transform->SetRotation( GetAngleFromTraget(transform->GetPosition() - Camera::GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
-	transform->SetRotation(GetAngleFromTraget(transform->GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth));
+	transform->SetRotation(MathUtility::GetAngleFromTraget(transform->GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth));
 	animator->ChangeAnimation("Idle");
 	Patrol();
 }
@@ -64,7 +64,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 void Enemy::OnShootEvent()
 {
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
-	Vector2 direction = GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
+	Vector2 direction = MathUtility::GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
 	SpawnBullet(spawnPosition, direction, BulletType::ENEMY);
 	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
 }

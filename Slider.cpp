@@ -1,7 +1,5 @@
 #include "Slider.h"
 
-
-
 Slider::Slider(std::string id, Vector2 position, Vector2 size, int padding)
 {
 	ID = id;
@@ -57,5 +55,5 @@ void Slider::AddText(std::string id,std::string text, std::string fontID, SDL_Co
 
 void Slider::SetValue(float value)
 {
-	this->value = Clamp(value, minValue, maxValue);
+	this->value = MathUtility::Clamp(value, minValue, maxValue);
 }

@@ -22,7 +22,7 @@ private:
 	
 public:
 
-	Player(Vector2 startPosition, float maxhealth);
+	Player(float maxhealth);
 	~Player();
 	
 	void Update(float deltaTime) override;

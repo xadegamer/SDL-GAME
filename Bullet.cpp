@@ -2,6 +2,10 @@
 
 #include "Health.h"
 
+#include "Game.h"
+
+#include "GasCylinder.h"
+
 Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
 	tag = Tag::BULLET;
@@ -10,19 +14,19 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 
 	bulletType = type;
 	
-	spriteRenderer = AddComponent<SpriteRenderer>();
+	spriteRenderer = AddComponent<SpriteRenderer>(new SpriteRenderer);
 	spriteRenderer->SetSortingOrder(1);
 
-	animator = AddComponent<Animator>();
+	animator = AddComponent<Animator>(new Animator);
 	animator->SetSprite(spriteRenderer->GetSprite());
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("Bullet"), 3, 0.05);
 
-	rigidBody = AddComponent<RigidBody>();
+	rigidBody = AddComponent<RigidBody>(new RigidBody);
 	rigidBody->SetGravity(0);
 
 	rigidBody->ApplyForce(direction * moveSpeed);
 
-	circleCollider = AddComponent<CircleCollider>();
+	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->isTrigger = true;
 	
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight));
@@ -45,6 +49,7 @@ void Bullet::Update(float deltaTime)
 
 	if (IsOutSideScreen())
 	{
+		isDestroyed = true;
 		GameObject::Destroy(this);
 	}
 }
@@ -58,19 +63,26 @@ void Bullet::OnCollisionEnter(Collider* other)
 {
 	if (other->GetGameObject()->CompareTag(Tag::ENEMY) && bulletType == BulletType::PLAYER)
 	{
-		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
+		other->GetGameObject()->GetComponent<HealthComponent>()->TakeDamage(10);
 		Destroy(this);
 	}
 	else if (other->GetGameObject()->CompareTag(Tag::PLAYER) && bulletType == BulletType::ENEMY)
 	{
-		other->GetGameObject()->GetComponent<Health>()->TakeDamage(10);
+		other->GetGameObject()->GetComponent<HealthComponent>()->TakeDamage(10);
+		Destroy(this);
+	}
+	
+	if (other->GetGameObject()->CompareTag(Tag::Gas_Cylinder))
+	{
+		GasCylinder* gasCylinder = dynamic_cast<GasCylinder*>(other->GetGameObject());
+		if (gasCylinder) gasCylinder->Explosion();
 		Destroy(this);
 	}
 }
 
 bool Bullet::IsOutSideScreen()
 {
-	if (transform->GetPosition().x < 0 || transform->GetPosition().x > 1280 * 1.2 || transform->GetPosition().y < 0 || transform->GetPosition().y > 960 * 1.2)
+	if (transform->GetPosition().x < 0 || transform->GetPosition().x > LEVEL_WIDTH || transform->GetPosition().y < 0 || transform->GetPosition().y > LEVEL_HEIGHT)
 	{
 		return true;
 	}

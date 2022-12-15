@@ -6,7 +6,7 @@ std::vector<GameObject*> GameObject::activeGameobjects = std::vector<GameObject*
 GameObject::GameObject()
 {
 	activeGameobjects.push_back(this);
-	transform = AddComponent<Transform>();
+	transform = AddComponent<Transform>(new Transform);
 }
 
 GameObject::~GameObject()
@@ -42,6 +42,15 @@ void GameObject::DestroyAllGameObjects()
 		gameObject = nullptr;
 	}
 	activeGameobjects.clear();
+}
+
+GameObject* GameObject::FindGameObjectWithTag(Tag tag)
+{
+	for (auto& gameObject : activeGameobjects)
+	{
+		if (gameObject->tag == tag) return gameObject;
+	}
+	return nullptr;
 }
 
 void GameObject::CheckComponent(Component* newCom)

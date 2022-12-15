@@ -115,6 +115,11 @@ Vector2 Vector2::Normalize(Vector2 v)
 	return Vector2(v.x / length, v.y / length);
 }
 
+float Vector2::Distance(Vector2 v1, Vector2 v2)
+{
+	return static_cast<float>(std::sqrt((v2.x - v1.x) * (v2.x - v1.x) + (v2.y - v1.y) * (v2.y - v1.y)));
+}
+
 Vector2 Vector2::operator*(float f) const
 {
 	return Vector2(x * f, y * f);

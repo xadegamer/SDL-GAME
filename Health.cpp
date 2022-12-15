@@ -1,19 +1,19 @@
 #include "Health.h"
 
-Health::Health()
+HealthComponent::HealthComponent()
 {
 }
 
-Health::~Health()
+HealthComponent::~HealthComponent()
 {
 	
 }
 
-void Health::TakeDamage(float damage)
+void HealthComponent::TakeDamage(float damage)
 {
 	if (health == 0) return;
 	
-	health = Clamp(health - damage, 0, maxHealth);
+	health = MathUtility::Clamp(health - damage, 0, maxHealth);
 	if(OnHealthChangeEvent) OnHealthChangeEvent(health / maxHealth);
 	if (health <= 0)
 	{
@@ -22,14 +22,14 @@ void Health::TakeDamage(float damage)
 	else { if (OnTakeDamageEvent)OnTakeDamageEvent(); }
 }
 
-void Health::Heal(float healAmount)
+void HealthComponent::Heal(float healAmount)
 {
-	health = Clamp(health + healAmount, 0, maxHealth);
+	health = MathUtility::Clamp(health + healAmount, 0, maxHealth);
 	if(OnHealthChangeEvent) OnHealthChangeEvent(health / maxHealth);
 	if (OnHealEvent) OnHealEvent();
 }
 
-void Health::SetHealth(float health)
+void HealthComponent::SetHealth(float health)
 {
 	this->health = health;  maxHealth = health;
 	if(OnHealthChangeEvent) OnHealthChangeEvent(health / maxHealth);

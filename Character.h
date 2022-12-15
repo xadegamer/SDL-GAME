@@ -15,7 +15,7 @@ protected:
 	SpriteRenderer* spriteRenderer;
 	RigidBody* rigidBody;
 	Animator* animator;
-	Health* health;
+	HealthComponent* health;
 	
 	float maxHealth;
 	float moveSpeed = 100;
@@ -46,6 +46,6 @@ public:
 
 	void SpawnBullet(Vector2 spawnPos, Vector2 direction, BulletType type);
 
-	inline Health* GetHealth() { return health; }
+	inline HealthComponent* GetHealth() { return health; }
 };
 

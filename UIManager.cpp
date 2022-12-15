@@ -34,7 +34,7 @@ void UIManager::SetUpMainMenuCanvas()
 	startButton->OnClick = []()
 	{
 		Game::StartGame();
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
 	canvas->AddUIObject(startButton);
@@ -44,7 +44,7 @@ void UIManager::SetUpMainMenuCanvas()
 	optionButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	optionButton->OnClick = []() 
 	{
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("OptionsMenu");
 	};
 	canvas->AddUIObject(optionButton);
@@ -74,7 +74,7 @@ void UIManager::SetUpOptionCanvas()
 	backButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	backButton->OnClick = []()
 	{
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
 	canvas->AddUIObject(backButton);
@@ -96,7 +96,7 @@ void UIManager::SetUpGameCanvas()
 	pauseButton->OnClick = []()
 	{
 		Game::ChangeGameState(GameState::PauseMode);
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("PauseMenu");
 	};
 	canvas->AddUIObject(pauseButton);
@@ -104,17 +104,6 @@ void UIManager::SetUpGameCanvas()
 	Slider* slider = new Slider("HealthSlider",topLeftScreenCorner + Vector2(200, 50), Vector2(300,30), 0);
 	slider->AddText("HealthSliderText","100", "Vorgang", { 255, 255, 255, 255 });
 	canvas->AddUIObject(slider);
-
-	//To Remove
-	Button* testButton = new Button("TestButton",midscreen - Vector2(600, -600), Vector2(100, 100), 0);
-	testButton->AddText("TestButtonText","Test", "Vorgang", { 255, 255, 255, 255 });
-	testButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
-	testButton->OnClick = [=]()
-	{
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);	
-		slider->SetValue(slider->GetValue() + .1f);
-	};
-	canvas->AddUIObject(testButton);
 
 	activeCanvases.push_back(canvas);
 }
@@ -134,7 +123,7 @@ void UIManager::SetUpPauseCanvas()
 	resumeButton->OnClick = []() 
 	{
 		Game::ChangeGameState(GameState::PlayMode);
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
 	canvas->AddUIObject(resumeButton);
@@ -144,7 +133,8 @@ void UIManager::SetUpPauseCanvas()
 	menuButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	menuButton->OnClick = []() 
 	{
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		Game::ResetGame();
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
 	canvas->AddUIObject(menuButton);
@@ -167,8 +157,8 @@ void UIManager::SetUpGameOverCanvas()
 	retryButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	retryButton->OnClick = []()
 	{
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
-		Game::StartGame();
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		Game::RetryGame();
 		EnableCanvasByID("GameMenu");
 	};
 	canvas->AddUIObject(retryButton);
@@ -180,7 +170,7 @@ void UIManager::SetUpGameOverCanvas()
 	menuButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	menuButton->OnClick = []()
 	{
-		AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
 	canvas->AddUIObject(menuButton);

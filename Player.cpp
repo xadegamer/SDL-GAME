@@ -8,15 +8,13 @@
 
 #include "Slider.h"
 
-Player::Player(Vector2 startPosition, float maxhealth)
+Player::Player(float maxhealth)
 {
-	transform->SetPosition(startPosition);
-	
 	tag = Tag::PLAYER;
 
 	spriteRenderer->SetSortingOrder(2);
 	
-	circleCollider = AddComponent<CircleCollider>();
+	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 	
@@ -33,12 +31,12 @@ void Player::Update(float deltaTime)
 	if (isDead) return;
 	animator->Update(deltaTime);
 
-	transform->SetRotation( GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
+	transform->SetRotation(MathUtility::GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 
 
 	//clamp player position to level bound with scale
-	 transform->SetXPosition( Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), 1280 + (animator->GetCurrentAnimationClip()->animPixelWidth / 2)) );
-	 transform->SetYPosition( Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), 960 + (animator->GetCurrentAnimationClip()->animPixelHeight / 2)) );
+	 transform->SetXPosition(MathUtility::Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), LEVEL_WIDTH - (animator->GetCurrentAnimationClip()->animPixelWidth)) );
+	 transform->SetYPosition(MathUtility::Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), LEVEL_HEIGHT - (animator->GetCurrentAnimationClip()->animPixelHeight)) );
 	
 	////Left and Right
 	//if ((transform->position.x < 0) transform->position.x = 0; else if (transform->position.x > 1280) transform->position.x = 1280;
@@ -104,7 +102,7 @@ void Player::OnCollisionEnter(Collider* other)
 void Player::OnShootEvent()
 {
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
-	Vector2 direction = GetDirectionToMouse(spawnPosition - Camera::GetPosition());
+	Vector2 direction = MathUtility::GetDirectionToMouse(spawnPosition - Camera::GetPosition());
 	SpawnBullet(spawnPosition, direction, BulletType::PLAYER);
 
 	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);

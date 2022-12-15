@@ -34,6 +34,8 @@ public:
 
 	static void SetUpPauseCanvas();
 
+	static void SetUpWinCanvas();
+
 	static void SetUpGameOverCanvas();
 	
 	static void Draw();

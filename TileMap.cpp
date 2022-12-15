@@ -13,6 +13,11 @@ TileMap::TileMap(int width, int height, int tileSize)
 	{
 		this->tiles[i] = new Tile[height];
 	}
+
+	grassSprite = AssetManager::GetSprite("Grass");
+	asphaltSprite = AssetManager::GetSprite("Asphalt");
+	
+	LoadMap();
 }
 
 TileMap::~TileMap()
@@ -24,37 +29,29 @@ TileMap::~TileMap()
 	delete[] tiles;
 }
 
-void TileMap::LoadMap(std::string mapPath)
+void TileMap::LoadMap()
 {
-	// load random map for now
-	for (int i = 0; i < width; i++)
+	std::string mapPath = "Assets/Maps/Map1.txt";
+	std::ifstream mapFile(mapPath);
+
+	if (mapFile.is_open())
 	{
-		for (int j = 0; j < height; j++)
+		// load the file to the map
+		for (int i = 0; i < width; i++)
 		{
-			tiles[i][j].id = rand() % 3;
-			tiles[i][j].position = Vector2(i * tileSize, j * tileSize);
-			tiles[i][j].sprite = SpriteRenderer::CreateSprite("Assets/Textures/Tile.png", "Tile");
+			for (int j = 0; j < height; j++)
+			{
+				std::string tileID;
+				mapFile >> tileID;
+				tiles[i][j].id = tileID;
+			}
 		}
+		mapFile.close();
 	}
-	
-	
-	//std::ifstream mapFile;
-	//mapFile.open(mapPath);
-	//if (mapFile.is_open())
-	//{
-	//	for (int y = 0; y < height; y++)
-	//	{
-	//		for (int x = 0; x < width; x++)
-	//		{
-	//			int tileID;
-	//			mapFile >> tileID;
-	//			tiles[x][y].id = tileID;
-	//			tiles[x][y].position = Vector2(x * tileSize, y * tileSize);
-	//			tiles[x][y].sprite = new Sprite("Tileset.png", Vector2(tileSize, tileSize), Vector2(tileSize * tileID, 0));
-	//		}
-	//	}
-	//}
-	//mapFile.close();
+	else
+	{
+		std::cout << "Unable to open file";
+	}
 }
 
 void TileMap::DrawMap()
@@ -63,16 +60,33 @@ void TileMap::DrawMap()
 	{
 		for (int x = 0; x < width; x++)
 		{ 
-			Sprite* sprite = tiles[x][y].sprite;
-			Vector2 position = tiles[x][y].position;
+			Sprite* sprite = tiles[x][y].id == "S" ? grassSprite : asphaltSprite;
+			
 			SDL_Rect destRect = 
 			{
-			position.x - Camera::GetPosition().x,
-			position.y - Camera::GetPosition().y,
+			x * tileSize - Camera::GetPosition().x,
+			y* tileSize - Camera::GetPosition().y,
 			sprite->textureWidth,
 			sprite->textureHeight
 			};
-			SDL_RenderCopy(SDLManager::GetRenderer(), tiles[x][y].sprite->texture, NULL, &destRect);
+			SDL_RenderCopy(SDLManager::GetRenderer(), sprite->texture, NULL, &destRect);
+		}
+	}
+}
+
+void TileMap::SaveMaptoFile()
+{
+	std::string mapPath = "Assets/Maps/Map1.txt";
+	std::ofstream mapFile(mapPath);
+	if (mapFile.is_open())
+	{
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				mapFile << tiles[x][y].id << " ";
+			}
+			mapFile << std::endl;
 		}
 	}
 }

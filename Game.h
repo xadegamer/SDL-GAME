@@ -7,6 +7,7 @@
 #include "Bullet.h""
 #include "Prop.h"
 #include "GasCylinder.h"
+#include "TileMap.h"
 
 #include "SDLManager.h"
 #include "AssetManager.h"
@@ -43,6 +44,8 @@ public:
 	static Sprite* cursor;
 	static Enemy* enemy;
 	static Prop* prop;
+
+	static TileMap* tileMap;
 	
 public:
 
@@ -79,5 +82,7 @@ public:
 	static void ToggleDebug(bool toggle);
 
 	static void Debug();
+
+	static void SaveMapToFile();
 };
 

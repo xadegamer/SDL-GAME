@@ -14,8 +14,9 @@ Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
 Prop* Game::prop = nullptr;
 bool Game::showDebug = true;
-
 GameState Game::gameState = GameState::MainMenu;
+
+TileMap* Game::tileMap = nullptr;
 
 Game::Game()
 {
@@ -42,6 +43,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::SpawnGameObjects()
 {
+	tileMap = new TileMap((LEVEL_WIDTH / 89) + 1,( LEVEL_HEIGHT/ 89) + 1, 89);
+	
 	player = GameObject::Instantiate(new Player(100), Vector2(500, 500));
 
 	Camera::SetUp(player);
@@ -145,6 +148,11 @@ void Game::Debug()
 	//}
 }
 
+void Game::SaveMapToFile()
+{
+	tileMap->SaveMaptoFile();
+}
+
 void Game::HandleEvents()
 {
 	SDL_Event event;
@@ -188,6 +196,8 @@ void Game::Render()
 
 	if (gameState == GameState::PlayMode)
 	{
+		tileMap->DrawMap();
+		
 		// loop throught all game objects and render them according to spriterenderer sorting order
 		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 		{

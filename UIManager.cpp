@@ -6,6 +6,8 @@
 #include "Canvas.h"
 #include "Slider.h"
 
+#include "TileMap.h"
+
 std::vector<Canvas*> UIManager::activeCanvases;
 float UIManager::refreshRate = 0.01f;
 float UIManager::currrentRefreshRate = 0.0f;
@@ -16,6 +18,7 @@ void UIManager::Init()
 	SetUpOptionCanvas();
 	SetUpGameCanvas();
 	SetUpPauseCanvas();
+	SetUpWinCanvas();
 	SetUpGameOverCanvas();
 }
 
@@ -44,6 +47,7 @@ void UIManager::SetUpMainMenuCanvas()
 	optionButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	optionButton->OnClick = []() 
 	{
+		Game::SaveMapToFile();
 		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
 		EnableCanvasByID("OptionsMenu");
 	};
@@ -132,6 +136,29 @@ void UIManager::SetUpPauseCanvas()
 	menuButton->AddText("MenuButtonText","Menu", "Vorgang", { 255, 255, 255, 255 });
 	menuButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
 	menuButton->OnClick = []() 
+	{
+		Game::ResetGame();
+		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);
+		EnableCanvasByID("MainMenu");
+	};
+	canvas->AddUIObject(menuButton);
+
+	activeCanvases.push_back(canvas);
+}
+
+void UIManager::SetUpWinCanvas()
+{
+	Canvas* canvas = new Canvas("WinMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));
+
+	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+	Text* title = new Text("WinMenuTitle", "You Win!", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
+	canvas->AddUIObject(title);
+
+	Button* menuButton = new Button("MenuButton", midscreen, Vector2(200, 50), 0);
+	menuButton->AddText("MenuButtonText", "Menu", "Vorgang", { 255, 255, 255, 255 });
+	menuButton->OnMouseOver = []() {AudioManager::PlayMusic(AssetManager::GetMusic("ButtonHover"), false); };
+	menuButton->OnClick = []()
 	{
 		Game::ResetGame();
 		//AudioManager::PlayMusic(AssetManager::GetMusic("ButtonClick"), false);

@@ -33,7 +33,5 @@ public:
 private:
 	AssetManager() = delete;
 	~AssetManager() = delete;
-
-
 };
 

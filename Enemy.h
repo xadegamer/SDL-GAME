@@ -4,20 +4,38 @@
 #include "BoxCollider.h"
 #include "CircleCollider.h"
 
+
+enum  EnemyState
+{
+	PATROL,
+	CHASE,
+	DEAD
+};
+
 class Enemy : public Character
 {
 private:
 	BoxCollider* boxCollider;
 	CircleCollider* circleCollider;
 	
-	float fireRate = 3;
-	float fireTimer = 0;
-	float despawnRate = 6;
-	float despawnTimer = 0;
+	float fireRate;
+	float fireTimer;
+	
+	float despawnRate;
+	float despawnTimer;
+	
+	float attackRange;
+	float detectionRadius;
+
+	EnemyState currentEnemyState;
+
+	Vector2 spawnPoint;
+	Vector2 currentPatrolPoint;
+	Vector2 direction;
 	
 public:
 
-	Enemy(float maxhealth);
+	Enemy(Vector2 position, float maxhealth);
 	~Enemy();
 
 	void Update(float deltaTime) override;
@@ -30,8 +48,14 @@ public:
 	
 	void OnDeath() override;
 	
-	void Patrol();
+	void PatrolState(float deltaTime);
+
+	void ChaseState(float deltaTime);
+
+	void AttackState();
 
 	void EnemyDespawn();
+
+	bool PlayerInRange(float range);
 };
 

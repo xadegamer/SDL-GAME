@@ -18,11 +18,10 @@ class Player : public Character
 private:
 	
 	CircleCollider* circleCollider;
-	float moveSpeed = 150;
 	
 public:
 
-	Player(float maxhealth);
+	Player(Vector2 position, float maxhealth);
 	~Player();
 	
 	void Update(float deltaTime) override;

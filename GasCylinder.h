@@ -13,7 +13,7 @@ private:
 	bool hasTriggerExplosion;
 	
 public:
-	GasCylinder(std::string spriteName, ColliderType colliderType, bool isStatic, bool isTrigger);
+	GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger);
 	~GasCylinder();
 
 	void Update(float deltaTime) override;

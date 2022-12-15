@@ -17,7 +17,7 @@ private:
 	
 public:
 
-	VfxEffect(std::string ID, int numberOfFrame);
+	VfxEffect(Vector2 position, std::string ID, int numberOfFrame);
 	~VfxEffect();
 
 	void Update(float deltaTime) override;

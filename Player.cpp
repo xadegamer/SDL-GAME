@@ -8,7 +8,7 @@
 
 #include "Slider.h"
 
-Player::Player(float maxhealth)
+Player::Player(Vector2 position, float maxhealth) : Character(position)
 {
 	tag = Tag::PLAYER;
 

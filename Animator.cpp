@@ -63,6 +63,7 @@ void Animator::Update(float deltaTime)
 		if (currentFrame == currentAnimationClip->numberOfCells - 1 && !currentAnimationClip->loop)
 		{
 			waitTillFinish = false;
+			currentAnimationClip == nullptr;
 			//SwitchAnimation(lastAnimationClip);
 		}
 

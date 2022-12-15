@@ -25,7 +25,7 @@ protected:
 	
 public:
 
-	Character();
+	Character(Vector2 position);
 	~Character();
 
 	void Draw() override;

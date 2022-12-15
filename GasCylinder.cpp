@@ -4,7 +4,7 @@
 
 #include "Health.h"
 
-GasCylinder::GasCylinder(std::string spriteName, ColliderType colliderType, bool isStatic, bool isTrigger) : Prop(spriteName, colliderType, isStatic, isTrigger)
+GasCylinder::GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger) : Prop(position, spriteName, colliderType,sortingOrder, isStatic, isTrigger)
 {
 	//collider->OnCollisionEnterEvent = std::bind(&GasCylinder::OnCollisionEnter, this, std::placeholders::_1);
 	collider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
@@ -32,7 +32,7 @@ void GasCylinder::TriggerExplosion()
 	if (!hasTriggerExplosion && !isDestroyed)
 	{
 		hasTriggerExplosion = true;
-		Instantiate<VfxEffect>(new VfxEffect("SmokeEffect", 8), collider->GetPosition());
+		Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"SmokeEffect", 8));
 	}
 }
 
@@ -60,7 +60,7 @@ void GasCylinder::Explosion()
 		}
 	}
 	
-	Instantiate<VfxEffect>(new VfxEffect("SmokeEffect", 8), collider->GetPosition());
-	Instantiate<VfxEffect>(new VfxEffect("ExplosionEffect", 8), collider->GetPosition());
+	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"SmokeEffect", 8));
+	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"ExplosionEffect", 8));
 	Destroy(this);
 }

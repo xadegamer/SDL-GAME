@@ -3,10 +3,11 @@
 //define the static variable
 std::vector<GameObject*> GameObject::activeGameobjects = std::vector<GameObject*>();
 
-GameObject::GameObject()
+GameObject::GameObject(Vector2 position)
 {
 	activeGameobjects.push_back(this);
 	transform = AddComponent<Transform>(new Transform);
+	transform->SetPosition(position);
 }
 
 GameObject::~GameObject()

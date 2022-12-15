@@ -46,7 +46,20 @@ public:
 
 	static int RandomRange(int min, int max)
 	{
-		srand((unsigned)time(NULL));
 		return rand() % (max - min + 1) + min;
+	}
+
+	static float DistanceBetweenTwoPoints(Vector2 point1, Vector2 point2)
+	{
+		float x = point1.x - point2.x;
+		float y = point1.y - point2.y;
+		return sqrt(x * x + y * y);
+	}
+
+	static Vector2 RandomPositionAroundRange(Vector2 position, int range)
+	{
+		int x = RandomRange(position.x - range, position.x + range);
+		int y = RandomRange(position.y - range, position.y + range);
+		return Vector2(x, y);
 	}
 };

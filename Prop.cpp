@@ -1,9 +1,9 @@
 #include "Prop.h"
 
-Prop::Prop(std::string spriteName, ColliderType colliderType, bool isStatic, bool isTrigger)
+Prop::Prop(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger) : GameObject(position)
 {
 	spriteRenderer = AddComponent<SpriteRenderer>(new SpriteRenderer);
-	spriteRenderer->SetSortingOrder(1);
+	spriteRenderer->SetSortingOrder(sortingOrder);
 	spriteRenderer->SetSprite(AssetManager::GetSprite(spriteName));
 
 	if (colliderType == ColliderType::BOX)

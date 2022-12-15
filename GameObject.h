@@ -41,7 +41,7 @@ protected:
 	bool isDestroyed = false;
 
 public:
-	GameObject();
+	GameObject(Vector2 position = Vector2(0, 0));
 	virtual ~GameObject();
 	
 	virtual void Update(float deltaTime) {};
@@ -120,11 +120,9 @@ public:
 	}
 
 	template<class T>
-	static T* Instantiate(T* prefab, Vector2 position, float rotation = 0.0f)
+	static T* Instantiate(T* prefab)
 	{
 		T* newObject = new T(*prefab);
-		newObject->GetTransform()->SetPosition(position);
-		newObject->GetTransform()->SetRotation(rotation);
 		return newObject;
 	}
 

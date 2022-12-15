@@ -32,6 +32,7 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	if (SDLManager::Init(title, xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen))
 	{	
+		srand((unsigned)time(NULL));
 		UIManager::Init();
 		cursor = AssetManager::GetSprite("cursor");
 		std::cout << "init success\n";
@@ -47,23 +48,25 @@ void Game::SpawnGameObjects()
 	
 	Vector2 playerPos = tileMap->GetTilePositionById("P");
 	std::cout << "Player pos: " << playerPos.x << ", " << playerPos.y << std::endl;
-	player = GameObject::Instantiate(new Player(100), playerPos);
+	player = GameObject::Instantiate(new Player(playerPos,100));
 
 	Camera::SetUp(player);
 
-	//enemy = GameObject::Instantiate(new Enemy(100), Vector2(600, 200));
+	enemy = GameObject::Instantiate(new Enemy(Vector2(600, 200),100));
 
 	//GameObject::InstantiateRandomPositionOnScreen(new Enemy(100));
 	
-	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(300, 300));
+	//prop = GameObject::Instantiate(new GasCylinder(Vector2(300, 300),"BarrelSmall", ColliderType::CIRCLE,1, true, false));
+	//
+	//prop = GameObject::Instantiate(new GasCylinder(Vector2(400, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
 
-	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(400, 300));
-	
-	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(500, 300));
-	
-	prop = GameObject::Instantiate(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false), Vector2(600, 300));
+	//prop = GameObject::Instantiate(new GasCylinder(Vector2(500, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
 
-	//GameObject::InstantiateRandomPositionOnScreen(new GasCylinder("BarrelSmall", ColliderType::CIRCLE, true, false));
+	//prop = GameObject::Instantiate(new GasCylinder(Vector2(600, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
+
+	GameObject::Instantiate(new Prop(Vector2(700, 300), "Tree_3", ColliderType::None,3, true, false));
+
+	GameObject::Instantiate(new Prop(Vector2(900, 500), "Car_1", ColliderType::BOX, 2, true, false));
 	
 	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }
@@ -209,6 +212,14 @@ void Game::Render()
 		{
 			SpriteRenderer* spriteRenderer = nullptr;
 			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 2)
+				if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+		}
+
+
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		{
+			SpriteRenderer* spriteRenderer = nullptr;
+			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 3)
 				if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
 		}
 

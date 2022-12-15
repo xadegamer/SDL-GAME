@@ -14,7 +14,7 @@ protected:
 	Collider* collider;
 	
 public:
-	Prop(std::string spriteName, ColliderType colliderType, bool isStatic, bool isTrigger);
+	Prop(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger);
 	~Prop();
 
 	void Update(float deltaTime) override;

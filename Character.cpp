@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character()
+Character::Character(Vector2 position):GameObject(position)
 {
 	spriteRenderer = AddComponent<SpriteRenderer>(new SpriteRenderer);
 	animator = AddComponent<Animator>(new Animator);

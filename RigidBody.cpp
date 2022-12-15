@@ -13,6 +13,20 @@ RigidBody::~RigidBody()
 	
 }
 
+void RigidBody::MoveToPosition(Vector2 position, float speed, float deltaTime)
+{
+	// move to new position with velocity and  a constant speed
+
+	// get the direction to the new position
+	Vector2 direction = Vector2::Normalize(position - this->position);
+	
+	// set the velocity to the direction multiplied by the speed
+	velocity = direction * speed;
+	
+	// move the object with the velocity
+	this->position += velocity * deltaTime;	
+}
+
 void RigidBody::Update(float deltaTime)
 {
 	// Calculate acceleration

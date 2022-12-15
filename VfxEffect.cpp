@@ -1,6 +1,6 @@
 #include "VfxEffect.h"
 
-VfxEffect::VfxEffect(std::string spriteID,int numberOfFrame)
+VfxEffect::VfxEffect(Vector2 position, std::string spriteID,int numberOfFrame) : GameObject(position)
 {
 	this->spriteRenderer = AddComponent <SpriteRenderer>(new SpriteRenderer);
 	spriteRenderer->SetSortingOrder(2);

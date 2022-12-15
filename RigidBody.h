@@ -34,6 +34,8 @@ public:
 	inline void ResetForce() { this->force = Vector2(0, 0); }
 	inline void ResetForceX() { this->force.x = 0; }
 	inline void ResetForceY() { this->force.y = 0; }
+
+	void MoveToPosition(Vector2 position, float speed, float deltaTime);
 	
 	//Friction
 	inline void ApplyFriction(Vector2 friction) { this->friction = friction; }
@@ -43,6 +45,9 @@ public:
 	inline void SetVelocity(Vector2 velocity) { this->velocity = velocity; }
 	inline void SetVelocityX(float x) { this->velocity.x = x; }
 	inline void SetVelocityY(float y) { this->velocity.y = y; }
+
+	//Position
+	inline void SetPosition(Vector2 position) { this->position = position; }
 
 	// Getters
 	inline float GetMass() { return  mass; }

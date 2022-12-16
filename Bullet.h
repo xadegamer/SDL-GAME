@@ -35,6 +35,8 @@ public:
 
 	bool IsOutSideScreen();
 
+	void RemoveBullet();
+	
 	inline BulletType GetBulletType() { return bulletType; }
 };
 

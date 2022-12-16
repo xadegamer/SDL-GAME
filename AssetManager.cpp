@@ -63,7 +63,7 @@ TTF_Font* AssetManager::GetFont(std::string filename, int size)
 	return fonts[fullPath];
 }
 
-Mix_Chunk* AssetManager::GetSound(std::string filename)
+Mix_Chunk* AssetManager::GetSoundEffect(std::string filename)
 {
 	std::string fullPath = "Assets/Audio/" + filename + ".wav";
 

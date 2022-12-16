@@ -19,6 +19,8 @@ Player::Player(Vector2 position, float maxhealth) : Character(position)
 	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 	
 	health->SetHealth(maxhealth);
+
+	currentMoveSpeed = moveSpeed;
 }
 
 Player::~Player()
@@ -52,25 +54,25 @@ void Player::Update(float deltaTime)
 
 	if (InputManager::GetKey(SDL_SCANCODE_W))
 	{
-		rigidBody->ApplyForceY(-moveSpeed);
+		rigidBody->ApplyForceY(-currentMoveSpeed);
 		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_S))
 	{
-		rigidBody->ApplyForceY(moveSpeed);
+		rigidBody->ApplyForceY(currentMoveSpeed);
 		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_A))
 	{
-		rigidBody->ApplyForceX(-moveSpeed);
+		rigidBody->ApplyForceX(-currentMoveSpeed);
 		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_D))
 	{
-		rigidBody->ApplyForceX(moveSpeed);
+		rigidBody->ApplyForceX(currentMoveSpeed);
 		animator->ChangeAnimation("Walk");
 	}
 
@@ -78,6 +80,9 @@ void Player::Update(float deltaTime)
 	{
 		animator->ChangeAnimation("Attack", true);
 	}
+
+	// if hold shift, increase move speed
+	currentMoveSpeed = InputManager::GetKey(SDL_SCANCODE_LSHIFT) ? runSpeed : moveSpeed;
 	
 	circleCollider->Update();
 }
@@ -105,7 +110,7 @@ void Player::OnShootEvent()
 	Vector2 direction = MathUtility::GetDirectionToMouse(spawnPosition - Camera::GetPosition());
 	SpawnBullet(spawnPosition, direction, BulletType::PLAYER);
 
-	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Mix_Chunk"), false);
 }
 
 void Player::OnHealthChange(float currentHealth)
@@ -129,6 +134,7 @@ void Player::OnHealthChange(float currentHealth)
 void Player::OnTakeDamage()
 {
 	animator->ChangeAnimation("Hurt", true);
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Hurt"), false);
 }
 
 void Player::OnHeal()

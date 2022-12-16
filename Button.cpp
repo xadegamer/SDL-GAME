@@ -1,17 +1,12 @@
 #include "Button.h"
 
 
-Button::Button(std::string id, Vector2 position, Vector2 startSize, int padding)
+Button::Button(std::string id, Vector2 position, Vector2 startSize)
 {
 	this->ID = id;
 	layer = 0;
 	anchorPositon = position;
 	size = startSize;
-	this->padding = padding;
-
-	size.x += padding;
-	size.y += padding;
-
 	centerPositon = anchorPositon - (size / 2);
 	rect = { (int)centerPositon.x, (int)centerPositon.y, (int)size.x , (int)size.y};
 	currentState = buttonState::DEFAULT;

@@ -11,18 +11,16 @@ class Button : public UIObject
 protected:
 	
 	buttonState currentState;
-
+	Text* text;
 	
 public:
 	
-	Button(std::string id, Vector2 position, Vector2 size, int padding = 0);
+	Button(std::string id, Vector2 position, Vector2 size);
 	~Button() override;
 
 	void Draw() override;
 	void Update() override;
 	
-	Text* text;
-	int padding;
 	std::function <void()> OnClick;
 	std::function <void()> OnMouseOver;
 

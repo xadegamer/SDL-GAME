@@ -151,7 +151,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GasCylinder.cpp" />
-    <ClCompile Include="Health.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HealthKit.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -163,7 +164,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TimeManager.cpp" />
-    <ClCompile Include="Toggle.cpp" />
+    <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIObject.cpp" />
@@ -189,7 +190,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GasCylinder.h" />
-    <ClInclude Include="Health.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HealthKit.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Player.h" />
@@ -201,7 +203,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TimeManager.h" />
-    <ClInclude Include="Toggle.h" />
+    <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIObject.h" />

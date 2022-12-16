@@ -1,10 +1,12 @@
 #include "Bullet.h"
 
-#include "Health.h"
+#include "HealthComponent.h"
 
 #include "Game.h"
 
 #include "GasCylinder.h"
+
+#include "VfxEffect.h"
 
 Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
 {	
@@ -64,20 +66,22 @@ void Bullet::OnCollisionEnter(Collider* other)
 	if (other->GetGameObject()->CompareTag(Tag::ENEMY) && bulletType == BulletType::PLAYER)
 	{
 		other->GetGameObject()->GetComponent<HealthComponent>()->TakeDamage(10);
-		Destroy(this);
+		RemoveBullet();
 	}
 	else if (other->GetGameObject()->CompareTag(Tag::PLAYER) && bulletType == BulletType::ENEMY)
 	{
 		other->GetGameObject()->GetComponent<HealthComponent>()->TakeDamage(10);
-		Destroy(this);
+		RemoveBullet();
 	}
 	
 	if (other->GetGameObject()->CompareTag(Tag::Gas_Cylinder))
 	{
 		GasCylinder* gasCylinder = dynamic_cast<GasCylinder*>(other->GetGameObject());
 		if (gasCylinder) gasCylinder->Explosion();
-		Destroy(this);
+		RemoveBullet();
 	}
+
+	if (other->GetGameObject()->CompareTag(Tag::DEFAULT)) RemoveBullet();
 }
 
 bool Bullet::IsOutSideScreen()
@@ -87,4 +91,10 @@ bool Bullet::IsOutSideScreen()
 		return true;
 	}
 	return false;
+}
+
+void Bullet::RemoveBullet()
+{
+	Instantiate<VfxEffect>(new VfxEffect(circleCollider->GetPosition(), "SmokeEffect", 8));
+	Destroy(this);
 }

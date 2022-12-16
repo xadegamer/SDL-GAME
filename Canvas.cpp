@@ -2,6 +2,9 @@
 
 Canvas::Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackground)
 {
+	activeDelay = 0.1f;
+	activeTimer = 0;
+	
 	ID = id;
 	this->hasBackground = hasBackground;
 	rect = { (int)position.x, (int)position.y, (int)size.x, (int)size.y };
@@ -21,7 +24,6 @@ Canvas::~Canvas()
 
 void Canvas::Show()
 {
-	isActive = true;
 	isEnable = true;
 }
 
@@ -38,7 +40,7 @@ void Canvas::AddUIObject(UIObject* uiObject)
 
 void Canvas::Draw()
 {
-	if (isActive)
+	if (isEnable)
 	{
 		if (hasBackground)
 		{
@@ -54,8 +56,18 @@ void Canvas::Draw()
 	}
 }
 
-void Canvas::Update()
+void Canvas::Update(float deltaTime)
 {
+	if (isEnable && !isActive)
+	{
+		if (activeTimer >= activeDelay)
+		{
+			isActive = true;
+			activeTimer = 0;
+		}
+		else activeTimer += deltaTime;
+	}
+	
 	if (isActive && isEnable) for (auto& uiObject : uiObjects) uiObject->Update();
 }
 

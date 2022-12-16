@@ -20,6 +20,9 @@ private:
 	static float refreshRate;
 	static float currrentRefreshRate;
 	
+	static Canvas* lastActiveCanvas;
+	static Canvas* activeCanvas;
+
 public:
 
 	static std::vector<Canvas*> activeCanvases;

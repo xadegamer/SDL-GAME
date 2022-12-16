@@ -87,13 +87,15 @@ void Enemy::OnShootEvent()
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
 	Vector2 direction = MathUtility::GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
 	SpawnBullet(spawnPosition, direction, BulletType::ENEMY);
-	AudioManager::PlaySoundEffect(AssetManager::GetSound("Mix_Chunk"), false);
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Mix_Chunk"), false);
 }
 
 void Enemy::OnTakeDamage()
 {
-	std::cout << "Enemy Take Damage" << std::endl;
 	animator->ChangeAnimation("Hurt", true);
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Hurt"), false);
+
+	if (currentEnemyState == EnemyState::PATROL) currentEnemyState = EnemyState::CHASE;
 }
 
 void Enemy::OnDeath()
@@ -102,6 +104,7 @@ void Enemy::OnDeath()
 	circleCollider->SetIsEnabled(false);
 	circleCollider->OnCollisionEnterEvent = nullptr;
 	animator->ChangeAnimation("Die", true);
+	currentEnemyState = EnemyState::DEAD;
 //	Instantiate<VfxEffect>(new VfxEffect("blood pool", 1), circleCollider->GetPosition());
 }
 
@@ -160,6 +163,5 @@ void Enemy::EnemyDespawn()
 
 bool Enemy::PlayerInRange(float range)
 {
-	std::cout << "Player In Range: " << MathUtility::DistanceBetweenTwoPoints(circleCollider->GetCentre(), Game::player->GetComponent<Collider>()->GetCentre()) << std::endl;
 	return MathUtility::DistanceBetweenTwoPoints(circleCollider->GetCentre(), Game::player->GetComponent<Collider>()->GetCentre()) <= range;
 }

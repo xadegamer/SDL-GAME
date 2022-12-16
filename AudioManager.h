@@ -28,5 +28,9 @@ public:
 
 	static void SetMusicVolume(int volume);
 	static void SetSoundEffectVolume(int volume);
+
+	static void ToggleMusicOnOff(bool isOn);
+
+	static void ToggleSoundEffectOnOff(bool isOn);
 };
 

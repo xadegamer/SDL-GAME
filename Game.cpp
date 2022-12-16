@@ -13,7 +13,7 @@ Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
 Enemy* Game::enemy = nullptr;
 Prop* Game::prop = nullptr;
-bool Game::showDebug = true;
+bool Game::showDebug = false;
 GameState Game::gameState = GameState::MainMenu;
 
 TileMap* Game::tileMap = nullptr;
@@ -37,6 +37,7 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 		cursor = AssetManager::GetSprite("cursor");
 		std::cout << "init success\n";
 		isRunning = true; // everything inited successfully, start the main loop
+		PlayGameStateMusic();
 		return true;
 	}
 	else return false;
@@ -127,11 +128,57 @@ void Game::Quit()
 void Game::ChangeGameState(GameState state)
 {
 	gameState = state;
+	if (gameState == GameState::MainMenu)ResetGame();
+	PlayGameStateMusic();
+}
+
+void Game::PlayGameStateMusic()
+{
+	switch (gameState)
+	{
+	case GameState::PlayMode:
+		
+		break;
+	case GameState::PauseMode:
+		
+		break;
+	case GameState::MainMenu:
+		AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+		break;
+	case GameState::GameOver:
+		break;
+		
+	default:break;
+	}
 }
 
 void Game::ToggleDebug(bool toggle)
 {
 	showDebug = toggle;
+}
+
+void Game::SaveData(int score)
+{
+	std::ofstream file;
+	file.open("data.txt");
+	if (!file.bad())
+	{
+		file << score;
+		file.close();
+	}
+}
+
+void Game::LoadData()
+{
+	int highScore;
+	
+	std::ifstream file;
+	file.open("data.txt");
+	if (!file.bad())
+	{
+		file >> highScore;
+		file.close();
+	}
 }
 
 void Game::Debug()
@@ -147,7 +194,7 @@ void Game::Debug()
 		}
 	}
 
-	//// draw only object with colliders
+	// draw only object with colliders
 	//for (auto& gameObject : GameObject::GetActiveGameobjects())
 	//{
 	//	SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();

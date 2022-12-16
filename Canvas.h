@@ -12,6 +12,8 @@ private:
 	bool isActive;
 	bool isEnable;
 	bool hasBackground;
+	float activeDelay;
+	float activeTimer;
 
 public:
 	Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackground = true);
@@ -27,7 +29,7 @@ public:
 	
 	void Draw();
 
-	void Update();
+	void Update(float deltaTime);
 
 	UIObject* GetUIObjectByID(std::string id);
 

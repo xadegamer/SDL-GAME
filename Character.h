@@ -3,7 +3,7 @@
 
 #include "TimeManager.h"
 
-#include "Health.h"
+#include "HealthComponent.h"
 
 #include "Bullet.h"
 
@@ -19,6 +19,8 @@ protected:
 	
 	float maxHealth;
 	float moveSpeed = 100;
+	float runSpeed = 200;
+	float currentMoveSpeed;
 	
 	bool canMove = true;
 	bool isDead = false;

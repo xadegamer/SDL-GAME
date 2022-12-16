@@ -120,7 +120,7 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Health.cpp">
+    <ClCompile Include="HealthComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
@@ -135,7 +135,7 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Toggle.cpp">
+    <ClCompile Include="ToggleButton.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="VfxEffect.cpp">
@@ -146,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="TileMap.cpp">
       <Filter>Source Files\Statics</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthKit.cpp">
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,7 +230,7 @@
     <ClInclude Include="Enemy.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Health.h">
+    <ClInclude Include="HealthComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -245,7 +248,7 @@
     <ClInclude Include="Prop.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Toggle.h">
+    <ClInclude Include="ToggleButton.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="VfxEffect.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="TileMap.h">
       <Filter>Header Files\Statics</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthKit.h">
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

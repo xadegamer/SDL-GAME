@@ -79,7 +79,13 @@ public:
 	
 	static void ChangeGameState(GameState state);
 
+	static void PlayGameStateMusic();
+
 	static void ToggleDebug(bool toggle);
+
+	static void SaveData(int score);
+
+	static void LoadData();
 
 	static void Debug();
 };

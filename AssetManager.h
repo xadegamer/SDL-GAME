@@ -26,7 +26,7 @@ public:
 	
 	static TTF_Font* GetFont(std::string filename, int size);
 
-	static Mix_Chunk* GetSound(std::string filename);
+	static Mix_Chunk* GetSoundEffect(std::string filename);
 
 	static Mix_Music* GetMusic(std::string filename);
 

@@ -59,3 +59,13 @@ void AudioManager::SetSoundEffectVolume(int volume)
 {
 	Mix_Volume(-1, volume);
 }
+
+void AudioManager::ToggleMusicOnOff(bool isOn)
+{
+	Mix_VolumeMusic(isOn ? 128 : 0);
+}
+
+void AudioManager::ToggleSoundEffectOnOff(bool isOn)
+{
+	Mix_Volume(-1, isOn ? 128 : 0);
+}

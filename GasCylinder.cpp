@@ -2,12 +2,10 @@
 
 #include "VfxEffect.h"
 
-#include "Health.h"
+#include "HealthComponent.h"
 
 GasCylinder::GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger) : Prop(position, spriteName, colliderType,sortingOrder, isStatic, isTrigger)
 {
-	//collider->OnCollisionEnterEvent = std::bind(&GasCylinder::OnCollisionEnter, this, std::placeholders::_1);
-	collider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
 	tag = Tag::Gas_Cylinder;
 }
 

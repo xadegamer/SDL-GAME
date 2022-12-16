@@ -10,8 +10,13 @@
 
 #include "Money.h"
 
+int Enemy::noOfEnemies;
+std::function<void(int)> Enemy::OnAnyEnemyKilled = [](int) {};
+
 Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 {
+	noOfEnemies++;
+	
 	fireRate = 3;
 	fireTimer = 0;
 	despawnRate = 6;
@@ -40,7 +45,8 @@ Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 
 Enemy::~Enemy()
 {
-
+	noOfEnemies--; 
+	if (OnAnyEnemyKilled)OnAnyEnemyKilled(noOfEnemies);
 }
 
 void Enemy::Update(float deltaTime)
@@ -93,7 +99,6 @@ void Enemy::OnShootEvent()
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
 	Vector2 direction = MathUtility::GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
 	SpawnBullet(spawnPosition, direction, BulletType::ENEMY);
-	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Mix_Chunk"), false);
 }
 
 void Enemy::OnTakeDamage()

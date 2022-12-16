@@ -65,5 +65,9 @@ void GasCylinder::Explosion()
 
 	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "SmokeEffect", 8, false));
 
+	std::string soundName = "Fire Explosion 0";
+	soundName += std::to_string(MathUtility::RandomRange(1, 4));
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect(soundName), false);
+
 	GameObject::Destroy(this);
 }

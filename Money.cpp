@@ -17,5 +17,6 @@ void Money::Update(float deltaTime)
 void Money::PickUp(Player* player)
 {
 	//player->GetComponent<MoneyComponent>()->AddMoney(amount);
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Pick Up"), false);
 	Collectable::PickUp(player);
 }

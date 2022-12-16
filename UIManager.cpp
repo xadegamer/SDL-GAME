@@ -6,6 +6,8 @@
 #include "Canvas.h"
 #include "Slider.h"
 #include "ToggleButton.h"
+#include "Image.h"
+
 #include "AudioManager.h"
 
 std::vector<Canvas*> UIManager::activeCanvases;
@@ -30,7 +32,7 @@ void UIManager::SetUpMainMenuCanvas()
 
 	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-	Text* title = new Text("TitleText", "Top Down Game", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
+	Text* title = new Text("TitleText", "WILD WEST RANGER", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
 
 	Button* startButton = new Button("StartButton",midscreen, Vector2(200, 50));
@@ -59,6 +61,10 @@ void UIManager::SetUpMainMenuCanvas()
 	quitButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	quitButton->OnClick = Game::Quit;
 	canvas->AddUIObject(quitButton);
+
+	// ceaate image for background
+	Image* background = new Image("MenuImage","Tank", midscreen);
+	canvas->AddUIObject(background);
 
 	activeCanvas = lastActiveCanvas = canvas;
 	canvas->Show();

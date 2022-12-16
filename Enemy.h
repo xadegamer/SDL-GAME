@@ -3,6 +3,8 @@
 #include "Character.h"
 #include "BoxCollider.h"
 #include "CircleCollider.h"
+#include <functional>
+
 
 
 enum  EnemyState
@@ -15,6 +17,10 @@ enum  EnemyState
 class Enemy : public Character
 {
 private:
+
+	static int noOfEnemies;
+
+	
 	BoxCollider* boxCollider;
 	CircleCollider* circleCollider;
 	
@@ -34,6 +40,8 @@ private:
 	Vector2 direction;
 	
 public:
+	
+	static std::function<void(int)> OnAnyEnemyKilled;
 
 	Enemy(Vector2 position, float maxhealth);
 	~Enemy();

@@ -56,4 +56,8 @@ Vector2 Character::GetBulletSpawnLocation(Vector2 playerPos)
 void Character::SpawnBullet(Vector2 spawnPos, Vector2 direction, BulletType bulletType)
 {
 	Bullet* bullet = new Bullet(spawnPos, bulletType, direction);
+	
+	std::string soundName = "Gun 1_";
+	soundName += std::to_string(MathUtility::RandomRange(1, 5));
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect(soundName), false);
 }

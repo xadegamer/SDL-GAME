@@ -44,6 +44,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 void Game::SpawnGameObjects()
 {
 	tileMap = new TileMap((LEVEL_WIDTH / 89) + 1,( LEVEL_HEIGHT/ 89) + 1, 89);
+
+	Enemy::OnAnyEnemyKilled = Game::CheckWinCondition;
 	
 	Vector2 playerPos = tileMap->GetTilePositionById("P");
 	std::cout << "Player pos: " << playerPos.x << ", " << playerPos.y << std::endl;
@@ -151,18 +153,28 @@ void Game::PlayGameStateMusic()
 	switch (gameState)
 	{
 	case GameState::PlayMode:
-		
+		AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 		break;
 	case GameState::PauseMode:
 		
 		break;
 	case GameState::MainMenu:
-		AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+		AudioManager::PlayMusic(AssetManager::GetMusic("Western Spaghetti - Chris Haugen"), true);
 		break;
 	case GameState::GameOver:
+		AudioManager::PlayMusic(AssetManager::GetMusic("Don't Ya Bite Now - Dan Lebowitz"), true);
 		break;
 		
 	default:break;
+	}
+}
+
+void Game::CheckWinCondition(int enemiesKilled)
+{
+	if (enemiesKilled == 0)
+	{
+		ChangeGameState(GameState::GameOver);
+		UIManager::EnableCanvasByID("WinMenu");
 	}
 }
 

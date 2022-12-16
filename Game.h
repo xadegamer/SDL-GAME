@@ -79,6 +79,8 @@ public:
 
 	static void PlayGameStateMusic();
 
+	static void CheckWinCondition(int enemiesKilled);
+
 	static void ToggleDebug(bool toggle);
 
 	static void SaveData(int score);

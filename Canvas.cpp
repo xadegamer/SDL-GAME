@@ -8,7 +8,10 @@ Canvas::Canvas(std::string id, Vector2 size, Vector2 position, bool hasBackgroun
 	ID = id;
 	this->hasBackground = hasBackground;
 	rect = { (int)position.x, (int)position.y, (int)size.x, (int)size.y };
-	backgroundSprite = AssetManager::GetSprite("background");
+
+	//random 1 - 2 backround image
+	int randomNum = rand() % 2;
+	backgroundSprite = AssetManager::GetSprite(randomNum == 1 ? "background" : "background2");
 }
 
 Canvas::~Canvas()

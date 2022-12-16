@@ -34,8 +34,6 @@ Player::~Player()
 void Player::Update(float deltaTime)
 {
 	Character::Update(deltaTime);
-
-	std::cout << "Player is dead: " << isDead << ": can move : " << canMove << std::endl;
 	
 	if (isDead) return;
 	
@@ -120,8 +118,6 @@ void Player::OnShootEvent()
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
 	Vector2 direction = MathUtility::GetDirectionToMouse(spawnPosition - Camera::GetPosition());
 	SpawnBullet(spawnPosition, direction, BulletType::PLAYER);
-
-	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Mix_Chunk"), false);
 }
 
 void Player::OnHealthChange(float currentHealth)
@@ -150,7 +146,7 @@ void Player::OnTakeDamage()
 
 void Player::OnHeal()
 {
-	
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Heal"), false);
 }
 
 void Player::OnDeath()
@@ -170,6 +166,6 @@ void Player::OnDead()
 void Player::FootStep()
 {
 	std::string soundName = "Player_Footstep_0";
-	soundName += std::to_string(MathUtility::RandomRange(0, 4));
+	soundName += std::to_string(MathUtility::RandomRange(1, 4));
 	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect(soundName), false);
 }

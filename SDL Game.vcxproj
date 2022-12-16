@@ -154,6 +154,7 @@
     <ClCompile Include="GasCylinder.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthKit.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Money.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="GasCylinder.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthKit.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Money.h" />

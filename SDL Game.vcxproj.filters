@@ -159,6 +159,9 @@
     <ClCompile Include="TimedDelayVfxEffect.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
@@ -278,8 +281,11 @@
     <ClInclude Include="Money.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
     <ClInclude Include="TimedDelayVfxEffect.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

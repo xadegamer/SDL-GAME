@@ -11,6 +11,8 @@ void Camera::SetUp(Player* currentPlayer)
 {
 	viewBox = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	player = currentPlayer;
+	viewBox.x = (player->GetTransform()->GetPosition().x + player->GetComponent<Collider>()->colliderRect->w / 2) - SCREEN_WIDTH / 2;
+	viewBox.y = (player->GetTransform()->GetPosition().y + player->GetComponent<Collider>()->colliderRect->h / 2) - SCREEN_HEIGHT / 2;
 }
 
 void Camera::Update()

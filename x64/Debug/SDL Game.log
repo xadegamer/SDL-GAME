@@ -1,4 +1,4 @@
-﻿  Collider.cpp
+﻿  Player.cpp
 D:\GIT Repo\SDL-GAME\MathUtility.h(17,13): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(61,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(61,34): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
@@ -8,12 +8,16 @@ D:\GIT Repo\SDL-GAME\MathUtility.h(63,21): warning C4244: 'argument': conversion
 D:\GIT Repo\SDL-GAME\MathUtility.h(63,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\Camera.h(7,15): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
 D:\GIT Repo\SDL-GAME\Vector2.h(5): message : see declaration of 'Vector2'
+D:\GIT Repo\SDL-GAME\HealthComponent.h(33,37): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
 D:\GIT Repo\SDL-GAME\Collider.h(38,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\Collider.h(38,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(24,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(25,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(26,40): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(27,40): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(45,72): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\GIT Repo\SDL-GAME\Collider.cpp(45,33): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Game.h(7,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\GIT Repo\SDL-GAME\Player.cpp(18,131): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(18,78): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(41,195): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(41,141): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(45,149): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(45,76): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(46,151): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Player.cpp(46,76): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

@@ -31,8 +31,11 @@ Player::~Player()
 void Player::Update(float deltaTime)
 {
 	Character::Update(deltaTime);
+
+	std::cout << "Player is dead: " << isDead << ": can move : " << canMove << std::endl;
 	
 	if (isDead) return;
+	
 	animator->Update(deltaTime);
 
 	transform->SetRotation(MathUtility::GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
@@ -110,6 +113,7 @@ void Player::OnCollisionEnter(Collider* other)
 
 void Player::OnShootEvent()
 {
+	if (!canMove)animator->ChangeAnimation("Die", true);
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
 	Vector2 direction = MathUtility::GetDirectionToMouse(spawnPosition - Camera::GetPosition());
 	SpawnBullet(spawnPosition, direction, BulletType::PLAYER);
@@ -149,6 +153,7 @@ void Player::OnHeal()
 void Player::OnDeath()
 {
 	canMove = false;
+	rigidBody->ResetForce();
 	animator->ChangeAnimation("Die", true);	
 }
 

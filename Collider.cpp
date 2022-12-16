@@ -30,12 +30,6 @@ void Collider::SetUp(Transform* owner, Vector2 size, bool isStatic)
 void Collider::OnCollision(Collider* other)
 {
 	if (other == nullptr || !isEnabled) return;
-
-	if (currentCollidedObject != other)
-	{
-		std::cout << "OnCollisionEnterReal" << std::endl;
-		currentCollidedObject = other;
-	}
 	
 	if (OnCollisionEnterEvent != nullptr) OnCollisionEnterEvent(other);
 }

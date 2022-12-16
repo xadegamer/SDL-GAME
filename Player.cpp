@@ -21,6 +21,9 @@ Player::Player(Vector2 position, float maxhealth) : Character(position)
 	health->SetHealth(maxhealth);
 
 	currentMoveSpeed = moveSpeed;
+
+	animator->GetAnimationClipByName("Walk")->AddAnimationEvent("Foot Step Event 1", 2, [=]() {FootStep(); });
+	animator->GetAnimationClipByName("Walk")->AddAnimationEvent("Foot Step Event 2", 6, [=]() {FootStep(); });
 }
 
 Player::~Player()
@@ -162,4 +165,11 @@ void Player::OnDead()
 	Character::OnDead();
 	Game::ChangeGameState(GameState::GameOver);
 	UIManager::EnableCanvasByID("GameOverMenu");
+}
+
+void Player::FootStep()
+{
+	std::string soundName = "Player_Footstep_0";
+	soundName += std::to_string(MathUtility::RandomRange(0, 4));
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect(soundName), false);
 }

@@ -151,4 +151,6 @@ public:
 	AnimationClip* GetCurrentAnimationClip() { return currentAnimationClip; }
 
 	Sprite* GetSprite() { return currentAnimationClip->sprite; }
+
+	AnimationClip* GetAnimationClipByName(std::string name);
 };

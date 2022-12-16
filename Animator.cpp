@@ -84,3 +84,12 @@ SDL_Rect& Animator::GetRect()
 {
 	return scrRect;
 }
+
+AnimationClip* Animator::GetAnimationClipByName(std::string name)
+{
+	for (size_t i = 0; i < animationClips.size(); i++)
+	{
+		if (animationClips[i]->name == name) return animationClips[i];
+	}
+	return nullptr;
+}

@@ -41,5 +41,7 @@ public:
 	void OnDeath() override;
 	
 	void OnDead() override;
+
+	void FootStep();
 };
 

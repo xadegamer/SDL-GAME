@@ -22,11 +22,13 @@ void HealthComponent::TakeDamage(float damage)
 	else { if (OnTakeDamageEvent)OnTakeDamageEvent(); }
 }
 
-void HealthComponent::Heal(float healAmount)
+bool HealthComponent::Heal(float healAmount)
 {
+	if (health == maxHealth) return false;
 	health = MathUtility::Clamp(health + healAmount, 0, maxHealth);
 	if(OnHealthChangeEvent) OnHealthChangeEvent(health / maxHealth);
 	if (OnHealEvent) OnHealEvent();
+	return true;
 }
 
 void HealthComponent::SetHealth(float health)

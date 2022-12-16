@@ -8,6 +8,7 @@
 #include "Prop.h"
 #include "GasCylinder.h"
 #include "TileMap.h"
+#include "HealthKit.h"
 
 #include "SDLManager.h"
 #include "AssetManager.h"
@@ -42,9 +43,6 @@ public:
 	static GameState gameState;
 	static Player* player;
 	static Sprite* cursor;
-	static Enemy* enemy;
-	static Prop* prop;
-
 	static TileMap* tileMap;
 	
 public:

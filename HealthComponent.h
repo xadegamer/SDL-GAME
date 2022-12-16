@@ -26,7 +26,7 @@ public:
 	~HealthComponent();
 
 	void TakeDamage(float damage);
-	void Heal(float healAmount);
+	bool Heal(float healAmount);
 
 	void SetHealth(float health);
 	inline float GetHealth() { return health; }

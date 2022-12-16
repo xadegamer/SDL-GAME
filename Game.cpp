@@ -11,8 +11,6 @@
 bool Game::isRunning = false;
 Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
-Enemy* Game::enemy = nullptr;
-Prop* Game::prop = nullptr;
 bool Game::showDebug = false;
 GameState Game::gameState = GameState::MainMenu;
 
@@ -53,7 +51,9 @@ void Game::SpawnGameObjects()
 
 	Camera::SetUp(player);
 
-	enemy = GameObject::Instantiate(new Enemy(Vector2(600, 200),100));
+	GameObject::Instantiate(new Enemy(Vector2(600, 200),100));
+
+	GameObject::Instantiate(new HealthKit(playerPos - Vector2(100, 100), "HeathKit", ColliderType::BOX,1));
 
 	//GameObject::InstantiateRandomPositionOnScreen(new Enemy(100));
 	

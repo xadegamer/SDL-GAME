@@ -6,7 +6,7 @@
 
 GasCylinder::GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger) : Prop(position, spriteName, colliderType,sortingOrder, isStatic, isTrigger)
 {
-	tag = Tag::Gas_Cylinder;
+	tag = Tag::GAS_CYLINDER;
 }
 
 GasCylinder::~GasCylinder()
@@ -18,31 +18,34 @@ void GasCylinder::Update(float deltaTime)
 {
 	Prop::Update(deltaTime);
 	
-	if (hasTriggerExplosion)
+	if (hasTriggerExplosion && !exploded)
 	{
 		currentLifeTime += deltaTime;
-		if (currentLifeTime >= detonateTime) Explosion();
+		if (currentLifeTime >= detonateTime)
+		{
+			Explosion();
+		}
 	}
 }
 
 void GasCylinder::TriggerExplosion()
 {
-	if (!hasTriggerExplosion && !isDestroyed)
+	if (!hasTriggerExplosion && !exploded)
 	{
 		hasTriggerExplosion = true;
-		Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"SmokeEffect", 8));
+		Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"SmokeEffect", 8, false));
 	}
 }
 
 void GasCylinder::Explosion()
 {
-	std::cout << "Gas Cylinder hit by bullet" << std::endl;
+	if (exploded) return;
+	exploded = true;
 	
-	isDestroyed = true;
-
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
-		if (GameObject::GetActiveGameobjects()[i]->CompareTag(Tag::ENEMY) || GameObject::GetActiveGameobjects()[i]->CompareTag(Tag::Gas_Cylinder))
+		if (GameObject::GetActiveGameobjects()[i] == nullptr || GameObject::GetActiveGameobjects()[i] == this) continue;
+		if (GameObject::GetActiveGameobjects()[i]->CompareTag(Tag::ENEMY) || GameObject::GetActiveGameobjects()[i]->CompareTag(Tag::GAS_CYLINDER))
 		{
 			float distance = Vector2::Distance(GameObject::GetActiveGameobjects()[i]->GetTransform()->GetPosition(), transform->GetPosition());
 			if (distance < explosionRadius)
@@ -57,8 +60,10 @@ void GasCylinder::Explosion()
 			}
 		}
 	}
-	
-	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"SmokeEffect", 8));
-	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"ExplosionEffect", 8));
-	Destroy(this);
+
+	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "ExplosionEffect", 8, false));
+
+	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "SmokeEffect", 8, false));
+
+	GameObject::Destroy(this);
 }

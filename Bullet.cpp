@@ -8,11 +8,9 @@
 
 #include "VfxEffect.h"
 
-Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction)
+Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction) : GameObject(startPosition)
 {	
 	tag = Tag::BULLET;
-
-	transform->SetPosition(startPosition);
 
 	bulletType = type;
 	
@@ -49,11 +47,12 @@ void Bullet::Update(float deltaTime)
 	rigidBody->Update(deltaTime);
 	circleCollider->Update();
 
-	if (IsOutSideScreen())
+	if (IsOutSideScreen() && !IsToBeDestroyed())
 	{
-		isDestroyed = true;
-		GameObject::Destroy(this);
+		RemoveBullet();
 	}
+
+	GameObject::Update(deltaTime);
 }
 
 void Bullet::Draw()
@@ -73,15 +72,13 @@ void Bullet::OnCollisionEnter(Collider* other)
 		other->GetGameObject()->GetComponent<HealthComponent>()->TakeDamage(10);
 		RemoveBullet();
 	}
-	
-	if (other->GetGameObject()->CompareTag(Tag::Gas_Cylinder))
+	else if (other->GetGameObject()->CompareTag(Tag::GAS_CYLINDER))
 	{
 		GasCylinder* gasCylinder = dynamic_cast<GasCylinder*>(other->GetGameObject());
 		if (gasCylinder) gasCylinder->Explosion();
 		RemoveBullet();
 	}
-
-	if (other->GetGameObject()->CompareTag(Tag::DEFAULT)) RemoveBullet();
+	else if (other->GetGameObject()->CompareTag(Tag::DEFAULT)) RemoveBullet();
 }
 
 bool Bullet::IsOutSideScreen()
@@ -96,5 +93,5 @@ bool Bullet::IsOutSideScreen()
 void Bullet::RemoveBullet()
 {
 	Instantiate<VfxEffect>(new VfxEffect(circleCollider->GetPosition(), "SmokeEffect", 8));
-	Destroy(this);
+	GameObject::Destroy(this);
 }

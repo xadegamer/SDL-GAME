@@ -26,11 +26,18 @@ enum Tag
 	PLAYER,
 	ENEMY,
 	BULLET,
-	Gas_Cylinder
+	GAS_CYLINDER,
+	COLLECTABLE
 };
 
 class GameObject
 {
+
+private:
+	bool toBeDestroyed = false;
+	float destoryDelay = 1.0f;
+	float currentDestoryTime;
+	
 protected:
 
 	static std::vector<GameObject*> activeGameobjects;
@@ -38,13 +45,13 @@ protected:
 	std::vector<Component*> components;
 	Tag tag = Tag::DEFAULT;
 	Transform* transform;
-	bool isDestroyed = false;
+
 
 public:
 	GameObject(Vector2 position = Vector2(0, 0));
 	virtual ~GameObject();
 	
-	virtual void Update(float deltaTime) {};
+	virtual void Update(float deltaTime);
 	virtual void LateUpdate(float deltaTime) {};
 	virtual void Draw() {};
 
@@ -126,7 +133,7 @@ public:
 		return newObject;
 	}
 
-	bool CompareTag( Tag tag)
+	bool CompareTag(Tag tag)
 	{
 		if (this->tag == tag) return true;
 		else return false;
@@ -142,7 +149,9 @@ public:
 	
 	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
 	
-	inline bool IsDestroyed() { return isDestroyed;}
+	inline bool IsToBeDestroyed() { return toBeDestroyed;}
+
+	void ClearObjectFromMemory(GameObject* gameObject);
 
 	static void Destroy(GameObject* gameObject);
 

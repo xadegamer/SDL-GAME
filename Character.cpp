@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(Vector2 position):GameObject(position)
+Character::Character(Vector2 position) : GameObject(position)
 {
 	spriteRenderer = AddComponent<SpriteRenderer>(new SpriteRenderer);
 	animator = AddComponent<Animator>(new Animator);
@@ -27,6 +27,11 @@ Character::~Character()
 	health->OnTakeDamageEvent = nullptr;
 	health->OnHealEvent = nullptr;
 	health->OnDeathEvent = nullptr;
+}
+
+void Character::Update(float deltatime)
+{
+	GameObject::Update(deltatime);
 }
 
 void Character::Draw()

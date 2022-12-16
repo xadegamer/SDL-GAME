@@ -12,11 +12,12 @@ GameObject::GameObject(Vector2 position)
 
 GameObject::~GameObject()
 {
-	for (auto& component : components)
+	for (size_t i = 0; i < components.size(); i++)
 	{
-		delete component;
-		component = nullptr;
+		delete components[i];
+		components[i] = nullptr;
 	}
+	components.clear();
 }
 
 bool GameObject::CheckIfComponentExits(Component* newComponent)
@@ -40,9 +41,11 @@ bool GameObject::GameObjectInRange(Vector2 position, float range)
 
 void GameObject::Destroy(GameObject* gameObject)
 {
-	activeGameobjects.erase(find(activeGameobjects.begin(), activeGameobjects.end(), gameObject));
-	delete gameObject;
-	gameObject = nullptr;
+	for (size_t i = 0; i < gameObject->components.size(); i++)
+	{
+		gameObject->components[i]->SetIsEnabled(false);
+	}
+	gameObject->toBeDestroyed = true;
 }
 
 void GameObject::DestroyAllGameObjects()
@@ -62,6 +65,22 @@ GameObject* GameObject::FindGameObjectWithTag(Tag tag)
 		if (gameObject->tag == tag) return gameObject;
 	}
 	return nullptr;
+}
+
+void GameObject::Update(float deltaTime)
+{
+	if (toBeDestroyed)
+	{
+		currentDestoryTime += deltaTime;
+		if (currentDestoryTime >= destoryDelay)ClearObjectFromMemory(this);
+	}
+}
+
+void GameObject::ClearObjectFromMemory(GameObject* gameObject)
+{
+	activeGameobjects.erase(find(activeGameobjects.begin(), activeGameobjects.end(), gameObject));
+	delete gameObject;
+	gameObject = nullptr;
 }
 
 void GameObject::CheckComponent(Component* newCom)

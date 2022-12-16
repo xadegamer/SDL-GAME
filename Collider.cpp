@@ -29,26 +29,15 @@ void Collider::SetUp(Transform* owner, Vector2 size, bool isStatic)
 
 void Collider::OnCollision(Collider* other)
 {
-	//if (currentCollidedObject == other) return;
-		
 	if (other == nullptr || !isEnabled) return;
 
+	if (currentCollidedObject != other)
+	{
+		std::cout << "OnCollisionEnterReal" << std::endl;
+		currentCollidedObject = other;
+	}
+	
 	if (OnCollisionEnterEvent != nullptr) OnCollisionEnterEvent(other);
-	
-	if (other == nullptr || !isEnabled) return;
-
-	
-	//currentCollidedObject = other;
-}
-
-Vector2 Collider::GetForward()
-{
-	return Vector2::Normalize(Vector2(colliderRect->x, colliderRect->y));
-}
-
-Vector2 Collider::GetRight()
-{
-	return Vector2::Normalize(Vector2(colliderRect->x, -colliderRect->x));
 }
 
 Vector2 Collider::GetCentre()

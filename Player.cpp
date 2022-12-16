@@ -30,6 +30,8 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
+	Character::Update(deltaTime);
+	
 	if (isDead) return;
 	animator->Update(deltaTime);
 
@@ -85,6 +87,8 @@ void Player::Update(float deltaTime)
 	currentMoveSpeed = InputManager::GetKey(SDL_SCANCODE_LSHIFT) ? runSpeed : moveSpeed;
 	
 	circleCollider->Update();
+	
+	GameObject::Update(deltaTime);
 }
 
 void Player::LateUpdate(float deltaTime)

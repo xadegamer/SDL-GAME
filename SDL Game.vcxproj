@@ -156,6 +156,7 @@
     <ClCompile Include="HealthKit.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Money.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Prop.cpp" />
     <ClCompile Include="RigidBody.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="TimedDelayVfxEffect.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="HealthKit.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MathUtility.h" />
+    <ClInclude Include="Money.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Prop.h" />
     <ClInclude Include="RigidBody.h" />
@@ -204,6 +207,7 @@
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="TimedDelayVfxEffect.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="Transform.h" />

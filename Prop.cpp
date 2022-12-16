@@ -35,6 +35,7 @@ Prop::~Prop()
 void Prop::Update(float deltaTime)
 {
 	if (collider) collider->Update();
+	GameObject::Update(deltaTime);
 }
 
 void Prop::Draw()

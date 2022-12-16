@@ -29,6 +29,7 @@ void RigidBody::MoveToPosition(Vector2 position, float speed, float deltaTime)
 
 void RigidBody::Update(float deltaTime)
 {
+	if (!isEnabled) return;
 	// Calculate acceleration
 	acceleration.x = (force.x + friction.x) / mass;
 	

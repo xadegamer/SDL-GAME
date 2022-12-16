@@ -52,14 +52,28 @@ void Game::SpawnGameObjects()
 	Camera::SetUp(player);
 
 	GameObject::Instantiate(new Enemy(Vector2(600, 200),100));
+	
+	GameObject::Instantiate(new Enemy(Vector2(600, 300), 100));
+
+	GameObject::Instantiate(new Enemy(Vector2(600, 400), 100));
+
+	GameObject::Instantiate(new Enemy(Vector2(600, 500), 100));
+
+	GameObject::Instantiate(new Enemy(Vector2(600, 600), 100));
+
+	GameObject::Instantiate(new Enemy(Vector2(600, 700), 100));
 
 	GameObject::Instantiate(new HealthKit(playerPos - Vector2(100, 100), "HeathKit", ColliderType::BOX,1, 50));
 
 	//GameObject::InstantiateRandomPositionOnScreen(new Enemy(100));
 	
-	//prop = GameObject::Instantiate(new GasCylinder(Vector2(300, 300),"BarrelSmall", ColliderType::CIRCLE,1, true, false));
-	//
-	//prop = GameObject::Instantiate(new GasCylinder(Vector2(400, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
+	GameObject::Instantiate(new GasCylinder(Vector2(300, 300),"BarrelSmall", ColliderType::CIRCLE,1, true, false));
+	
+	GameObject::Instantiate(new GasCylinder(Vector2(400, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
+
+	GameObject::Instantiate(new GasCylinder(Vector2(500, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
+
+	GameObject::Instantiate(new GasCylinder(Vector2(600, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
 
 	//prop = GameObject::Instantiate(new GasCylinder(Vector2(500, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
 
@@ -74,24 +88,24 @@ void Game::SpawnGameObjects()
 
 void Game::HandleCollision()
 {
+	// check collision between object using layermasks
+	
 	//check collision between all game objects with colliders
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
 		Collider* colliderA = nullptr;
-		if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
+		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
 		{
 			for (int j = 0; j < GameObject::GetActiveGameobjects().size(); j++)
 			{
 				Collider* colliderB = nullptr;
-				if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed() && GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
-				{
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
+				{					
 					if (colliderA != colliderB && colliderA->GetIsEnabled() && colliderB->GetIsEnabled())
 					{
 						if (CollisionManager::CheckCollision(colliderA, colliderB))
 						{
-							if (colliderA == nullptr || colliderB == nullptr || !colliderA->GetIsEnabled() || !colliderB->GetIsEnabled()) continue;
 							colliderA->OnCollision(colliderB);
-							if (colliderA == nullptr || colliderB == nullptr || !colliderA->GetIsEnabled() || !colliderB->GetIsEnabled()) continue;
 							colliderB->OnCollision(colliderA);
 						}
 					}
@@ -188,18 +202,18 @@ void Game::Debug()
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
 		Collider* collider = nullptr;
-		if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider))
+		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider))
 		{
 			if (collider->GetIsEnabled()) collider->Draw();
 		}
 	}
 
 	// draw only object with colliders
-	//for (auto& gameObject : GameObject::GetActiveGameobjects())
-	//{
-	//	SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
-	//	if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
-	//}
+	for (auto& gameObject : GameObject::GetActiveGameobjects())
+	{
+		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
+		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
+	}
 }
 
 void Game::HandleEvents()
@@ -221,14 +235,14 @@ void Game::Update(float deltaTime)
 	{
 		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 		{
-			if(!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
+			GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
 		}
 
 		HandleCollision();
 
 		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 		{
-			if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->LateUpdate(deltaTime);
+			 GameObject::GetActiveGameobjects()[i]->LateUpdate(deltaTime);
 		}
 
 		Camera::Update();
@@ -246,20 +260,28 @@ void Game::Render()
 	if (gameState == GameState::PlayMode)
 	{
 		tileMap->DrawMap();
+
+		// loop throught all game objects and render them according to spriterenderer sorting order
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		{
+			SpriteRenderer* spriteRenderer = nullptr;
+			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 0)
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+		}
 		
 		// loop throught all game objects and render them according to spriterenderer sorting order
 		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 		{
 			SpriteRenderer* spriteRenderer = nullptr;
 			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 1)
-				if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
 		}
 
 		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 		{
 			SpriteRenderer* spriteRenderer = nullptr;
 			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 2)
-				if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
 		}
 
 
@@ -267,7 +289,7 @@ void Game::Render()
 		{
 			SpriteRenderer* spriteRenderer = nullptr;
 			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 3)
-				if (!GameObject::GetActiveGameobjects()[i]->IsDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
 		}
 
 		if(showDebug) Debug();

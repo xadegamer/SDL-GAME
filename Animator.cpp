@@ -53,7 +53,7 @@ void Animator::SwitchAnimation(AnimationClip* newClip)
 
 void Animator::Update(float deltaTime)
 {
-	if (currentAnimationClip == nullptr) return;
+	if (currentAnimationClip == nullptr || !isEnabled) return;
 
 	if (animationTimeCounter > currentAnimationClip->animSpeed)
 	{

@@ -37,10 +37,6 @@ public:
 
 	inline Vector2 GetPosition() { return Vector2(colliderRect->x, colliderRect->y); }
 
-	Vector2 GetForward();
-
-	Vector2 GetRight();
-
 	Vector2 GetCentre();
 
 	virtual SDL_Rect* GetColliderRect() { return colliderRect; };

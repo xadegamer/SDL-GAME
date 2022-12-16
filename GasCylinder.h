@@ -11,6 +11,7 @@ private:
 	float explosionRadius = 200;
 	float damage = 100;
 	bool hasTriggerExplosion;
+	bool exploded;
 	
 public:
 	GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger);

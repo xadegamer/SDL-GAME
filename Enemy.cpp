@@ -6,6 +6,10 @@
 
 #include "VfxEffect.h"
 
+#include "TimedDelayVfxEffect.h"
+
+#include "Money.h"
+
 Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 {
 	fireRate = 3;
@@ -41,6 +45,8 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
+	Character::Update(deltaTime);
+	
 	if (isDead)
 	{
 		EnemyDespawn();
@@ -80,7 +86,7 @@ void Enemy::OnShootEvent()
 {
 	if (!canMove)
 	{
-		OnDeath();
+		animator->ChangeAnimation("Die", true);
 		return;
 	}
 	
@@ -100,12 +106,13 @@ void Enemy::OnTakeDamage()
 
 void Enemy::OnDeath()
 {
+	currentEnemyState = EnemyState::DEAD;
 	canMove = false;
 	circleCollider->SetIsEnabled(false);
 	circleCollider->OnCollisionEnterEvent = nullptr;
 	animator->ChangeAnimation("Die", true);
-	currentEnemyState = EnemyState::DEAD;
-//	Instantiate<VfxEffect>(new VfxEffect("blood pool", 1), circleCollider->GetPosition());
+	GameObject::Instantiate(new TimedDelayVfxEffect(circleCollider->GetCentre(), "blood pool", 0, 10));
+	GameObject::Instantiate(new Money(circleCollider->GetCentre(), "Money", ColliderType::BOX, 2, 50));
 }
 
 void Enemy::PatrolState(float deltaTime)
@@ -132,7 +139,8 @@ void Enemy::ChaseState(float deltaTime)
 
 	if (fireTimer >= fireRate)
 	{
-		if (!isDead) animator->ChangeAnimation("Attack", true);
+		if (isDead || !canMove) return;
+		animator->ChangeAnimation("Attack", true);
 		fireTimer = 0;
 	}
 	else
@@ -156,7 +164,7 @@ void Enemy::EnemyDespawn()
 {
 	if (despawnTimer >= despawnRate)
 	{
-		Destroy(this);
+		GameObject::Destroy(this);
 	}
 	else despawnTimer += Engine::deltaTimer.getDeltaTime();
 }

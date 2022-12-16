@@ -141,6 +141,11 @@ void UIManager::SetUpGameCanvas()
 	slider->AddText("HealthSliderText","100", "Vorgang", { 255, 255, 255, 255 });
 	canvas->AddUIObject(slider);
 
+	// create score text
+	
+	Text* scoreText = new Text("ScoreText", "Score: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(100, 100));
+	canvas->AddUIObject(scoreText);
+
 	activeCanvases.push_back(canvas);
 }
 

@@ -30,6 +30,8 @@ public:
 	Character(Vector2 position);
 	~Character();
 
+	virtual void Update(float deltaTime) override;
+
 	void Draw() override;
 
 	virtual void OnShootEvent() {};

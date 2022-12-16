@@ -53,7 +53,7 @@ void Game::SpawnGameObjects()
 
 	GameObject::Instantiate(new Enemy(Vector2(600, 200),100));
 
-	GameObject::Instantiate(new HealthKit(playerPos - Vector2(100, 100), "HeathKit", ColliderType::BOX,1));
+	GameObject::Instantiate(new HealthKit(playerPos - Vector2(100, 100), "HeathKit", ColliderType::BOX,1, 50));
 
 	//GameObject::InstantiateRandomPositionOnScreen(new Enemy(100));
 	

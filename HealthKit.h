@@ -1,18 +1,13 @@
 #pragma once
 
-#include "Prop.h"
+#include "Collectable.h"
 
-class HealthKit : public Prop
-{
-private:
-	
-	float healAmount;
-	
+class HealthKit : public Collectable
+{	
 public:
-	HealthKit(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder);
+	HealthKit(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, float amount);
 	~HealthKit();
 	
-	void OnCollisionEnter(Collider* other) override;
-	void PickUp();
+	void PickUp(Player* player) override;
 };
 

@@ -122,20 +122,8 @@ void Player::OnShootEvent()
 
 void Player::OnHealthChange(float currentHealth)
 {
-	Canvas* GameCanvas = UIManager::GetCanvasByID("GameMenu");	
-	if (GameCanvas != nullptr)
-	{
-		UIObject* sliderObj = GameCanvas->GetUIObjectByID("HealthSlider");
-		if (!sliderObj) return;
-		Slider* slider = dynamic_cast<Slider*>(sliderObj);
-		if (!slider) return;
-		slider->SetValue(currentHealth);
-
-		//remove decima
-		std::string healthString = std::to_string(health->GetHealth());
-		healthString = healthString.substr(0, healthString.find("."));
-		slider->SetText(healthString);
-	}
+	UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Slider>("HealthSlider")->SetValue(currentHealth);
+	UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Slider>("HealthSlider")->SetText(std::to_string((int)(currentHealth * 100)) + "%");
 }
 
 void Player::OnTakeDamage()

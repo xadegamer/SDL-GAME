@@ -6,6 +6,10 @@
 
 #include "Camera.h"
 
+#include "UIManager.h"
+
+#include "Enemy.h"
+
 #include <iostream>
 
 bool Game::isRunning = false;
@@ -13,8 +17,9 @@ Player* Game::player = nullptr;
 Sprite* Game::cursor = nullptr;
 bool Game::showDebug = false;
 GameState Game::gameState = GameState::MainMenu;
-
-TileMap* Game::tileMap = nullptr;
+GroundTileMap* Game::groundTileMap = nullptr;
+int Game::money = 0;
+LayoutTileMap* Game::layoutTileMap = nullptr;
 
 Game::Game()
 {
@@ -43,47 +48,14 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::SpawnGameObjects()
 {
-	tileMap = new TileMap((LEVEL_WIDTH / 89) + 1,( LEVEL_HEIGHT/ 89) + 1, 89);
+	groundTileMap = new GroundTileMap((LEVEL_WIDTH / 89) + 1, (LEVEL_HEIGHT / 89) + 1, 89, "Assets/Maps/Ground Map 1.txt");
+	layoutTileMap = new LayoutTileMap((LEVEL_WIDTH / 89) + 1, (LEVEL_HEIGHT / 89) + 1, 89, "Assets/Maps/Layout Map 1.txt");
 
 	Enemy::OnAnyEnemyKilled = Game::CheckWinCondition;
 	
-	Vector2 playerPos = tileMap->GetTilePositionById("P");
-	std::cout << "Player pos: " << playerPos.x << ", " << playerPos.y << std::endl;
-	player = GameObject::Instantiate(new Player(playerPos,100));
+	player = GameObject::Instantiate(new Player(layoutTileMap->GetPlayerPosition(),100));
 
 	Camera::SetUp(player);
-
-	GameObject::Instantiate(new Enemy(Vector2(600, 200),100));
-	
-	GameObject::Instantiate(new Enemy(Vector2(600, 300), 100));
-
-	GameObject::Instantiate(new Enemy(Vector2(600, 400), 100));
-
-	GameObject::Instantiate(new Enemy(Vector2(600, 500), 100));
-
-	GameObject::Instantiate(new Enemy(Vector2(600, 600), 100));
-
-	GameObject::Instantiate(new Enemy(Vector2(600, 700), 100));
-
-	GameObject::Instantiate(new HealthKit(playerPos - Vector2(100, 100), "HeathKit", ColliderType::BOX,1, 50));
-
-	//GameObject::InstantiateRandomPositionOnScreen(new Enemy(100));
-	
-	GameObject::Instantiate(new GasCylinder(Vector2(300, 300),"BarrelSmall", ColliderType::CIRCLE,1, true, false));
-	
-	GameObject::Instantiate(new GasCylinder(Vector2(400, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
-
-	GameObject::Instantiate(new GasCylinder(Vector2(500, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
-
-	GameObject::Instantiate(new GasCylinder(Vector2(600, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
-
-	//prop = GameObject::Instantiate(new GasCylinder(Vector2(500, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
-
-	//prop = GameObject::Instantiate(new GasCylinder(Vector2(600, 300), "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
-
-	GameObject::Instantiate(new Prop(Vector2(700, 300), "Tree_3", ColliderType::None,3, true, false));
-
-	GameObject::Instantiate(new Prop(Vector2(900, 500), "Car_1", ColliderType::BOX, 2, true, false));
 	
 	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }
@@ -125,8 +97,8 @@ void Game::StartGame()
 
 void Game::ResetGame()
 {
-	delete tileMap;
-	tileMap = nullptr;
+	delete groundTileMap;
+	groundTileMap = nullptr;
 	GameObject::DestroyAllGameObjects();
 }
 
@@ -176,6 +148,13 @@ void Game::CheckWinCondition(int enemiesKilled)
 		ChangeGameState(GameState::GameOver);
 		UIManager::EnableCanvasByID("WinMenu");
 	}
+}
+
+void Game::AddMoney(int amount)
+{
+	money += amount;
+	std::to_string(money);
+	UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("MoneyText")->SetText("Money: " + std::to_string(money));
 }
 
 void Game::ToggleDebug(bool toggle)
@@ -271,7 +250,7 @@ void Game::Render()
 
 	if (gameState == GameState::PlayMode)
 	{
-		tileMap->DrawMap();
+		groundTileMap->DrawMap();
 
 		// loop throught all game objects and render them according to spriterenderer sorting order
 		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)

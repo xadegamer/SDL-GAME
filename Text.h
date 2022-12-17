@@ -15,7 +15,7 @@ public:
 
 	std::function <void()> OnTextChange;
 	
-	Text(std::string id, std::string text, std::string fontID, SDL_Color c, Vector2 position);
+	Text(std::string id, std::string text, std::string fontID, SDL_Color c, Vector2 position, int textSize = 32);
 	~Text() override;
 
 	void Draw() override;

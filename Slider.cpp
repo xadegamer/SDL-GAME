@@ -48,9 +48,9 @@ void Slider::Update()
 	
 }
 
-void Slider::AddText(std::string id,std::string text, std::string fontID, SDL_Color color)
+void Slider::AddText(std::string id,std::string text, std::string fontID, SDL_Color color, int textSize)
 {
-	this->text = new Text(id, text, fontID, color, Vector2(centerPositon.x + size.x / 2, centerPositon.y + size.y / 2));
+	this->text = new Text(id, text, fontID, color, Vector2(centerPositon.x + size.x / 2, centerPositon.y + size.y / 2),textSize);
 }
 
 void Slider::SetValue(float value)

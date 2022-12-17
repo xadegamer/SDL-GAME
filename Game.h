@@ -3,12 +3,8 @@
 #include "SDL.h"
 #include "GameObject.h"
 #include "Player.h"
-#include "Enemy.h"
-#include "Bullet.h""
-#include "Prop.h"
-#include "GasCylinder.h"
-#include "TileMap.h"
-#include "HealthKit.h"
+#include "GroundTileMap.h"
+#include "LayoutTileMap.h"
 
 #include "SDLManager.h"
 #include "AssetManager.h"
@@ -37,13 +33,15 @@ private:
 
 	static bool isRunning;
 	static bool showDebug;
+	static int money;
 
 public:
 	
 	static GameState gameState;
 	static Player* player;
 	static Sprite* cursor;
-	static TileMap* tileMap;
+	static GroundTileMap* groundTileMap;
+	static LayoutTileMap* layoutTileMap;
 	
 public:
 
@@ -80,6 +78,8 @@ public:
 	static void PlayGameStateMusic();
 
 	static void CheckWinCondition(int enemiesKilled);
+
+	static void AddMoney(int amount);
 
 	static void ToggleDebug(bool toggle);
 

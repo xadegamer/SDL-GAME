@@ -3,26 +3,19 @@
 #include "Camera.h"
 
 
-TileMap::TileMap(int width, int height, int tileSize)
+TileMap::TileMap(int width, int height, int tileSize, std::string mapPath)
 {
 	this->width = width;
 	this->height = height;
 	this->tileSize = tileSize;
 	this->numTiles = width * height;
-	
+
 	tiles.resize(width);
 	for (int i = 0; i < width; i++)
 	{
 		tiles[i].resize(height);
 	}
-
-	grassSprite = AssetManager::GetSprite("grass");
-	
-	asphaltCentreSprite = AssetManager::GetSprite("Asphalt_Centre");
-	asphaltCentreLeftSprite = AssetManager::GetSprite("Asphalt_Centre_Left");
-	asphaltCentreRightSprite = AssetManager::GetSprite("Asphalt_Centre_Right");
-
-	LoadMap();
+	LoadMap(mapPath);
 }
 
 TileMap::~TileMap()
@@ -38,11 +31,9 @@ TileMap::~TileMap()
 	tiles.clear();
 }
 
-void TileMap::LoadMap()
+void TileMap::LoadMap(std::string mapPath)
 {
-	std::string mapPath = "Assets/Maps/Map1.txt";
 	std::ifstream mapFile(mapPath);
-
 	if (mapFile.is_open())
 	{
 		// load the file to the map
@@ -52,8 +43,7 @@ void TileMap::LoadMap()
 			{
 				std::string tileID;
 				mapFile >> tileID;
-
-				tiles[i][j] = new Tile(tileID, GetSprite(tileID));
+				tiles[i][j] = new Tile(tileID);
 			}
 		}
 		mapFile.close();
@@ -64,22 +54,8 @@ void TileMap::LoadMap()
 	}
 }
 
-void TileMap::DrawMap()
+void TileMap::SaveMaptoFile(std::string mapPath)
 {
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < height; y++)
-		{			
-			SDL_Rect destRect = {x * tileSize - Camera::GetPosition().x, y * tileSize - Camera::GetPosition().y,
-			tiles[x][y]->sprite->textureWidth,	tiles[x][y]->sprite->textureHeight};
-			SDL_RenderCopy(SDLManager::GetRenderer(), tiles[x][y]->sprite->texture, NULL, &destRect);
-		}
-	}
-}
-
-void TileMap::SaveMaptoFile()
-{
-	std::string mapPath = "Assets/Maps/Map1.txt";
 	std::ofstream mapFile(mapPath);
 	if (mapFile.is_open())
 	{
@@ -96,30 +72,6 @@ void TileMap::SaveMaptoFile()
 	else
 	{
 		std::cout << "Unable to open file";
-	}
-}
-
-Sprite* TileMap::GetSprite(std::string id)
-{
-	if (id == "F")
-	{
-		return grassSprite;
-	}
-	else if (id == "S")
-	{
-		return asphaltCentreSprite;
-	}
-	else if (id == "L")
-	{
-		return asphaltCentreLeftSprite;
-	}
-	else if (id == "R")
-	{
-		return asphaltCentreRightSprite;
-	}
-	else
-	{
-		return grassSprite;
 	}
 }
 

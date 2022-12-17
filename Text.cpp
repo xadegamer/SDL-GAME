@@ -1,12 +1,12 @@
 #include "Text.h"
 
-Text::Text(std::string id, std::string text, std::string fontID, SDL_Color c, Vector2 position)
+Text::Text(std::string id, std::string text, std::string fontID, SDL_Color c, Vector2 position, int textSize)
 {
 	this->ID = id;
 	layer = 1;
 	this->text = text;
 	this->color = c;
-	this->font = AssetManager::GetFont(fontID, 32);
+	this->font = AssetManager::GetFont(fontID, textSize);
 	
 	anchorPositon = position;
 	

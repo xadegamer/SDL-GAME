@@ -14,18 +14,15 @@
 struct Tile
 {
 	std::string id;
-	Sprite* sprite;
-
-	Tile(std::string id, Sprite* sprite)
+	Tile(std::string id)
 	{
 		this->id = id;
-		this->sprite = sprite;
 	}
 };
 
 class TileMap
 {
-private:
+protected:
 	
 	int width;
 	int height;
@@ -34,29 +31,13 @@ private:
 
 	std::vector<std::vector<Tile*>> tiles;
 	
-	Sprite* grassSprite;
-	
-	Sprite* asphaltTopLeftSprite;
-	Sprite* asphaltTopCentreSprite;
-	Sprite* asphaltTopRightSprite;
-	
-	Sprite* asphaltCentreLeftSprite;
-	Sprite* asphaltCentreSprite;
-	Sprite* asphaltCentreRightSprite;
-
-	Sprite* asphaltBottomLeftSprite;
-	Sprite* asphaltBottomCentreSprite;
-	Sprite* asphaltBottomRightSprite;
-	
 public:
-	TileMap(int width, int height, int tileSize);
+	TileMap(int width, int height, int tileSize, std::string mapPath);
 	~TileMap();
 
-	void LoadMap();
-	void DrawMap();
-	void SaveMaptoFile();
-
-	Sprite* GetSprite(std::string id);
+	void LoadMap(std::string mapPath);
+	virtual void DrawMap() {};
+	void SaveMaptoFile(std::string mapPath = "Assets/Maps/Map1.txt");
 
 	Vector2 GetTilePositionById(std::string id);
 };

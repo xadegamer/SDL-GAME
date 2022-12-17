@@ -60,8 +60,6 @@ public:
 
 	void ChaseState(float deltaTime);
 
-	void AttackState();
-
 	void EnemyDespawn();
 
 	bool PlayerInRange(float range);

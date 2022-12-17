@@ -6,9 +6,14 @@
 #include "AudioManager.h"
 #include "AssetManager.h"
 
-class Canvas;
-class Slider;
-class UIObject;
+#include "Canvas.h"
+#include "Button.h"
+#include "Text.h"
+#include "Canvas.h"
+#include "Slider.h"
+#include "ToggleButton.h"
+#include "Image.h"
+
 class Game;
 
 class UIManager

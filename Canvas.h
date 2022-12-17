@@ -33,5 +33,14 @@ public:
 
 	UIObject* GetUIObjectByID(std::string id);
 
+	template <typename T>
+	T* GetUIObjectByID(std::string id)
+	{
+		for (auto& uiObject : uiObjects)
+		{
+			if (uiObject->GetID() == id) return dynamic_cast<T*>(uiObject);
+		}
+		return nullptr;
+	}
 };
 

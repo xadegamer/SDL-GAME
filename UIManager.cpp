@@ -1,14 +1,7 @@
 #include "UIManager.h"
-#include "Canvas.h"
-#include "Game.h"
-#include "Button.h"
-#include "Text.h"
-#include "Canvas.h"
-#include "Slider.h"
-#include "ToggleButton.h"
-#include "Image.h"
 
 #include "AudioManager.h"
+#include "Game.h"
 
 std::vector<Canvas*> UIManager::activeCanvases;
 float UIManager::refreshRate = 0.01f;
@@ -144,12 +137,12 @@ void UIManager::SetUpGameCanvas()
 	canvas->AddUIObject(pauseButton);
 
 	Slider* slider = new Slider("HealthSlider",topLeftScreenCorner + Vector2(200, 50), Vector2(300,30), 0);
-	slider->AddText("HealthSliderText","100", "Vorgang", { 255, 255, 255, 255 });
+	slider->AddText("HealthSliderText","100", "Vorgang_Small", { 255, 255, 255, 255 },20);
 	canvas->AddUIObject(slider);
 
 	// create score text
 	
-	Text* scoreText = new Text("ScoreText", "Score: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(100, 100));
+	Text* scoreText = new Text("MoneyText", "Money: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(100, 100));
 	canvas->AddUIObject(scoreText);
 
 	activeCanvases.push_back(canvas);

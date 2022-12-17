@@ -37,6 +37,12 @@
     <Filter Include="Header Files\GameObject">
       <UniqueIdentifier>{ab838e34-116b-4b31-a00a-4fc216bb864e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\TileMaps">
+      <UniqueIdentifier>{9b79213c-e849-47a7-8656-73e37373db71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TileMaps">
+      <UniqueIdentifier>{dce06993-3408-4b38-bd7d-cf8aaec8b15c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,9 +150,6 @@
     <ClCompile Include="GasCylinder.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="TileMap.cpp">
-      <Filter>Source Files\Statics</Filter>
-    </ClCompile>
     <ClCompile Include="HealthKit.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
@@ -161,6 +164,15 @@
     </ClCompile>
     <ClCompile Include="Image.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundTileMap.cpp">
+      <Filter>Source Files\TileMaps</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Source Files\TileMaps</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutTileMap.cpp">
+      <Filter>Source Files\TileMaps</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +281,6 @@
     <ClInclude Include="GasCylinder.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="TileMap.h">
-      <Filter>Header Files\Statics</Filter>
-    </ClInclude>
     <ClInclude Include="HealthKit.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
@@ -286,6 +295,15 @@
     </ClInclude>
     <ClInclude Include="TimedDelayVfxEffect.h">
       <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundTileMap.h">
+      <Filter>Header Files\TileMaps</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Header Files\TileMaps</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutTileMap.h">
+      <Filter>Header Files\TileMaps</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

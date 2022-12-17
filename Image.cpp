@@ -3,23 +3,25 @@
 Image::Image(std::string ID, std::string imageID, Vector2 anchorPositon)
 {
 	this->ID = ID;
-	sprite = AssetManager::GetSprite(imageID);
+
+	spriteRenderer.SetSprite(AssetManager::GetSprite(imageID));
+
 	this->anchorPositon = anchorPositon;
-	centerPositon = anchorPositon + Vector2(sprite->textureWidth / 2, sprite->textureHeight / 2);
-	rect = { (int)anchorPositon.x, (int)anchorPositon.y, sprite->textureWidth, sprite->textureHeight };
+	centerPositon = anchorPositon - Vector2(spriteRenderer.GetSprite()->textureWidth / 2, spriteRenderer.GetSprite()->textureHeight / 2);
+	rect = { (int)centerPositon.x, (int)centerPositon.y, spriteRenderer.GetSprite()->textureWidth, spriteRenderer.GetSprite()->textureHeight };
 }
 
 Image::~Image()
 {
-	
+
+}
+
+void Image::Update(float deltaTime)
+{
+
 }
 
 void Image::Draw()
 {
-	SDL_RenderCopy(SDLManager::GetRenderer(), sprite->texture, NULL, &rect);
-}
-
-void Image::Update()
-{
-	
+	spriteRenderer.Draw(rect);
 }

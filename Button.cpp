@@ -42,7 +42,7 @@ void Button::Draw()
 	if (text != nullptr) text->Draw();
 }
 
-void Button::Update()
+void Button::Update(float deltaTime)
 {	
 	// check if mouse is inside button
 	if (MathUtility::IsPointInRect(InputManager::GetMousePosition(), centerPositon, size))
@@ -67,7 +67,7 @@ void Button::Update()
 		currentState = buttonState::DEFAULT;
 	}
 
-	if (text != nullptr) text->Update();
+	if (text != nullptr) text->Update(deltaTime);
 }
 
 void Button::AddText(std::string id,std::string inputText, std::string fontID, SDL_Color color)

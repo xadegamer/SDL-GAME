@@ -45,7 +45,7 @@ void Text::Draw()
 	SDL_RenderCopy(SDLManager::GetRenderer(), texture, NULL, &rect);	
 }
 
-void Text::Update()
+void Text::Update(float deltaTime)
 {
 	rect.x = centerPositon.x;
 	rect.y = centerPositon.y;

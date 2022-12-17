@@ -23,7 +23,7 @@ public:
 	~Slider() override;
 
 	void Draw() override;
-	void Update() override;
+	void Update(float deltaTime) override;
 
 	void AddText(std::string id, std::string text, std::string fontID, SDL_Color color, int textSize = 32);
 

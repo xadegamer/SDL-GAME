@@ -32,7 +32,7 @@ public:
 	virtual ~UIObject();
 
 	virtual void Draw();
-	virtual void Update();
+	virtual void Update(float deltaTime);
 
 	inline void SetID(std::string id) { ID = id; }
 	inline std::string GetID() { return ID; }

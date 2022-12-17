@@ -43,7 +43,7 @@ void Slider::Draw()
 	if (text != nullptr) text->Draw();
 }
 
-void Slider::Update()
+void Slider::Update(float deltaTime)
 {
 	
 }

@@ -55,7 +55,9 @@ void Canvas::Draw()
 				SDL_RenderFillRect(SDLManager::GetRenderer(), &rect);
 			}
 		}	
-		for (auto& uiObject : uiObjects) uiObject->Draw();
+
+		// normal for loop
+		for (int i = 0; i < uiObjects.size(); i++) uiObjects[i]->Draw();
 	}
 }
 
@@ -71,7 +73,7 @@ void Canvas::Update(float deltaTime)
 		else activeTimer += deltaTime;
 	}
 	
-	if (isActive && isEnable) for (auto& uiObject : uiObjects) uiObject->Update();
+	if (isActive && isEnable) for (auto& uiObject : uiObjects) uiObject->Update(deltaTime);
 }
 
 UIObject* Canvas::GetUIObjectByID(std::string id)

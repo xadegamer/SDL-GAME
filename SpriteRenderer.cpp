@@ -20,15 +20,18 @@ void SpriteRenderer::SetSprite(Sprite* sprite)
 	this->sprite = sprite;
 }
 
-void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect, SDL_RendererFlip flip)
+void SpriteRenderer::Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect, bool relativeToCam, SDL_RendererFlip flip)
 {
 	//Position in world
 	destRect.x = position.x;
 	destRect.y = position.y;
 
-	//Position in camera
-	destRect.x -= Camera::GetPosition().x;
-	destRect.y -= Camera::GetPosition().y;
+	if (relativeToCam)
+	{
+		//Position in camera
+		destRect.x -= Camera::GetPosition().x;
+		destRect.y -= Camera::GetPosition().y;
+	}
 
 	//Size of object
 	destRect.w = srcRect.w;
@@ -46,6 +49,15 @@ void SpriteRenderer::Draw(Vector2 position, SDL_RendererFlip flip)
 	destRect.x -= Camera::GetPosition().x;
 	destRect.y -= Camera::GetPosition().y;
 	
+	SDL_RenderCopy(SDLManager::GetRenderer(), sprite->texture, NULL, &destRect);
+}
+
+void SpriteRenderer::Draw(SDL_Rect srcRect, SDL_RendererFlip flip)
+{
+	destRect.w = srcRect.w;
+	destRect.h = srcRect.h;
+	destRect.x = srcRect.x;
+	destRect.y = srcRect.y;
 	SDL_RenderCopy(SDLManager::GetRenderer(), sprite->texture, NULL, &destRect);
 }
 

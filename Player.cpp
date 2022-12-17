@@ -41,45 +41,39 @@ void Player::Update(float deltaTime)
 
 	transform->SetRotation(MathUtility::GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 
-
 	//clamp player position to level bound with scale
-	 transform->SetXPosition(MathUtility::Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), LEVEL_WIDTH - (animator->GetCurrentAnimationClip()->animPixelWidth)) );
-	 transform->SetYPosition(MathUtility::Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), LEVEL_HEIGHT - (animator->GetCurrentAnimationClip()->animPixelHeight)) );
-	
-	////Left and Right
-	//if ((transform->position.x < 0) transform->position.x = 0; else if (transform->position.x > 1280) transform->position.x = 1280;
-	////Top and Bottom
-	//if (transform->position.y < 0) transform->position.y = 0; else if (transform->position.y > 960)transform->position.y = 960;
+	transform->SetXPosition(MathUtility::Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), LEVEL_WIDTH - (animator->GetCurrentAnimationClip()->animPixelWidth)) );
+	transform->SetYPosition(MathUtility::Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), LEVEL_HEIGHT - (animator->GetCurrentAnimationClip()->animPixelHeight)) );
 
-	 if (!canMove) return;
+	if (!canMove) return;
 	if (InputManager::GetKey(SDL_SCANCODE_W) == false && InputManager::GetKey(SDL_SCANCODE_S) == false && InputManager::GetKey(SDL_SCANCODE_A) == false && InputManager::GetKey(SDL_SCANCODE_D) == false)
 	{
 		rigidBody->ResetForce();
 		animator->ChangeAnimation("Idle");
 	}
+	else
+	{
+		animator->ChangeAnimation("Walk");
+	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_W))
 	{
 		rigidBody->ApplyForceY(-currentMoveSpeed);
-		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_S))
 	{
 		rigidBody->ApplyForceY(currentMoveSpeed);
-		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_A))
 	{
 		rigidBody->ApplyForceX(-currentMoveSpeed);
-		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetKey(SDL_SCANCODE_D))
 	{
 		rigidBody->ApplyForceX(currentMoveSpeed);
-		animator->ChangeAnimation("Walk");
 	}
 
 	if (InputManager::GetMouseButtonDown(InputManager::LEFT))
@@ -108,7 +102,7 @@ void Player::OnCollisionEnter(Collider* other)
 	{
 		Vector2 direction = transform->GetPosition() - other->GetGameObject()->GetTransform()->GetPosition();
 		direction.normalize();
-		transform->SetPosition(transform->GetPosition() += direction * 1.5);
+		transform->SetPosition(transform->GetPosition() += direction * 1.8);
 	}
 }
 

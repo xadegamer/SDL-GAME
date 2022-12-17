@@ -13,6 +13,7 @@
 #include "Slider.h"
 #include "ToggleButton.h"
 #include "Image.h"
+#include "AnimatedImage.h"
 
 class Game;
 

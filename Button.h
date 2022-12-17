@@ -19,7 +19,7 @@ public:
 	~Button() override;
 
 	void Draw() override;
-	void Update() override;
+	void Update(float deltaTime) override;
 	
 	std::function <void()> OnClick;
 	std::function <void()> OnMouseOver;

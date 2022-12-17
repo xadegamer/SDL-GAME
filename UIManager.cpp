@@ -55,9 +55,15 @@ void UIManager::SetUpMainMenuCanvas()
 	quitButton->OnClick = Game::Quit;
 	canvas->AddUIObject(quitButton);
 
-	// ceaate image for background
-	Image* background = new Image("MenuImage","Tank", midscreen);
+	Image* background = new Image("MenuImage","Car_2", midscreen - Vector2(300, -200));
 	canvas->AddUIObject(background);
+
+	// create animated image 
+	AnimatedImage* animatedImage1 = new AnimatedImage("AnimatedImage1", "spritesheet", midscreen - Vector2(300, 0), 12, 0.05f);
+	canvas->AddUIObject(animatedImage1);
+
+	AnimatedImage* animatedImage2 = new AnimatedImage("AnimatedImage2", "Dacing", midscreen - Vector2(-300, 0), 31, 0.01f);
+	canvas->AddUIObject(animatedImage2);
 
 	activeCanvas = lastActiveCanvas = canvas;
 	canvas->Show();

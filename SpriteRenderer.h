@@ -49,9 +49,11 @@ public:
 
 	void SetSprite(Sprite* sprite);
 
-	void Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect,SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void Draw(SDL_Texture* texture, Vector2 position, float angle, SDL_Rect srcRect, bool relativeToCam = true, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 	void Draw(Vector2 position, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
+	void Draw(SDL_Rect srcRect, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	
 	void CursorBlit(SDL_Texture* texture, int x, int y, bool center);
 
@@ -61,6 +63,8 @@ public:
 
 	int GetSortingOrder() { return sortingOrder; }
 	void SetSortingOrder(int sortingOrder) { this->sortingOrder = sortingOrder; }
+
+	SDL_Rect& GetRect() { return destRect; }
 
 	void DebugRect();
 };

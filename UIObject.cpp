@@ -14,7 +14,7 @@ void UIObject::Draw()
 	
 }
 
-void UIObject::Update()
+void UIObject::Update(float deltaTime)
 {
 	
 }

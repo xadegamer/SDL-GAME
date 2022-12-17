@@ -32,7 +32,6 @@ Game::~Game()
 
 bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
-
 	if (SDLManager::Init(title, xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen))
 	{	
 		srand((unsigned)time(NULL));
@@ -46,24 +45,20 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 	else return false;
 }
 
-void Game::SpawnGameObjects()
+void Game::LoadLevel()
 {
-	groundTileMap = new GroundTileMap((LEVEL_WIDTH / 89) + 1, (LEVEL_HEIGHT / 89) + 1, 89, "Assets/Maps/Ground Map 1.txt");
-	layoutTileMap = new LayoutTileMap((LEVEL_WIDTH / 89) + 1, (LEVEL_HEIGHT / 89) + 1, 89, "Assets/Maps/Layout Map 1.txt");
+	groundTileMap = new GroundTileMap((LEVEL_WIDTH / TILE_SIZE) + 1, (LEVEL_HEIGHT / TILE_SIZE) + 1, TILE_SIZE, "Assets/Maps/Ground Map 1.txt");
+	layoutTileMap = new LayoutTileMap((LEVEL_WIDTH / TILE_SIZE) + 1, (LEVEL_HEIGHT / TILE_SIZE) + 1, TILE_SIZE, "Assets/Maps/Layout Map 1.txt");
 
 	Enemy::OnAnyEnemyKilled = Game::CheckWinCondition;
 	
 	player = GameObject::Instantiate(new Player(layoutTileMap->GetPlayerPosition(),100));
 
 	Camera::SetUp(player);
-	
-	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }
 
 void Game::HandleCollision()
 {
-	// check collision between object using layermasks
-	
 	//check collision between all game objects with colliders
 	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
 	{
@@ -91,14 +86,13 @@ void Game::HandleCollision()
 
 void Game::StartGame()
 {
-	SpawnGameObjects();
+	LoadLevel();
 	ChangeGameState(GameState::PlayMode);
 }
 
 void Game::ResetGame()
 {
-	delete groundTileMap;
-	groundTileMap = nullptr;
+	TileMap::Clear();
 	GameObject::DestroyAllGameObjects();
 }
 
@@ -143,7 +137,7 @@ void Game::PlayGameStateMusic()
 
 void Game::CheckWinCondition(int enemiesKilled)
 {
-	if (enemiesKilled == 0)
+	if (gameState == GameState::PlayMode && enemiesKilled == 0)
 	{
 		ChangeGameState(GameState::GameOver);
 		UIManager::EnableCanvasByID("WinMenu");
@@ -186,27 +180,6 @@ void Game::LoadData()
 	}
 }
 
-void Game::Debug()
-{
-	// draw only object with colliders
-
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		Collider* collider = nullptr;
-		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider))
-		{
-			if (collider->GetIsEnabled()) collider->Draw();
-		}
-	}
-
-	// draw only object with colliders
-	for (auto& gameObject : GameObject::GetActiveGameobjects())
-	{
-		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
-		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
-	}
-}
-
 void Game::HandleEvents()
 {
 	SDL_Event event;
@@ -244,45 +217,28 @@ void Game::Update(float deltaTime)
 
 void Game::Render()
 {
-	SDL_SetRenderDrawColor(SDLManager::GetRenderer(), 0, 0, 255, 255);
-
-	SDL_RenderClear(SDLManager::GetRenderer()); // clear the renderer to the draw color
+	SDL_RenderClear(SDLManager::GetRenderer());
 
 	if (gameState == GameState::PlayMode)
 	{
 		groundTileMap->DrawMap();
 
-		// loop throught all game objects and render them according to spriterenderer sorting order
-		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-		{
-			SpriteRenderer* spriteRenderer = nullptr;
-			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 0)
-				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
-		}
-		
-		// loop throught all game objects and render them according to spriterenderer sorting order
-		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-		{
-			SpriteRenderer* spriteRenderer = nullptr;
-			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 1)
-				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
-		}
+		int minLayer = static_cast<int>(SortingLayer::CharacterBloodLayer);
+		int maxlayer = static_cast<int>(SortingLayer::VfxLayer);
 
-		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		// Loop through all game objects and draw them acoording to layer and increment layer from min and max
+		for (int layer = minLayer; layer <= maxlayer; layer++)
 		{
-			SpriteRenderer* spriteRenderer = nullptr;
-			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 2)
-				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+			for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+			{
+				SpriteRenderer* spriteRenderer = nullptr;
+				if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == layer)
+				{
+					if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+				}
+			}
 		}
-
-
-		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-		{
-			SpriteRenderer* spriteRenderer = nullptr;
-			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == 3)
-				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
-		}
-
+	
 		if(showDebug) Debug();
 	}
 	
@@ -301,4 +257,25 @@ void Game::Clean()
 	Camera::Clean();
 	GameObject::DestroyAllGameObjects();
 	SDLManager::Clean();
+}
+
+void Game::Debug()
+{
+	// draw only object with colliders
+
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		Collider* collider = nullptr;
+		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider))
+		{
+			if (collider->GetIsEnabled()) collider->Draw();
+		}
+	}
+
+	// draw only object with colliders
+	for (auto& gameObject : GameObject::GetActiveGameobjects())
+	{
+		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
+		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
+	}
 }

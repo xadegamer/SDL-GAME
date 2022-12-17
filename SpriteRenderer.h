@@ -21,6 +21,19 @@ public:
 	}
 };
 
+
+enum SortingLayer
+{
+	CharacterBloodLayer = 0,
+	DeadCharacterLayer = 1,
+	CollectableLayer = 2,
+	PropsLayer = 3,
+	EnemyLayer = 4,
+	PlayerLayer = 5,
+	TreesLayer = 6,
+	VfxLayer = 7,
+};
+
 class SpriteRenderer : public Component
 {
 private:

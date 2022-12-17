@@ -5,8 +5,6 @@
 #include "CircleCollider.h"
 #include <functional>
 
-
-
 enum  EnemyState
 {
 	PATROL,
@@ -30,7 +28,8 @@ private:
 	float despawnRate;
 	float despawnTimer;
 	
-	float attackRange;
+	float minAttackRange;
+	float MaxAttackRange;
 	float detectionRadius;
 
 	EnemyState currentEnemyState;

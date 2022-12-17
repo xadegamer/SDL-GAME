@@ -21,12 +21,13 @@ Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 	fireTimer = 0;
 	despawnRate = 6;
 	despawnTimer = 0;
-	attackRange = 400;
+	minAttackRange = 400;
+	MaxAttackRange = 450;
 	detectionRadius = 600;
 	
 	tag = Tag::ENEMY;
 
-	spriteRenderer->SetSortingOrder(1);
+	spriteRenderer->SetSortingOrder(SortingLayer::EnemyLayer);
 
 	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
@@ -112,12 +113,13 @@ void Enemy::OnTakeDamage()
 void Enemy::OnDeath()
 {
 	currentEnemyState = EnemyState::DEAD;
+	spriteRenderer->SetSortingOrder(SortingLayer::DeadCharacterLayer);
 	canMove = false;
 	circleCollider->SetIsEnabled(false);
 	circleCollider->OnCollisionEnterEvent = nullptr;
 	animator->ChangeAnimation("Die", true);
-	GameObject::Instantiate(new TimedDelayVfxEffect(circleCollider->GetCentre(), "blood pool", 0, 10));
-	GameObject::Instantiate(new Money(circleCollider->GetCentre(), "Money", ColliderType::BOX, 2, 50));
+	GameObject::Instantiate(new TimedDelayVfxEffect(circleCollider->GetCentre(), "blood pool", SortingLayer::CharacterBloodLayer, 10));
+	GameObject::Instantiate(new Money(circleCollider->GetCentre(), "Money", ColliderType::BOX, SortingLayer::CollectableLayer, 50));
 }
 
 void Enemy::PatrolState(float deltaTime)
@@ -150,7 +152,7 @@ void Enemy::ChaseState(float deltaTime)
 	}
 	else
 	{
-		if (!PlayerInRange(attackRange))
+		if (!PlayerInRange(minAttackRange) && !PlayerInRange(MaxAttackRange))
 		{
 			animator->ChangeAnimation("Walk");
 			rigidBody->MoveToPosition(Game::player->GetComponent<Transform>()->GetPosition(), 100, deltaTime);

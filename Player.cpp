@@ -12,7 +12,7 @@ Player::Player(Vector2 position, float maxhealth) : Character(position)
 {
 	tag = Tag::PLAYER;
 
-	spriteRenderer->SetSortingOrder(2);
+	spriteRenderer->SetSortingOrder(SortingLayer::PlayerLayer);
 	
 	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
@@ -114,7 +114,11 @@ void Player::OnCollisionEnter(Collider* other)
 
 void Player::OnShootEvent()
 {
-	if (!canMove)animator->ChangeAnimation("Die", true);
+	if (!canMove)
+	{
+		animator->ChangeAnimation("Die", true);
+		return;
+	}
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
 	Vector2 direction = MathUtility::GetDirectionToMouse(spawnPosition - Camera::GetPosition());
 	SpawnBullet(spawnPosition, direction, BulletType::PLAYER);

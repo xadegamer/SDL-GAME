@@ -22,6 +22,10 @@ struct Tile
 
 class TileMap
 {
+private:
+	
+	static std::vector<TileMap*> tileMaps;
+	
 protected:
 	
 	int width;
@@ -40,5 +44,7 @@ public:
 	void SaveMaptoFile(std::string mapPath = "Assets/Maps/Map1.txt");
 
 	Vector2 GetTilePositionById(std::string id);
+
+	static void Clear();
 };
 

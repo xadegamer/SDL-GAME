@@ -9,6 +9,8 @@
 #include "GroundTileMap.h"
 #include "HealthKit.h"
 
+#include "MathUtility.h"
+
 LayoutTileMap::LayoutTileMap(int width, int height, int tileSize, std::string mapPath) : TileMap(width, height, tileSize, mapPath)
 {
 	DrawMap();
@@ -38,19 +40,28 @@ void LayoutTileMap::PopulateLevel(std::string id, Vector2 position)
 	}
 	else if (id == "G")
 	{
-		GameObject::Instantiate(new GasCylinder(position, "BarrelSmall", ColliderType::CIRCLE, 1, true, false));
+		GameObject::Instantiate(new GasCylinder(position, "BarrelSmall", ColliderType::CIRCLE, SortingLayer::PropsLayer, true, false));
+	}
+	else if (id == "B")
+	{
+		int barrelType = MathUtility::RandomRange(1, 3);
+		GameObject::Instantiate(new Prop(position, "Barrel_" + std::to_string(barrelType), ColliderType::CIRCLE, SortingLayer::PropsLayer, true, false));
 	}
 	else if (id == "T")
 	{
-		GameObject::Instantiate(new Prop(position, "Tree_3", ColliderType::None, 3, true, false));
+		// random treee 1 - 6
+		int treeType = MathUtility::RandomRange(1, 6);
+		GameObject::Instantiate(new Prop(position, "Tree_" + std::to_string(treeType), ColliderType::None, SortingLayer::TreesLayer, true, false));
 	}
 	else if (id == "C")
 	{
-		GameObject::Instantiate(new Prop(Vector2(900, 500), "Car_1", ColliderType::BOX, 2, true, false));
+		// random car 1 - 2
+		int carType = MathUtility::RandomRange(1, 3);
+		GameObject::Instantiate(new Prop(position, "Car_" + std::to_string(carType), ColliderType::BOX, SortingLayer::PropsLayer, true, false));
 	}
 	else if (id == "H")
 	{
-		GameObject::Instantiate(new HealthKit(position, "HeathKit", ColliderType::BOX, 1, 50));
+		GameObject::Instantiate(new HealthKit(position, "HeathKit", ColliderType::BOX, SortingLayer::CollectableLayer, 50));
 	}
 	else if (id == "P")
 	{

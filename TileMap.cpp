@@ -2,9 +2,12 @@
 
 #include "Camera.h"
 
+std::vector<TileMap*> TileMap::tileMaps;
 
 TileMap::TileMap(int width, int height, int tileSize, std::string mapPath)
 {
+	tileMaps.push_back(this);
+	
 	this->width = width;
 	this->height = height;
 	this->tileSize = tileSize;
@@ -27,7 +30,6 @@ TileMap::~TileMap()
 			delete tiles[i][j];
 		}
 	}
-
 	tiles.clear();
 }
 
@@ -88,4 +90,14 @@ Vector2 TileMap::GetTilePositionById(std::string id)
 		}
 	}
 	return Vector2(-1, -1);
+}
+
+void TileMap::Clear()
+{
+	for (int i = 0; i < tileMaps.size(); i++)
+	{
+		delete tileMaps[i];
+		tileMaps[i] = nullptr;	
+	}
+	tileMaps.clear();
 }

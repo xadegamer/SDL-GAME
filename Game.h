@@ -22,6 +22,8 @@ const int LEVEL_HEIGHT = 1920;
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 960;
 
+const int TILE_SIZE = 89;
+
 enum class GameState
 {
 	PlayMode, PauseMode, MainMenu, GameOver
@@ -61,7 +63,7 @@ public:
 
 	static bool IsRunning() { return isRunning; }
 
-	static void SpawnGameObjects();
+	static void LoadLevel();
 
 	static void HandleCollision();
 	

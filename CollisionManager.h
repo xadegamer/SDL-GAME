@@ -18,5 +18,7 @@ public:
 	static bool DoBoxToCircleCollsionCheck(SDL_Rect* box, SDL_Rect* circle, float radious);	
 	static bool CheckCollision(Collider* colA, Collider* colB);
 	static double DistanceSquared(int x1, int y1, int x2, int y2);
+	
+	static void HandleAllCollision();
 };
 

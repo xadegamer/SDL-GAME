@@ -21,7 +21,6 @@ public:
 	}
 };
 
-
 enum SortingLayer
 {
 	CharacterBloodLayer = 0,

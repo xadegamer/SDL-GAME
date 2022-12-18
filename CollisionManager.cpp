@@ -114,3 +114,30 @@ double CollisionManager::DistanceSquared(int x1, int y1, int x2, int y2)
 	return deltaX * deltaX + deltaY * deltaY;
 }
 
+void CollisionManager::HandleAllCollision()
+{
+	//check collision between all game objects with colliders
+	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+	{
+		Collider* colliderA = nullptr;
+		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
+		{
+			for (int j = 0; j < GameObject::GetActiveGameobjects().size(); j++)
+			{
+				Collider* colliderB = nullptr;
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
+				{
+					if (colliderA != colliderB && colliderA->GetIsEnabled() && colliderB->GetIsEnabled())
+					{
+						if (CollisionManager::CheckCollision(colliderA, colliderB))
+						{
+							colliderA->OnCollision(colliderB);
+							colliderB->OnCollision(colliderA);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

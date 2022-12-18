@@ -34,6 +34,10 @@ class GameObject
 {
 
 private:
+	
+	static const int minLayer = static_cast<int>(SortingLayer::CharacterBloodLayer);
+	static const int maxlayer = static_cast<int>(SortingLayer::VfxLayer);
+	
 	bool toBeDestroyed = false;
 	float destoryDelay = 1.0f;
 	float currentDestoryTime;
@@ -46,20 +50,17 @@ protected:
 	Tag tag = Tag::DEFAULT;
 	Transform* transform;
 
-
+	virtual void Update(float deltaTime);
+	virtual void LateUpdate(float deltaTime) {};
+	virtual void Draw() {};
+	
 public:
 	GameObject(Vector2 position = Vector2(0, 0));
 	virtual ~GameObject();
 	
-	virtual void Update(float deltaTime);
-	virtual void LateUpdate(float deltaTime) {};
-	virtual void Draw() {};
-
 	inline Transform* GetTransform() { return transform; }
 	inline Tag GetTag() { return tag; }
 	inline void SetTag(Tag tag) { this->tag = tag; }
-
-public:
 
 	template<class T>
 	T* AddComponent(T* newCom)
@@ -108,51 +109,34 @@ public:
 	}
 
 	template<class T>
-	static T* InstantiateRandomPositionInLevel(T* prefab)
-	{
-		Vector2 randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
-		//while (GameObjectInRange(randomPosition, 5)) randomPosition = Vector2(MathUtility::RandomRange(0, 2560), MathUtility::RandomRange(0, 1920));
-		return Instantiate(prefab, randomPosition);
-	}
-
-	template<class T>
-	static T* InstantiateRandomPositionOnScreen(T* prefab)
-	{
-		SDL_Rect cameraRect = Camera::GetViewBox();
-		Vector2 randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
-
-		//while (GameObjectInRange(randomPosition, 5)) randomPosition = Vector2(MathUtility::RandomRange(cameraRect.x, cameraRect.x + cameraRect.w), MathUtility::RandomRange(cameraRect.y, cameraRect.y + cameraRect.h));
-
-		return Instantiate(prefab, randomPosition);
-	}
-
-	template<class T>
 	static T* Instantiate(T* prefab)
 	{
 		T* newObject = new T(*prefab);
 		return newObject;
 	}
 
-	bool CompareTag(Tag tag)
-	{
-		if (this->tag == tag) return true;
-		else return false;
-	}
+	virtual void OnCollisionEnter(Collider* other) {};
+	
+	inline bool CompareTag(Tag tag) { return this->tag == tag; }
 
 	void CheckComponent(Component* newCom);
 
-	bool CheckIfComponentExits(Component* newComponent);
-
-	static bool GameObjectInRange(Vector2 position, float range);
-
-	virtual void OnCollisionEnter(Collider* other) {};
-	
-	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
+	bool CheckIfComponentExits(Component* newComponent);	
 	
 	inline bool IsToBeDestroyed() { return toBeDestroyed;}
 
 	void ClearObjectFromMemory(GameObject* gameObject);
 
+	inline static std::vector<GameObject*> GetActiveGameobjects() { return activeGameobjects; }
+	
+	static void UpdateAllActive(float deltaTime);
+
+	static void LateUpdateAllActive(float deltaTime);
+	
+	static void DrawAllActive();
+	
+	static void ShowAllDebugVisuals();
+	
 	static void Destroy(GameObject* gameObject);
 
 	static void DestroyAllGameObjects();	

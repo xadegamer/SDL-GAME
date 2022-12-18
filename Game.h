@@ -65,8 +65,6 @@ public:
 
 	static void LoadLevel();
 
-	static void HandleCollision();
-	
 	static void StartGame();
 
 	static void ResetGame();
@@ -88,7 +86,5 @@ public:
 	static void SaveData(int score);
 
 	static void LoadData();
-
-	static void Debug();
 };
 

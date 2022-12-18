@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+#include "Collider.h"
+
 //define the static variable
 std::vector<GameObject*> GameObject::activeGameobjects = std::vector<GameObject*>();
 
@@ -29,14 +31,41 @@ bool GameObject::CheckIfComponentExits(Component* newComponent)
 	return false;
 }
 
-bool GameObject::GameObjectInRange(Vector2 position, float range)
+void GameObject::DrawAllActive()
 {
-	for (size_t i = 0; i < activeGameobjects.size(); i++)
+	// Loop through all game objects and draw them acoording to layer and increment layer from min and max
+	for (int layer = minLayer; layer <= maxlayer; layer++)
 	{
-		float distance = Vector2::Distance(activeGameobjects[i]->GetTransform()->GetPosition(), position);
-		if (distance < range) return true;
+		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
+		{
+			SpriteRenderer* spriteRenderer = nullptr;
+			if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == layer)
+			{
+				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
+			}
+		}
 	}
-	return false;
+}
+
+void GameObject::ShowAllDebugVisuals()
+{
+	// draw only object with colliders
+
+	for (int i = 0; i < activeGameobjects.size(); i++)
+	{
+		Collider* collider = nullptr;
+		if (!activeGameobjects[i]->IsToBeDestroyed() && activeGameobjects[i]->TryGetComponent<Collider>(collider))
+		{
+			if (collider->GetIsEnabled()) collider->Draw();
+		}
+	}
+
+	// draw only object with colliders
+	for (int i = 0; i < activeGameobjects.size(); i++)
+	{
+		SpriteRenderer* spriteRen = activeGameobjects[i]->GetComponent<SpriteRenderer>();
+		if (spriteRen) activeGameobjects[i]->GetComponent<SpriteRenderer>()->DebugRect();
+	}
 }
 
 void GameObject::Destroy(GameObject* gameObject)
@@ -68,11 +97,14 @@ GameObject* GameObject::FindGameObjectWithTag(Tag tag)
 }
 
 void GameObject::Update(float deltaTime)
-{
+{	
 	if (toBeDestroyed)
 	{
 		currentDestoryTime += deltaTime;
-		if (currentDestoryTime >= destoryDelay)ClearObjectFromMemory(this);
+		if (currentDestoryTime >= destoryDelay)
+		{
+			ClearObjectFromMemory(this);
+		}
 	}
 }
 
@@ -81,6 +113,22 @@ void GameObject::ClearObjectFromMemory(GameObject* gameObject)
 	activeGameobjects.erase(find(activeGameobjects.begin(), activeGameobjects.end(), gameObject));
 	delete gameObject;
 	gameObject = nullptr;
+}
+
+void GameObject::UpdateAllActive(float deltaTime)
+{
+	for (int i = 0; i < activeGameobjects.size(); i++)
+	{
+		activeGameobjects[i]->Update(deltaTime);
+	}	
+}
+
+void GameObject::LateUpdateAllActive(float deltaTime)
+{
+	for (int i = 0; i < activeGameobjects.size(); i++)
+	{
+		if (!activeGameobjects[i]->IsToBeDestroyed()) activeGameobjects[i]->LateUpdate(deltaTime);
+	}
 }
 
 void GameObject::CheckComponent(Component* newCom)

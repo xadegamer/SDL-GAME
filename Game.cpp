@@ -55,33 +55,8 @@ void Game::LoadLevel()
 	player = GameObject::Instantiate(new Player(layoutTileMap->GetPlayerPosition(),100));
 
 	Camera::SetUp(player);
-}
 
-void Game::HandleCollision()
-{
-	//check collision between all game objects with colliders
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		Collider* colliderA = nullptr;
-		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(colliderA))
-		{
-			for (int j = 0; j < GameObject::GetActiveGameobjects().size(); j++)
-			{
-				Collider* colliderB = nullptr;
-				if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[j]->TryGetComponent<Collider>(colliderB))
-				{					
-					if (colliderA != colliderB && colliderA->GetIsEnabled() && colliderB->GetIsEnabled())
-					{
-						if (CollisionManager::CheckCollision(colliderA, colliderB))
-						{
-							colliderA->OnCollision(colliderB);
-							colliderB->OnCollision(colliderA);
-						}
-					}
-				}
-			}
-		}
-	}
+	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }
 
 void Game::StartGame()
@@ -119,10 +94,10 @@ void Game::PlayGameStateMusic()
 	switch (gameState)
 	{
 	case GameState::PlayMode:
-		AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+		AudioManager::ResumeMusic();
 		break;
 	case GameState::PauseMode:
-		
+		AudioManager::PauseMusic();
 		break;
 	case GameState::MainMenu:
 		AudioManager::PlayMusic(AssetManager::GetMusic("Western Spaghetti - Chris Haugen"), true);
@@ -197,21 +172,15 @@ void Game::Update(float deltaTime)
 {
 	if (gameState == GameState::PlayMode)
 	{
-		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-		{
-			GameObject::GetActiveGameobjects()[i]->Update(deltaTime);
-		}
+		GameObject::UpdateAllActive(deltaTime);
 
-		HandleCollision();
+		CollisionManager::HandleAllCollision();
 
-		for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-		{
-			 GameObject::GetActiveGameobjects()[i]->LateUpdate(deltaTime);
-		}
+		GameObject::LateUpdateAllActive(deltaTime);
 
 		Camera::Update();
 	}
-
+	
 	UIManager::Update(deltaTime);
 }
 
@@ -223,23 +192,9 @@ void Game::Render()
 	{
 		groundTileMap->DrawMap();
 
-		int minLayer = static_cast<int>(SortingLayer::CharacterBloodLayer);
-		int maxlayer = static_cast<int>(SortingLayer::VfxLayer);
-
-		// Loop through all game objects and draw them acoording to layer and increment layer from min and max
-		for (int layer = minLayer; layer <= maxlayer; layer++)
-		{
-			for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-			{
-				SpriteRenderer* spriteRenderer = nullptr;
-				if (GameObject::GetActiveGameobjects()[i]->TryGetComponent<SpriteRenderer>(spriteRenderer) && spriteRenderer->GetSortingOrder() == layer)
-				{
-					if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed()) GameObject::GetActiveGameobjects()[i]->Draw();
-				}
-			}
-		}
+		GameObject::DrawAllActive();
 	
-		if(showDebug) Debug();
+		if (showDebug) GameObject::ShowAllDebugVisuals();
 	}
 	
 	UIManager::Draw();
@@ -257,25 +212,4 @@ void Game::Clean()
 	Camera::Clean();
 	GameObject::DestroyAllGameObjects();
 	SDLManager::Clean();
-}
-
-void Game::Debug()
-{
-	// draw only object with colliders
-
-	for (int i = 0; i < GameObject::GetActiveGameobjects().size(); i++)
-	{
-		Collider* collider = nullptr;
-		if (!GameObject::GetActiveGameobjects()[i]->IsToBeDestroyed() && GameObject::GetActiveGameobjects()[i]->TryGetComponent<Collider>(collider))
-		{
-			if (collider->GetIsEnabled()) collider->Draw();
-		}
-	}
-
-	// draw only object with colliders
-	for (auto& gameObject : GameObject::GetActiveGameobjects())
-	{
-		SpriteRenderer* spriteRen = gameObject->GetComponent<SpriteRenderer>();
-		if (spriteRen) gameObject->GetComponent<SpriteRenderer>()->DebugRect();
-	}
 }

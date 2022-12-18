@@ -19,5 +19,5 @@ void AnimatedImage::Update(float deltaTime)
 
 void AnimatedImage::Draw()
 {
-	spriteRenderer.Draw(animator.GetSprite()->texture, centerPositon, 0, animator.GetRect());
+	spriteRenderer.Draw(animator.GetSprite()->texture, centerPositon, 0, animator.GetRect(),false);
 }

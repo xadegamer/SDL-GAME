@@ -175,7 +175,7 @@
       <Filter>Source Files\TileMaps</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedImage.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -309,7 +309,7 @@
       <Filter>Header Files\TileMaps</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedImage.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

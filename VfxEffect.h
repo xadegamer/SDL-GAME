@@ -14,7 +14,7 @@ private:
 	
 public:
 
-	VfxEffect(Vector2 position, std::string ID, int numberOfFrame, bool applyOffset = true);
+	VfxEffect(Vector2 position, std::string ID, int numberOfFrame, int sortingOrder, bool applyOffset = true, bool destroyOnLastFrame = true);
 	~VfxEffect();
 
 	void Update(float deltaTime) override;

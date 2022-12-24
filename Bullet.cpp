@@ -92,6 +92,6 @@ bool Bullet::IsOutSideScreen()
 
 void Bullet::RemoveBullet()
 {
-	Instantiate<VfxEffect>(new VfxEffect(circleCollider->GetPosition(), "SmokeEffect", 8));
+	Instantiate<VfxEffect>(new VfxEffect(circleCollider->GetPosition(), "BulletHit", 5, SortingLayer::VfxLayer));
 	GameObject::Destroy(this);
 }

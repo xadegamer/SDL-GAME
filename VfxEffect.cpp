@@ -1,19 +1,23 @@
 #include "VfxEffect.h"
 
-VfxEffect::VfxEffect(Vector2 position, std::string spriteID,int numberOfFrame, bool applyOffset) : GameObject(position)
+VfxEffect::VfxEffect(Vector2 position, std::string spriteID,int numberOfFrame, int sortingOrder, bool applyOffset, bool destroyOnLastFrame) : GameObject(position)
 {
 	this->spriteRenderer = AddComponent <SpriteRenderer>(new SpriteRenderer);
-	spriteRenderer->SetSortingOrder(2);
+	spriteRenderer->SetSortingOrder(sortingOrder);
 	
 	this->animator = AddComponent < Animator>(new Animator);
 	animator->SetSprite(spriteRenderer->GetSprite());
-	this->animator->AddAnimationClip("Effect", AssetManager::GetSprite(spriteID), numberOfFrame, 0.05, false)->AddAnimationEvent("End Event", numberOfFrame - 1, [=]() {OnAnimationEnd(); });
+	
+	if (destroyOnLastFrame)
+	{
+		this->animator->AddAnimationClip("Effect", AssetManager::GetSprite(spriteID), numberOfFrame, 0.05, false)->AddAnimationEvent("End Event", numberOfFrame - 1, [=]() {OnAnimationEnd(); });
+	}
+	else this->animator->AddAnimationClip("Effect", AssetManager::GetSprite(spriteID), numberOfFrame, 0.05, false);
 
+	
 	if (applyOffset)
 	{
-		//get center of sprite
 		Vector2 center = Vector2(animator->GetCurrentAnimationClip()->animPixelWidth / 2, animator->GetCurrentAnimationClip()->animPixelHeight / 2);
-		// set position to center of sprite
 		transform->SetPosition(transform->GetPosition() - center);
 	}
 }

@@ -218,6 +218,9 @@ void UIManager::SetUpWinCanvas()
 	};
 	canvas->AddUIObject(menuButton);
 
+	Text* thanksText = new Text("ThanksText", "Thanks for playing!", "Vorgang", { 255, 255, 255, 255 }, midscreen - Vector2(0, -100));
+	canvas->AddUIObject(thanksText);
+	
 	activeCanvases.push_back(canvas);
 }
 

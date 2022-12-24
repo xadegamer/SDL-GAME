@@ -39,6 +39,8 @@ void Player::Update(float deltaTime)
 	
 	animator->Update(deltaTime);
 
+	rigidBody->ResetForce();
+
 	transform->SetRotation(MathUtility::GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 
 	//clamp player position to level bound with scale
@@ -48,7 +50,6 @@ void Player::Update(float deltaTime)
 	if (!canMove) return;
 	if (InputManager::GetKey(SDL_SCANCODE_W) == false && InputManager::GetKey(SDL_SCANCODE_S) == false && InputManager::GetKey(SDL_SCANCODE_A) == false && InputManager::GetKey(SDL_SCANCODE_D) == false)
 	{
-		rigidBody->ResetForce();
 		animator->ChangeAnimation("Idle");
 	}
 	else

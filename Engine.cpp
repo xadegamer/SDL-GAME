@@ -52,4 +52,6 @@ void Engine::FrameCap()
 		//Wait remaining time
 		SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
 	}
+	std::string title = "Wild West Ranged [avg fps: " + std::to_string(int(avgFPS)) + "] ";
+	SDL_SetWindowTitle(SDLManager::GetWindow(), title.c_str());
 }

@@ -11,7 +11,7 @@ GasCylinder::GasCylinder(Vector2 position, std::string spriteName, ColliderType 
 
 GasCylinder::~GasCylinder()
 {
-	
+
 }
 
 void GasCylinder::Update(float deltaTime)
@@ -33,7 +33,7 @@ void GasCylinder::TriggerExplosion()
 	if (!hasTriggerExplosion && !exploded)
 	{
 		hasTriggerExplosion = true;
-		Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(),"SmokeEffect", 8, false));
+		smokeEffect = new VfxEffect(collider->GetPosition(), "SmokeBeam", 2, SortingLayer::VfxLayer,false, false);
 	}
 }
 
@@ -61,13 +61,14 @@ void GasCylinder::Explosion()
 		}
 	}
 
-	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "ExplosionEffect", 8, false));
+	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "ExplosionEffect", 8, SortingLayer::VfxLayer,false));
 
-	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "SmokeEffect", 8, false));
+//	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "SmokeEffect", 8, false));
 
 	std::string soundName = "Fire Explosion 0";
 	soundName += std::to_string(MathUtility::RandomRange(1, 4));
 	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect(soundName), false);
 
 	GameObject::Destroy(this);
+	if (smokeEffect)GameObject::Destroy(smokeEffect);
 }

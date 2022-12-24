@@ -1,6 +1,6 @@
 #include "Money.h"
 
-#include "Game.h"
+#include "Engine.h"
 
 Money::Money(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, float amount) : Collectable(position, spriteName, colliderType, sortingOrder, amount)
 {
@@ -18,7 +18,7 @@ void Money::Update(float deltaTime)
 
 void Money::PickUp(Player* player)
 {
-	Game::AddMoney(amount);
+	Engine::GetGame()->AddMoney(amount);
 	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Pick Up"), false);
 	Collectable::PickUp(player);
 }

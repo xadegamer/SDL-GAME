@@ -1,31 +1,31 @@
 #include "Camera.h"
-
-#include "Player.h"
+#include "Engine.h"
+#include "GameObject.h"
 #include "Game.h"
 
 
-SDL_Rect Camera::viewBox = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-Player* Camera::player = nullptr;
+SDL_Rect Camera::viewBox = { 0, 0, Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT };
+GameObject* Camera::player = nullptr;
 
-void Camera::SetUp(Player* currentPlayer)
+void Camera::SetUp(GameObject* currentPlayer)
 {
-	viewBox = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	viewBox = { 0, 0,  Engine::SCREEN_WIDTH,  Engine::SCREEN_HEIGHT };
 	player = currentPlayer;
-	viewBox.x = (player->GetTransform()->GetPosition().x + player->GetComponent<Collider>()->GetColliderRect()->w / 2) - SCREEN_WIDTH / 2;
-	viewBox.y = (player->GetTransform()->GetPosition().y + player->GetComponent<Collider>()->GetColliderRect()->h / 2) - SCREEN_HEIGHT / 2;
+	viewBox.x = (player->GetTransform()->GetPosition().x + player->GetComponent<Collider>()->GetColliderRect()->w / 2) - Engine::SCREEN_WIDTH / 2;
+	viewBox.y = (player->GetTransform()->GetPosition().y + player->GetComponent<Collider>()->GetColliderRect()->h / 2) - Engine::SCREEN_HEIGHT / 2;
 }
 
 void Camera::Update()
 {
 	if (player)
 	{
-		viewBox.x = (player->GetTransform()->GetPosition().x + player->GetComponent<Collider>()->GetColliderRect()->w / 2) - SCREEN_WIDTH / 2;
-		viewBox.y = (player->GetTransform()->GetPosition().y + player->GetComponent<Collider>()->GetColliderRect()->h / 2) - SCREEN_HEIGHT / 2;
+		viewBox.x = (player->GetTransform()->GetPosition().x + player->GetComponent<Collider>()->GetColliderRect()->w / 2) - Engine::SCREEN_WIDTH / 2;
+		viewBox.y = (player->GetTransform()->GetPosition().y + player->GetComponent<Collider>()->GetColliderRect()->h / 2) - Engine::SCREEN_HEIGHT / 2;
 
 		if (viewBox.x < 0) { viewBox.x = 0; }
 		if (viewBox.y < 0) { viewBox.y = 0; }
-		if (viewBox.x > LEVEL_WIDTH - viewBox.w) { viewBox.x = LEVEL_WIDTH - viewBox.w; }
-		if (viewBox.y > LEVEL_HEIGHT - viewBox.h) { viewBox.y = LEVEL_HEIGHT - viewBox.h; }
+		if (viewBox.x > Engine::LEVEL_WIDTH - viewBox.w) { viewBox.x = Engine::LEVEL_WIDTH - viewBox.w; }
+		if (viewBox.y > Engine::LEVEL_HEIGHT - viewBox.h) { viewBox.y = Engine::LEVEL_HEIGHT - viewBox.h; }
 	}
 }
 

@@ -1,7 +1,5 @@
 #include "Collectable.h"
 
-#include "Player.h"
-
 Collectable::Collectable(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, float amount) : Prop(position, spriteName, colliderType, sortingOrder, true, true)
 {
 	SetTag(Tag::COLLECTABLE);

@@ -37,6 +37,8 @@ private:
 	Vector2 spawnPoint;
 	Vector2 currentPatrolPoint;
 	Vector2 direction;
+
+	GameObject* target;
 	
 public:
 	
@@ -62,5 +64,7 @@ public:
 	void EnemyDespawn();
 
 	bool PlayerInRange(float range);
+
+	GameObject* GetTarget();
 };
 

@@ -7,6 +7,9 @@
 #include "Game.h"
 #include "TimeManager.h"
 
+
+
+// Frame rate
 const int SCREEN_TICK_PER_FRAME = 16;
 const float ANIMATION_INTERVAL = 0.05;
 
@@ -16,13 +19,26 @@ private:
 
 	Engine() = delete;
 	~Engine() = delete;
-	static void FrameCap();
-	
-public:
-	
+
+	static Game* game;
+	static int countedFrames;
 	static TimeManager systemTimer;
 	static TimeManager deltaTimer;
-	static int countedFrames;
+	static Sprite* cursor;
+public:
+
+	static const int LEVEL_WIDTH = 2560;
+	static const int LEVEL_HEIGHT = 1920;
+	static const int SCREEN_WIDTH = 1280;
+	static const int SCREEN_HEIGHT = 960;
+	static const int TILE_SIZE = 89;
+	static const int P0S_X = 100;
+	static const int P0S_Y = 100;
+	
 	static void Start();
+	static void FrameCap();
+	static Game* GetGame() { return game; }
+	inline static TimeManager& GetSystemTimer() { return systemTimer; }
+	inline static TimeManager& GetDeltaTimer() { return deltaTimer; }
 };
 

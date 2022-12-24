@@ -1,7 +1,6 @@
 #include "UIManager.h"
-
+#include "Engine.h"
 #include "AudioManager.h"
-#include "Game.h"
 
 std::vector<Canvas*> UIManager::activeCanvases;
 float UIManager::refreshRate = 0.01f;
@@ -21,9 +20,9 @@ void UIManager::Init()
 
 void UIManager::SetUpMainMenuCanvas()
 {
-	Canvas* canvas = new Canvas("MainMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));
+	Canvas* canvas = new Canvas("MainMenu", Vector2(Engine::SCREEN_WIDTH, Engine::Engine::SCREEN_HEIGHT), Vector2(0, 0));
 
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
 
 	Text* title = new Text("TitleText", "WILD WEST RANGER", "Vorgang _Large", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200), 50);
 	canvas->AddUIObject(title);
@@ -33,7 +32,7 @@ void UIManager::SetUpMainMenuCanvas()
 	startButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	startButton->OnClick = []()
 	{
-		Game::StartGame();
+		Engine::GetGame()->StartGame();
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
@@ -52,7 +51,10 @@ void UIManager::SetUpMainMenuCanvas()
 	Button* quitButton = new Button("QuitButton",midscreen - Vector2(0, -200), Vector2(200, 50));
 	quitButton->AddText("QuitButtonText", "Quit", "Vorgang", { 255, 255, 255, 255 });
 	quitButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	quitButton->OnClick = Game::Quit;
+	quitButton->OnClick = []()
+	{
+		Engine::GetGame()->Quit();
+	}; 
 	canvas->AddUIObject(quitButton);
 
 	Image* background = new Image("MenuImage","Car_2", midscreen - Vector2(300, -200));
@@ -72,9 +74,9 @@ void UIManager::SetUpMainMenuCanvas()
 
 void UIManager::SetUpOptionCanvas()
 {
-	Canvas* canvas = new Canvas("OptionsMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));
+	Canvas* canvas = new Canvas("OptionsMenu", Vector2(Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT), Vector2(0, 0));
 
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
 
 	Text* title = new Text("TitleText","Options", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
@@ -86,7 +88,7 @@ void UIManager::SetUpOptionCanvas()
 	showDebugToggle->OnToggleChange = [](bool toggle)
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
-		Game::ToggleDebug(toggle);
+		Engine::GetGame()->ToggleDebug(toggle);
 	};
 	canvas->AddUIObject(showDebugToggle);
 
@@ -125,10 +127,10 @@ void UIManager::SetUpOptionCanvas()
 
 void UIManager::SetUpGameCanvas()
 {
-	Canvas* canvas = new Canvas("GameMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0),false);
+	Canvas* canvas = new Canvas("GameMenu", Vector2(Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT), Vector2(0, 0),false);
 
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	Vector2 topRightScreenCorner = Vector2(SCREEN_WIDTH, 0);
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
+	Vector2 topRightScreenCorner = Vector2(Engine::SCREEN_WIDTH, 0);
 	Vector2 topLeftScreenCorner = Vector2(0, 0);
 	
 	Button* pauseButton = new Button("PauseButton",topRightScreenCorner - Vector2(50, -50), Vector2(50, 50));
@@ -136,7 +138,7 @@ void UIManager::SetUpGameCanvas()
 	pauseButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	pauseButton->OnClick = []()
 	{
-		Game::ChangeGameState(GameState::PauseMode);
+		Engine::GetGame()->ChangeGameState(GameState::PauseMode);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("PauseMenu");
 	};
@@ -156,9 +158,9 @@ void UIManager::SetUpGameCanvas()
 
 void UIManager::SetUpPauseCanvas()
 {
-	Canvas* canvas = new Canvas("PauseMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));
+	Canvas* canvas = new Canvas("PauseMenu", Vector2(Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT), Vector2(0, 0));
 
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
 
 	Text* title = new Text("PauseMenuTitle","Paused", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
@@ -178,7 +180,7 @@ void UIManager::SetUpPauseCanvas()
 	resumeButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	resumeButton->OnClick = []() 
 	{
-		Game::ChangeGameState(GameState::PlayMode);
+		Engine::GetGame()->ChangeGameState(GameState::PlayMode);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
@@ -189,7 +191,7 @@ void UIManager::SetUpPauseCanvas()
 	menuButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	menuButton->OnClick = []() 
 	{
-		Game::ChangeGameState(GameState::MainMenu);
+		Engine::GetGame()->ChangeGameState(GameState::MainMenu);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
@@ -200,9 +202,9 @@ void UIManager::SetUpPauseCanvas()
 
 void UIManager::SetUpWinCanvas()
 {
-	Canvas* canvas = new Canvas("WinMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));
+	Canvas* canvas = new Canvas("WinMenu", Vector2(Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT), Vector2(0, 0));
 
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
 
 	Text* title = new Text("WinMenuTitle", "You Win!", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
@@ -212,7 +214,7 @@ void UIManager::SetUpWinCanvas()
 	menuButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	menuButton->OnClick = []()
 	{
-		Game::ChangeGameState(GameState::MainMenu);
+		Engine::GetGame()->ChangeGameState(GameState::MainMenu);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};
@@ -226,9 +228,9 @@ void UIManager::SetUpWinCanvas()
 
 void UIManager::SetUpGameOverCanvas()
 {
-	Canvas* canvas = new Canvas("GameOverMenu", Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), Vector2(0, 0));
+	Canvas* canvas = new Canvas("GameOverMenu", Vector2(Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT), Vector2(0, 0));
 
-	Vector2 midscreen = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
 
 	Text* title = new Text("GameOverMenuTitle", "Game Over", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
 	canvas->AddUIObject(title);
@@ -240,7 +242,7 @@ void UIManager::SetUpGameOverCanvas()
 	retryButton->OnClick = []()
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
-		Game::RetryGame();
+		Engine::GetGame()->RetryGame();
 		EnableCanvasByID("GameMenu");
 	};
 	canvas->AddUIObject(retryButton);
@@ -252,7 +254,7 @@ void UIManager::SetUpGameOverCanvas()
 	menuButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	menuButton->OnClick = []()
 	{
-		Game::ChangeGameState(GameState::MainMenu);
+		Engine::GetGame()->ChangeGameState(GameState::MainMenu);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("MainMenu");
 	};

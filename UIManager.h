@@ -15,8 +15,6 @@
 #include "Image.h"
 #include "AnimatedImage.h"
 
-class Game;
-
 class UIManager
 {
 private:

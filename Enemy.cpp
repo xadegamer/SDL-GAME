@@ -53,6 +53,8 @@ Enemy::~Enemy()
 void Enemy::Update(float deltaTime)
 {
 	Character::Update(deltaTime);
+
+	if (GetTarget() == nullptr) return;
 	
 	if (isDead)
 	{
@@ -98,7 +100,7 @@ void Enemy::OnShootEvent()
 	}
 	
 	Vector2 spawnPosition = GetBulletSpawnLocation(circleCollider->GetCentre());
-	Vector2 direction = MathUtility::GetDirectionToTarget(spawnPosition, Game::player->GetComponent<Collider>()->GetCentre());
+	Vector2 direction = MathUtility::GetDirectionToTarget(spawnPosition, target->GetComponent<Collider>()->GetCentre());
 	SpawnBullet(spawnPosition, direction, BulletType::ENEMY);
 }
 
@@ -142,7 +144,7 @@ void Enemy::PatrolState(float deltaTime)
 
 void Enemy::ChaseState(float deltaTime)
 {
-	transform->SetRotation(MathUtility::GetAngleFromTraget(transform->GetPosition(), Game::player->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth));
+	transform->SetRotation(MathUtility::GetAngleFromTraget(transform->GetPosition(), GetTarget()->GetComponent<Collider>()->GetCentre(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth));
 
 	if (fireTimer >= fireRate)
 	{
@@ -155,7 +157,7 @@ void Enemy::ChaseState(float deltaTime)
 		if (!PlayerInRange(minAttackRange) && !PlayerInRange(MaxAttackRange))
 		{
 			animator->ChangeAnimation("Walk");
-			rigidBody->MoveToPosition(Game::player->GetComponent<Transform>()->GetPosition(), 100, deltaTime);
+			rigidBody->MoveToPosition(GetTarget()->GetComponent<Transform>()->GetPosition(), 100, deltaTime);
 			transform->SetPosition(rigidBody->GetPosition());
 		}
 		else
@@ -163,7 +165,7 @@ void Enemy::ChaseState(float deltaTime)
 			animator->ChangeAnimation("Idle");
 		}
 		
-		fireTimer += Engine::deltaTimer.getDeltaTime();
+		fireTimer += Engine::GetDeltaTimer().getDeltaTime();
 	}
 }
 
@@ -173,10 +175,16 @@ void Enemy::EnemyDespawn()
 	{
 		GameObject::Destroy(this);
 	}
-	else despawnTimer += Engine::deltaTimer.getDeltaTime();
+	else despawnTimer += Engine::GetDeltaTimer().getDeltaTime();
 }
 
 bool Enemy::PlayerInRange(float range)
 {
-	return MathUtility::DistanceBetweenTwoPoints(circleCollider->GetCentre(), Game::player->GetComponent<Collider>()->GetCentre()) <= range;
+	return MathUtility::DistanceBetweenTwoPoints(circleCollider->GetCentre(), GetTarget()->GetComponent<Collider>()->GetCentre()) <= range;
+}
+
+GameObject* Enemy::GetTarget()
+{
+	if (target == nullptr) target = FindGameObjectWithTag(Tag::PLAYER);
+	return target;
 }

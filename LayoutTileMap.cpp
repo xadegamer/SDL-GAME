@@ -65,7 +65,7 @@ void LayoutTileMap::PopulateLevel(std::string id, Vector2 position)
 	}
 	else if (id == "P")
 	{
-		playerPosition = position;
+		GameObject::Instantiate(new Player(position, 100));
 	}
 }
 

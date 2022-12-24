@@ -2,6 +2,8 @@
 
 #include "Prop.h"
 
+#include "Player.h"
+
 class Collectable : public Prop
 {
 	

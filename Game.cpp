@@ -12,49 +12,40 @@
 
 #include <iostream>
 
-bool Game::isRunning = false;
-Player* Game::player = nullptr;
-Sprite* Game::cursor = nullptr;
-bool Game::showDebug = false;
-GameState Game::gameState = GameState::MainMenu;
-GroundTileMap* Game::groundTileMap = nullptr;
-int Game::money = 0;
-LayoutTileMap* Game::layoutTileMap = nullptr;
+#include "Engine.h"
 
 Game::Game()
 {
-	
+	isRunning = false;
+	showDebug = false;
+	gameState = GameState::MainMenu;
+	groundTileMap = nullptr;
+	money = 0;
+	layoutTileMap = nullptr;
+
+	srand((unsigned)time(NULL));
+	UIManager::Init();
+	isRunning = true; // everything inited successfully, start the main loop
+	PlayGameStateMusic();
 }
 
 Game::~Game()
 {
-}
-
-bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
-{
-	if (SDLManager::Init(title, xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen))
-	{	
-		srand((unsigned)time(NULL));
-		UIManager::Init();
-		cursor = AssetManager::GetSprite("cursor");
-		std::cout << "init success\n";
-		isRunning = true; // everything inited successfully, start the main loop
-		PlayGameStateMusic();
-		return true;
-	}
-	else return false;
+	std::cout << "cleaning game\n";
+	UIManager::Clean();
+	Camera::Clean();
+	GameObject::DestroyAllGameObjects();
+	SDLManager::Clean();
 }
 
 void Game::LoadLevel()
 {
-	groundTileMap = new GroundTileMap((LEVEL_WIDTH / TILE_SIZE) + 1, (LEVEL_HEIGHT / TILE_SIZE) + 1, TILE_SIZE, "Assets/Maps/Ground Map 1.txt");
-	layoutTileMap = new LayoutTileMap((LEVEL_WIDTH / TILE_SIZE) + 1, (LEVEL_HEIGHT / TILE_SIZE) + 1, TILE_SIZE, "Assets/Maps/Layout Map 1.txt");
+	groundTileMap = new GroundTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Ground Map 1.txt");
+	layoutTileMap = new LayoutTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Layout Map 1.txt");
 
-	Enemy::GetOnAnyEnemyKilled() = Game::CheckWinCondition;
-	
-	player = GameObject::Instantiate(new Player(layoutTileMap->GetPlayerPosition(),100));
+	Enemy::GetOnAnyEnemyKilled() = [this](int num){ CheckWinCondition(num); };
 
-	Camera::SetUp(player);
+	Camera::SetUp(GameObject::FindGameObjectWithTag(Tag::PLAYER));
 
 	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
 }
@@ -186,8 +177,6 @@ void Game::Update(float deltaTime)
 
 void Game::Render()
 {
-	SDL_RenderClear(SDLManager::GetRenderer());
-
 	if (gameState == GameState::PlayMode)
 	{
 		groundTileMap->DrawMap();
@@ -198,18 +187,4 @@ void Game::Render()
 	}
 	
 	UIManager::Draw();
-		
-	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
-	
-	SDL_RenderPresent(SDLManager::GetRenderer()); // draw to the screen
-}
-
-void Game::Clean()
-{
-	std::cout << "cleaning game\n";
-
-	UIManager::Clean();
-	Camera::Clean();
-	GameObject::DestroyAllGameObjects();
-	SDLManager::Clean();
 }

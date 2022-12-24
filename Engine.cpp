@@ -4,35 +4,52 @@
 TimeManager Engine::systemTimer;
 TimeManager Engine::deltaTimer;
 int Engine::countedFrames = 0;
+Game* Engine::game = nullptr;
+Sprite* Engine::cursor = nullptr;
 
 void Engine::Start()
 {
+	if (!SDLManager::Init("Wild West Ranger", P0S_X, P0S_Y, SCREEN_WIDTH, SCREEN_HEIGHT, false))
+	{
+		std::cout << "SDLManager::Init() failed\n";
+		return;
+	}
+
 	AssetManager::Init();
-	InputManager::Init();
 	
-	Game::Init("Chapter 1", 100, 100, 1280, 720, false);
+	InputManager::Init();
+
+	cursor = AssetManager::GetSprite("cursor");
+		
+	game = new Game();
 
 	systemTimer.tick();
 	deltaTimer.tick();
 
-	while (Game::IsRunning())
+	while (game->IsRunning())
 	{
 		deltaTimer.tick();
 		
 		InputManager::Update();
 
-		Game::HandleEvents();
-		Game::Update(deltaTimer.getDeltaTime());
-		Game::Render();
-
+		game->HandleEvents();
+		game->Update(deltaTimer.getDeltaTime());
+		
+		// Rendering
+		SDL_RenderClear(SDLManager::GetRenderer());
+		game->Render();
+		SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
+		SDL_RenderPresent(SDLManager::GetRenderer());
+		
 		InputManager::UpdatePreviousInput();
 
 		FrameCap();
 	}
 
 	AssetManager::Clear();
-	Game::Clean();
 
+	delete game;
+	game = nullptr;
 }
 
 void Engine::FrameCap()
@@ -52,6 +69,6 @@ void Engine::FrameCap()
 		//Wait remaining time
 		SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
 	}
-	std::string title = "Wild West Ranged [avg fps: " + std::to_string(int(avgFPS)) + "] ";
+	std::string title = "Wild West Ranger [avg fps: " + std::to_string(int(avgFPS)) + "] ";
 	SDL_SetWindowTitle(SDLManager::GetWindow(), title.c_str());
 }

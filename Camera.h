@@ -2,8 +2,7 @@
 
 #include "SDLManager.h"
 
-class Game;
-class Player;
+class GameObject;
 struct Vector2;
 
 
@@ -13,11 +12,11 @@ class Camera
 	~Camera() = delete;
 	
 	static SDL_Rect viewBox;
-	static Player* player;
+	static GameObject* player;
 
 public:
 
-	static void SetUp(Player* player);
+	static void SetUp(GameObject* player);
 	static void Update();
 	static Vector2 GetPosition();
 	static void Clean();

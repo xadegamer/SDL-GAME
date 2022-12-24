@@ -8,6 +8,8 @@
 
 #include "Slider.h"
 
+#include "Engine.h"
+
 Player::Player(Vector2 position, float maxhealth) : Character(position)
 {
 	tag = Tag::PLAYER;
@@ -44,8 +46,8 @@ void Player::Update(float deltaTime)
 	transform->SetRotation(MathUtility::GetAngleFromMouse(transform->GetPosition() - Camera::GetPosition(), animator->GetCurrentAnimationClip()->animPixelHeight, animator->GetCurrentAnimationClip()->animPixelWidth) );
 
 	//clamp player position to level bound with scale
-	transform->SetXPosition(MathUtility::Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), LEVEL_WIDTH - (animator->GetCurrentAnimationClip()->animPixelWidth)) );
-	transform->SetYPosition(MathUtility::Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), LEVEL_HEIGHT - (animator->GetCurrentAnimationClip()->animPixelHeight)) );
+	transform->SetXPosition(MathUtility::Clamp(transform->GetPosition().x, 0 - (animator->GetCurrentAnimationClip()->animPixelWidth / 2), Engine::LEVEL_WIDTH - (animator->GetCurrentAnimationClip()->animPixelWidth)) );
+	transform->SetYPosition(MathUtility::Clamp(transform->GetPosition().y, 0 - (animator->GetCurrentAnimationClip()->animPixelHeight / 2), Engine::LEVEL_HEIGHT - (animator->GetCurrentAnimationClip()->animPixelHeight)) );
 
 	if (!canMove) return;
 	if (InputManager::GetKey(SDL_SCANCODE_W) == false && InputManager::GetKey(SDL_SCANCODE_S) == false && InputManager::GetKey(SDL_SCANCODE_A) == false && InputManager::GetKey(SDL_SCANCODE_D) == false)
@@ -146,7 +148,7 @@ void Player::OnDeath()
 void Player::OnDead()
 {
 	Character::OnDead();
-	Game::ChangeGameState(GameState::GameOver);
+	Engine::GetGame()->ChangeGameState(GameState::GameOver);
 	UIManager::EnableCanvasByID("GameOverMenu");
 }
 

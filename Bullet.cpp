@@ -8,6 +8,8 @@
 
 #include "VfxEffect.h"
 
+#include "Engine.h"
+
 Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction) : GameObject(startPosition)
 {	
 	tag = Tag::BULLET;
@@ -85,7 +87,7 @@ void Bullet::OnCollisionEnter(Collider* other)
 
 bool Bullet::IsOutSideScreen()
 {
-	if (transform->GetPosition().x < 0 || transform->GetPosition().x > LEVEL_WIDTH || transform->GetPosition().y < 0 || transform->GetPosition().y > LEVEL_HEIGHT)
+	if (transform->GetPosition().x < 0 || transform->GetPosition().x > Engine::LEVEL_WIDTH || transform->GetPosition().y < 0 || transform->GetPosition().y > Engine::LEVEL_HEIGHT)
 	{
 		return true;
 	}

@@ -7,6 +7,13 @@
 GasCylinder::GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger) : Prop(position, spriteName, colliderType,sortingOrder, isStatic, isTrigger)
 {
 	tag = Tag::GAS_CYLINDER;
+
+	detonateTime = 1;
+	currentLifeTime = 0;
+	explosionRadius = 200;
+	damage = 100;
+	hasTriggerExplosion = false;
+	exploded = false;
 }
 
 GasCylinder::~GasCylinder()

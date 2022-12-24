@@ -2,6 +2,9 @@
 
 TimedDelayVfxEffect::TimedDelayVfxEffect(Vector2 position, std::string spriteID, int sortingOrder, float duration) : GameObject(position)
 {
+	currentLifeTime = 0;
+	isDestroyed = false;
+	
 	this->duration = duration;
 	this->spriteRenderer = AddComponent <SpriteRenderer>(new SpriteRenderer);
 	spriteRenderer->SetSprite(AssetManager::GetSprite(spriteID));

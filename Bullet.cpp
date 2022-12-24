@@ -14,6 +14,8 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction) : Game
 
 	bulletType = type;
 	
+	moveSpeed = 500;
+	
 	spriteRenderer = AddComponent<SpriteRenderer>(new SpriteRenderer);
 	spriteRenderer->SetSortingOrder(1);
 
@@ -27,17 +29,17 @@ Bullet::Bullet(Vector2 startPosition, BulletType type, Vector2 direction) : Game
 	rigidBody->ApplyForce(direction * moveSpeed);
 
 	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
-	circleCollider->isTrigger = true;
+	circleCollider->SetTrigger(true);
 	
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight));
 
-	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
+	circleCollider->GetOnCollisionEnterEvent() = [=](Collider* other) {OnCollisionEnter(other); };
 }
 
 
 Bullet::~Bullet()
 {
-	circleCollider->OnCollisionEnterEvent = nullptr;
+	circleCollider->GetOnCollisionEnterEvent() = nullptr;
 }
 
 void Bullet::Update(float deltaTime)

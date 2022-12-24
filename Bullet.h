@@ -19,7 +19,7 @@ private:
 	RigidBody* rigidBody;
 	Animator* animator;
 	CircleCollider* circleCollider;
-	float moveSpeed = 500;
+	float moveSpeed;
 	BulletType bulletType;
 
 public:

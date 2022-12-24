@@ -17,7 +17,7 @@ class Enemy : public Character
 private:
 
 	static int noOfEnemies;
-
+	static std::function<void(int)> OnAnyEnemyKilled;
 	
 	BoxCollider* boxCollider;
 	CircleCollider* circleCollider;
@@ -40,7 +40,7 @@ private:
 	
 public:
 	
-	static std::function<void(int)> OnAnyEnemyKilled;
+	static inline std::function <void(int)>& GetOnAnyEnemyKilled() { return OnAnyEnemyKilled; }
 
 	Enemy(Vector2 position, float maxhealth);
 	~Enemy();

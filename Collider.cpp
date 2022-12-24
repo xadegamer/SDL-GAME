@@ -4,6 +4,7 @@
 
 Collider::Collider()
 {
+	currentCollidedObject = nullptr;
 	colliderRect = new SDL_Rect();
 }
 

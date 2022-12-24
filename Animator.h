@@ -90,25 +90,6 @@ public:
 	}
 };
 
-struct AnimationTransition
-{
-	std::string name;
-	std::string from;
-	std::string to;
-	float duration;
-	float timeInTransition;
-	bool isPlaying = false;
-	bool isFinished = false;
-
-	AnimationTransition(std::string name, std::string from, std::string to, float duration)
-	{
-		this->name = name;
-		this->from = from;
-		this->to = to;
-		this->duration = duration;
-	}
-};
-
 class Animator : public Component
 {
 private:

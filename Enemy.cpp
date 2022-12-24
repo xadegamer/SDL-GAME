@@ -31,7 +31,7 @@ Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 
 	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
-	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
+	circleCollider->GetOnCollisionEnterEvent() = [=](Collider* other) {OnCollisionEnter(other); };
 	
 	health->SetHealth(maxhealth);
 	
@@ -116,7 +116,7 @@ void Enemy::OnDeath()
 	spriteRenderer->SetSortingOrder(SortingLayer::DeadCharacterLayer);
 	canMove = false;
 	circleCollider->SetIsEnabled(false);
-	circleCollider->OnCollisionEnterEvent = nullptr;
+	circleCollider->GetOnCollisionEnterEvent() = nullptr;
 	animator->ChangeAnimation("Die", true);
 	GameObject::Instantiate(new TimedDelayVfxEffect(circleCollider->GetCentre(), "blood pool", SortingLayer::CharacterBloodLayer, 10));
 	GameObject::Instantiate(new Money(circleCollider->GetCentre(), "Money", ColliderType::BOX, SortingLayer::CollectableLayer, 50));

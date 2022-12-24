@@ -10,7 +10,7 @@ class TimedDelayVfxEffect : public GameObject
 private:
 
 	float duration;
-	float currentLifeTime = 0;
+	float currentLifeTime;
 	
 	SpriteRenderer* spriteRenderer;
 	bool isDestroyed = false;

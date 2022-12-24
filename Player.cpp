@@ -16,7 +16,7 @@ Player::Player(Vector2 position, float maxhealth) : Character(position)
 	
 	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
 	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
-	circleCollider->OnCollisionEnterEvent = [=](Collider* other) {OnCollisionEnter(other); };
+	circleCollider->GetOnCollisionEnterEvent() = [=](Collider* other) {OnCollisionEnter(other); };
 	
 	health->SetHealth(maxhealth);
 
@@ -99,7 +99,7 @@ void Player::LateUpdate(float deltaTime)
 
 void Player::OnCollisionEnter(Collider* other)
 {
-	if (!other->isTrigger)
+	if (!other->IsTrigger())
 	{
 		Vector2 direction = transform->GetPosition() - other->GetGameObject()->GetTransform()->GetPosition();
 		direction.normalize();

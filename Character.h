@@ -18,8 +18,8 @@ protected:
 	HealthComponent* health;
 	
 	float maxHealth;
-	float moveSpeed = 100;
-	float runSpeed = 200;
+	float moveSpeed;
+	float runSpeed;
 	float currentMoveSpeed;
 	
 	bool canMove = true;

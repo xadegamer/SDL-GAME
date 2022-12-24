@@ -14,16 +14,21 @@ private:
 	
 	float health;
 	float maxHealth;
-
-public:
-
+	
 	std::function <void(float normalisedHealth)> OnHealthChangeEvent;
 	std::function <void()> OnTakeDamageEvent;
 	std::function <void()> OnHealEvent;
 	std::function <void()> OnDeathEvent;
-	
+
+public:
+
 	HealthComponent();
-	~HealthComponent();
+	~HealthComponent();	
+
+	inline std::function <void(float normalisedHealth)>& GetOnHealthChangeEvent() { return OnHealthChangeEvent; }
+	inline std::function <void()>& GetOnTakeDamageEvent() { return OnTakeDamageEvent; }
+	inline std::function <void()>& GetOnHealEvent() { return OnHealEvent; }
+	inline std::function <void()>& GetOnDeathEvent() { return OnDeathEvent; }
 
 	void TakeDamage(float damage);
 	bool Heal(float healAmount);

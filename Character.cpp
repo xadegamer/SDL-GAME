@@ -9,24 +9,27 @@ Character::Character(Vector2 position) : GameObject(position)
 	rigidBody->SetGravity(0);
 	
 	health = AddComponent<HealthComponent>(new HealthComponent);
-	health->OnHealthChangeEvent = [=](float health) {OnHealthChange(health); };
-	health->OnTakeDamageEvent = [=]() {OnTakeDamage(); };
-	health->OnHealEvent = [=]() {OnHeal(); };
-	health->OnDeathEvent = [=]() {OnDeath(); };
+	health->GetOnHealthChangeEvent() = [=](float health) {OnHealthChange(health); };
+	health->GetOnTakeDamageEvent() = [=]() {OnTakeDamage(); };
+	health->GetOnHealEvent() = [=]() {OnHeal(); };
+	health->GetOnDeathEvent() = [=]() {OnDeath(); };
 
 	animator->AddAnimationClip("Idle", AssetManager::GetSprite("CowBoy_6_Idle"), 11, 0.05);
 	animator->AddAnimationClip("Walk", AssetManager::GetSprite("CowBoy_6_Pistol_Walk"), 8, 0.05);
 	animator->AddAnimationClip("Hurt", AssetManager::GetSprite("CowBoy_6_Hurt"), 6, 0.01, false);
 	animator->AddAnimationClip("Die", AssetManager::GetSprite("CowBoy_6_Die"), 5, 0.05, false)->AddAnimationEvent("Shoot Event", 4, [=]() {OnDead(); });
 	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.02, false)->AddAnimationEvent("Shoot Event", 5, [=]() {OnShootEvent(); });
+
+	moveSpeed = 100;
+	runSpeed = 200;
 }
 
 Character::~Character()
 {
-	health->OnHealthChangeEvent = nullptr;
-	health->OnTakeDamageEvent = nullptr;
-	health->OnHealEvent = nullptr;
-	health->OnDeathEvent = nullptr;
+	health->GetOnHealthChangeEvent() = nullptr;
+	health->GetOnTakeDamageEvent() = nullptr;
+	health->GetOnHealEvent() = nullptr;
+	health->GetOnDeathEvent() = nullptr;
 }
 
 void Character::Update(float deltatime)

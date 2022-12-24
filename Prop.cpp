@@ -22,8 +22,8 @@ Prop::Prop(Vector2 position, std::string spriteName, ColliderType colliderType, 
 
 	if (collider != nullptr)
 	{
-		collider->isStatic = isStatic;
-		collider->isTrigger = isTrigger;
+		collider->SetStatic(isStatic);
+		collider->SetTrigger(isTrigger);
 	}
 }
 

@@ -50,7 +50,7 @@ void Game::LoadLevel()
 	groundTileMap = new GroundTileMap((LEVEL_WIDTH / TILE_SIZE) + 1, (LEVEL_HEIGHT / TILE_SIZE) + 1, TILE_SIZE, "Assets/Maps/Ground Map 1.txt");
 	layoutTileMap = new LayoutTileMap((LEVEL_WIDTH / TILE_SIZE) + 1, (LEVEL_HEIGHT / TILE_SIZE) + 1, TILE_SIZE, "Assets/Maps/Layout Map 1.txt");
 
-	Enemy::OnAnyEnemyKilled = Game::CheckWinCondition;
+	Enemy::GetOnAnyEnemyKilled() = Game::CheckWinCondition;
 	
 	player = GameObject::Instantiate(new Player(layoutTileMap->GetPlayerPosition(),100));
 

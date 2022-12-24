@@ -6,7 +6,7 @@ Collectable::Collectable(Vector2 position, std::string spriteName, ColliderType 
 {
 	SetTag(Tag::COLLECTABLE);
 	this->amount = amount;
-	collider->OnCollisionEnterEvent = std::bind(&Collectable::OnCollisionEnter, this, std::placeholders::_1);
+	collider->GetOnCollisionEnterEvent() = std::bind(&Collectable::OnCollisionEnter, this, std::placeholders::_1);
 }
 
 Collectable::~Collectable()

@@ -7,10 +7,10 @@ class GasCylinder : public Prop
 {
 private:
 	
-	float detonateTime = 1;
-	float currentLifeTime = 0;
-	float explosionRadius = 200;
-	float damage = 100;
+	float detonateTime;
+	float currentLifeTime;
+	float explosionRadius;
+	float damage;
 	bool hasTriggerExplosion;
 	bool exploded;
 

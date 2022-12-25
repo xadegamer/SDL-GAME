@@ -8,7 +8,6 @@ class Component
 {
 protected:
 	
-	std::string name;
 	GameObject* gameObject;
 	bool isEnabled;
 	

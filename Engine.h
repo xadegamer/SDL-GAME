@@ -10,8 +10,7 @@
 
 
 // Frame rate
-const int SCREEN_TICK_PER_FRAME = 16;
-const float ANIMATION_INTERVAL = 0.05;
+
 
 class Engine
 {
@@ -20,11 +19,13 @@ private:
 	Engine() = delete;
 	~Engine() = delete;
 
+	static const int SCREEN_TICK_PER_FRAME = 16;
 	static Game* game;
 	static int countedFrames;
 	static TimeManager systemTimer;
 	static TimeManager deltaTimer;
 	static Sprite* cursor;
+	
 public:
 
 	static const int LEVEL_WIDTH = 2560;
@@ -36,6 +37,8 @@ public:
 	static const int P0S_Y = 100;
 	
 	static void Start();
+	static void Update();
+	static void Render();
 	static void FrameCap();
 	static Game* GetGame() { return game; }
 	inline static TimeManager& GetSystemTimer() { return systemTimer; }

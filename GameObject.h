@@ -115,11 +115,12 @@ public:
 		return newObject;
 	}
 
+
 	virtual void OnCollisionEnter(Collider* other) {};
-	
-	inline bool CompareTag(Tag tag) { return this->tag == tag; }
 
 	void CheckComponent(Component* newCom);
+	
+	inline bool CompareTag(Tag tag) { return this->tag == tag; }
 
 	bool CheckIfComponentExits(Component* newComponent);	
 	

@@ -32,14 +32,9 @@ void Engine::Start()
 		
 		InputManager::Update();
 
-		game->HandleEvents();
-		game->Update(deltaTimer.getDeltaTime());
+		Update();
 		
-		// Rendering
-		SDL_RenderClear(SDLManager::GetRenderer());
-		game->Render();
-		SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
-		SDL_RenderPresent(SDLManager::GetRenderer());
+		Render();
 		
 		InputManager::UpdatePreviousInput();
 
@@ -50,6 +45,20 @@ void Engine::Start()
 
 	delete game;
 	game = nullptr;
+}
+
+void Engine::Update()
+{
+	game->HandleEvents();
+	game->Update(deltaTimer.getDeltaTime());
+}
+
+void Engine::Render()
+{
+	SDL_RenderClear(SDLManager::GetRenderer());
+	game->Render();
+	SDLManager::CursorBlit(cursor->texture, InputManager::GetMousePosition().x, InputManager::GetMousePosition().y, true);
+	SDL_RenderPresent(SDLManager::GetRenderer());
 }
 
 void Engine::FrameCap()

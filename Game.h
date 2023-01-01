@@ -48,6 +48,8 @@ public:
 	 bool IsRunning() { return isRunning; }
 	
 	 void LoadLevel();
+
+	 void LoadLevel(int level);
 	
 	 void StartGame();
 	

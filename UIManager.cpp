@@ -162,7 +162,7 @@ void UIManager::SetUpGameCanvas()
 	canvas->AddUIObject(scoreText);
 
 	// add a dialog text in lower middle of screen
-	Text* dialogText = new Text("DialogText", "Hello World", "Vorgang", { 255, 255, 255, 255 }, midscreen + Vector2(0, 450));
+	Text* dialogText = new Text("DialogText", " ", "Vorgang", { 255, 255, 255, 255 }, midscreen + Vector2(0, 450));
 	canvas->AddUIObject(dialogText);
 
 	activeCanvases.push_back(canvas);

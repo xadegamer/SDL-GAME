@@ -8,6 +8,8 @@
 
 #include "UIManager.h"
 
+#include "DialogManager.h"
+
 #include "Enemy.h"
 
 #include <iostream>
@@ -25,6 +27,7 @@ Game::Game()
 	layoutTileMap = nullptr;
 	srand((unsigned)time(NULL));
 	UIManager::Init();
+	DialogManager::Init();
 	LoadData();
 	isRunning = true; // everything inited successfully, start the main loop
 	PlayGameStateMusic();
@@ -52,6 +55,8 @@ void Game::LoadLevel()
 	Camera::SetUp(GameObject::FindGameObjectWithTag(Tag::PLAYER));
 
 	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+
+	DialogManager::ShowDialog("Intro");
 }
 
 void Game::StartGame()
@@ -169,6 +174,8 @@ void Game::Update(float deltaTime)
 		CollisionManager::HandleAllCollision();
 
 		GameObject::LateUpdateAllActive(deltaTime);
+
+		DialogManager::Update(deltaTime);
 
 		Camera::Update();
 	}

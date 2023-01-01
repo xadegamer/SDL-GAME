@@ -12,6 +12,8 @@ protected:
 	
 	buttonState currentState;
 	Text* text;
+	std::function <void()> onClick;
+	std::function <void()> onMouseOver;
 	
 public:
 	
@@ -21,8 +23,9 @@ public:
 	void Draw() override;
 	void Update(float deltaTime) override;
 	
-	std::function <void()> OnClick;
-	std::function <void()> OnMouseOver;
+	inline std::function <void()>& OnClick() { return onClick; }
+
+	inline std::function <void()>& OnMouseOver() { return onMouseOver; }
 
 	void AddText(std::string id,std::string text, std::string fontID, SDL_Color color);
 	

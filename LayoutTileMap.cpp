@@ -27,7 +27,7 @@ void LayoutTileMap::DrawMap()
 		for (int y = 0; y < height; y++)
 		{
 			Vector2 position = Vector2(x * tileSize, y * tileSize);
-			PopulateLevel(tiles[x][y]->id, position);
+			PopulateLevel(tiles[x][y], position);
 		}
 	}
 }

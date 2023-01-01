@@ -176,7 +176,7 @@
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="VfxEffect.cpp" />
+    <ClCompile Include="AnimationControlledVfxEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedImage.h" />
@@ -222,7 +222,7 @@
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="Vector2.h" />
-    <ClInclude Include="VfxEffect.h" />
+    <ClInclude Include="AnimationControlledVfxEffect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

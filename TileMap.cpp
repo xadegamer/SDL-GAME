@@ -23,13 +23,6 @@ TileMap::TileMap(int width, int height, int tileSize, std::string mapPath)
 
 TileMap::~TileMap()
 {
-	for (int i = 0; i < width; i++)
-	{
-		for (int j = 0; j < height; j++)
-		{
-			delete tiles[i][j];
-		}
-	}
 	tiles.clear();
 }
 
@@ -45,7 +38,7 @@ void TileMap::LoadMap(std::string mapPath)
 			{
 				std::string tileID;
 				mapFile >> tileID;
-				tiles[i][j] = new Tile(tileID);
+				tiles[i][j] = tileID;
 			}
 		}
 		mapFile.close();
@@ -65,7 +58,7 @@ void TileMap::SaveMaptoFile(std::string mapPath)
 		{
 			for (int j = 0; j < height; j++)
 			{
-				mapFile << tiles[i][j]->id << " ";
+				mapFile << tiles[i][j] << " ";
 			}
 			mapFile << std::endl;
 		}
@@ -83,7 +76,7 @@ Vector2 TileMap::GetTilePositionById(std::string id)
 	{
 		for (int j = 0; j < height; j++)
 		{
-			if (tiles[i][j]->id == id)
+			if (tiles[i][j] == id)
 			{
 				return Vector2(i * tileSize, j * tileSize);
 			}

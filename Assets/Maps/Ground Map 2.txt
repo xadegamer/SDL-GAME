@@ -1,0 +1,29 @@
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F E L L L L L L L L L L L L L L L L V F F
+F F T S S S S S S S S S S S S S S S S B F F
+F F T S S S S S S S S S S S S S S S S B F F
+F F Y R R R R R R R R R R R R R R R R N F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F E L L L L L L L L L L L L L L L L V F F
+F F T S S S S S S S S S S S S S S S S B F F
+F F T S S S S S S S S S S S S S S S S B F F
+F F Y R R R R R R R R R R R R R R R R N F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F E L L L L L L L L L L L L L L L L V F F
+F F T S S S S S S S S S S S S S S S S B F F
+F F T S S S S S S S S S S S S S S S S B F F
+F F Y R R R R R R R R R R R R R R R R N F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+F F F F F F F F F F F F F F F F F F F F F F 
+                      
+                      
+                      
+                      
+                      

@@ -6,7 +6,7 @@
 
 #include "GasCylinder.h"
 
-#include "VfxEffect.h"
+#include "AnimationControlledVfxEffect.h"
 
 #include "Engine.h"
 
@@ -96,6 +96,6 @@ bool Bullet::IsOutSideScreen()
 
 void Bullet::RemoveBullet()
 {
-	Instantiate<VfxEffect>(new VfxEffect(circleCollider->GetPosition(), "BulletHit", 5, SortingLayer::VfxLayer));
+	Instantiate<AnimationControlledVfxEffect>(new AnimationControlledVfxEffect(circleCollider->GetPosition(), "BulletHit", 5, SortingLayer::VfxLayer));
 	GameObject::Destroy(this);
 }

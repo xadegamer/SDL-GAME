@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Prop.h"
-#include "VfxEffect.h"
+#include "AnimationControlledVfxEffect.h"
 
 class GasCylinder : public Prop
 {
@@ -14,7 +14,7 @@ private:
 	bool hasTriggerExplosion;
 	bool exploded;
 
-	VfxEffect* smokeEffect;
+	AnimationControlledVfxEffect* smokeEffect;
 	
 public:
 	GasCylinder(Vector2 position, std::string spriteName, ColliderType colliderType, int sortingOrder, bool isStatic, bool isTrigger);

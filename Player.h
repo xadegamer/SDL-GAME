@@ -17,7 +17,7 @@ class Player : public Character
 {
 private:
 	
-	CircleCollider* circleCollider;
+	float runSpeed;
 	
 public:
 

@@ -27,21 +27,21 @@ void UIManager::SetUpMainMenuCanvas()
 	Text* title = new Text("TitleText", "WILD WEST RANGER", "Vorgang _Large", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200), 50);
 	canvas->AddUIObject(title);
 
-	Button* startButton = new Button("StartButton",midscreen, Vector2(200, 50));
-	startButton->AddText("StartButtonText","Start", "Vorgang", { 255, 255, 255, 255 });
-	startButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	startButton->OnClick = []()
+	Button* playButton = new Button("PlayButton",midscreen, Vector2(200, 50));
+	playButton->AddText("StartButtonText","Play", "Vorgang", { 255, 255, 255, 255 });
+	playButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	playButton->OnClick() = []()
 	{
 		Engine::GetGame()->StartGame();
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("GameMenu");
 	};
-	canvas->AddUIObject(startButton);
+	canvas->AddUIObject(playButton);
 
 	Button* optionButton = new Button("OptionButton",midscreen - Vector2(0, -100), Vector2(200, 50));
 	optionButton->AddText("OptionButtonText","Options", "Vorgang", { 255, 255, 255, 255 });
-	optionButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	optionButton->OnClick = []() 
+	optionButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	optionButton->OnClick() = []()
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("OptionsMenu");
@@ -50,22 +50,30 @@ void UIManager::SetUpMainMenuCanvas()
 
 	Button* quitButton = new Button("QuitButton",midscreen - Vector2(0, -200), Vector2(200, 50));
 	quitButton->AddText("QuitButtonText", "Quit", "Vorgang", { 255, 255, 255, 255 });
-	quitButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	quitButton->OnClick = []()
+	quitButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	quitButton->OnClick() = []()
 	{
 		Engine::GetGame()->Quit();
 	}; 
 	canvas->AddUIObject(quitButton);
 
-	Image* background = new Image("MenuImage","Car_2", midscreen - Vector2(300, -200));
+	Image* background = new Image("MenuImage","BarrelSmall", midscreen - Vector2(0, 300));
 	canvas->AddUIObject(background);
 
 	// create animated image 
-	AnimatedImage* animatedImage1 = new AnimatedImage("AnimatedImage1", "spritesheet", midscreen - Vector2(300, 0), 12, 0.05f);
+	AnimatedImage* animatedImage1 = new AnimatedImage("AnimatedImage1", "Cow_Guitar", midscreen - Vector2(300, 0), 12, 0.05f);
 	canvas->AddUIObject(animatedImage1);
 
-	AnimatedImage* animatedImage2 = new AnimatedImage("AnimatedImage2", "Dacing", midscreen - Vector2(-300, 0), 31, 0.01f);
+	AnimatedImage* animatedImage2 = new AnimatedImage("AnimatedImage2", "CowBoy_6_Pistol_Shoot", midscreen - Vector2(-300, 0),8, 0.01f);
 	canvas->AddUIObject(animatedImage2);
+
+	// add money image and text
+	Vector2 topRightScreenCorner = Vector2(Engine::SCREEN_WIDTH, 0);
+	Image* moneyImage = new Image("MenuMoneyImage", "Money", topRightScreenCorner - Vector2(150, -50));
+	canvas->AddUIObject(moneyImage);
+	
+	Text* moneyText = new Text("MenuMoneyText", "1000", "Vorgang", { 255, 255, 255, 255 }, topRightScreenCorner - Vector2(90, -50), 20);
+	canvas->AddUIObject(moneyText);
 
 	activeCanvas = lastActiveCanvas = canvas;
 	canvas->Show();
@@ -84,8 +92,8 @@ void UIManager::SetUpOptionCanvas()
 	// show debug toggle
 	ToggleButton* showDebugToggle = new ToggleButton("ToggleMusicButton", { "Debug On", "Debug Off" }, midscreen - Vector2(0, 100), Vector2(200, 50), false);
 	showDebugToggle->AddText("ShowDebugToggleText", "Debug Off", "Vorgang", { 255, 255, 255, 255 });
-	showDebugToggle->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	showDebugToggle->OnToggleChange = [](bool toggle)
+	showDebugToggle->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	showDebugToggle->OnToggleChange() = [](bool toggle)
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		Engine::GetGame()->ToggleDebug(toggle);
@@ -94,8 +102,8 @@ void UIManager::SetUpOptionCanvas()
 
 	// create toggle button
 	ToggleButton* musicToggleButton = new ToggleButton("ToggleMusicButton", { "Music On", "Music Off" }, midscreen, Vector2(200, 50));
-	musicToggleButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	musicToggleButton->OnToggleChange = [](bool toggle)
+	musicToggleButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	musicToggleButton->OnToggleChange() = [](bool toggle)
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		AudioManager::ToggleMusicOnOff(toggle);
@@ -104,8 +112,8 @@ void UIManager::SetUpOptionCanvas()
 
 	// sfx toggle button
 	ToggleButton* sfxToggleButton = new ToggleButton("ToggleSFXButton", { "SFX On", "SFX Off " }, midscreen - Vector2(0, -100), Vector2(200, 50));
-	sfxToggleButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	sfxToggleButton->OnToggleChange = [](bool toggle)
+	sfxToggleButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	sfxToggleButton->OnToggleChange() = [](bool toggle)
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		AudioManager::ToggleSoundEffectOnOff(toggle);
@@ -114,8 +122,8 @@ void UIManager::SetUpOptionCanvas()
 
 	Button* backButton = new Button("BackButton", midscreen - Vector2(0, -200), Vector2(200, 50));
 	backButton->AddText("BackButtonText","Back", "Vorgang", { 255, 255, 255, 255 });
-	backButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	backButton->OnClick = []()
+	backButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	backButton->OnClick() = []()
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID(lastActiveCanvas->GetID());
@@ -135,8 +143,8 @@ void UIManager::SetUpGameCanvas()
 	
 	Button* pauseButton = new Button("PauseButton",topRightScreenCorner - Vector2(50, -50), Vector2(50, 50));
 	pauseButton->AddText("PauseButtonText","||", "Vorgang", { 255, 255, 255, 255 });
-	pauseButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	pauseButton->OnClick = []()
+	pauseButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	pauseButton->OnClick() = []()
 	{
 		Engine::GetGame()->ChangeGameState(GameState::PauseMode);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
@@ -144,7 +152,7 @@ void UIManager::SetUpGameCanvas()
 	};
 	canvas->AddUIObject(pauseButton);
 
-	Slider* slider = new Slider("HealthSlider",topLeftScreenCorner + Vector2(200, 50), Vector2(300,30), 0);
+	Slider* slider = new Slider("HealthSlider",topLeftScreenCorner + Vector2(200, 50), Vector2(300,30));
 	slider->AddText("HealthSliderText","100", "Vorgang_Small", { 255, 255, 255, 255 },20);
 	canvas->AddUIObject(slider);
 
@@ -152,6 +160,10 @@ void UIManager::SetUpGameCanvas()
 	
 	Text* scoreText = new Text("MoneyText", "Money: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(100, 100));
 	canvas->AddUIObject(scoreText);
+
+	// add a dialog text in lower middle of screen
+	Text* dialogText = new Text("DialogText", "Hello World", "Vorgang", { 255, 255, 255, 255 }, midscreen + Vector2(0, 450));
+	canvas->AddUIObject(dialogText);
 
 	activeCanvases.push_back(canvas);
 }
@@ -167,8 +179,8 @@ void UIManager::SetUpPauseCanvas()
 
 	Button* optionButton = new Button("OptionButton", midscreen - Vector2(0, 100), Vector2(200, 50));
 	optionButton->AddText("OptionButtonText", "Options", "Vorgang", { 255, 255, 255, 255 });
-	optionButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	optionButton->OnClick = []()
+	optionButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	optionButton->OnClick() = []()
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		EnableCanvasByID("OptionsMenu");
@@ -177,8 +189,8 @@ void UIManager::SetUpPauseCanvas()
 
 	Button* resumeButton = new Button("ResumeButton",midscreen, Vector2(200, 50));
 	resumeButton->AddText("ResumeButtonText","Resume", "Vorgang", { 255, 255, 255, 255 });
-	resumeButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	resumeButton->OnClick = []() 
+	resumeButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	resumeButton->OnClick() = []()
 	{
 		Engine::GetGame()->ChangeGameState(GameState::PlayMode);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
@@ -188,8 +200,8 @@ void UIManager::SetUpPauseCanvas()
 
 	Button* menuButton = new Button("MenuButton",midscreen - Vector2(0, -100), Vector2(200, 50));
 	menuButton->AddText("MenuButtonText","Menu", "Vorgang", { 255, 255, 255, 255 });
-	menuButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	menuButton->OnClick = []() 
+	menuButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	menuButton->OnClick() = []()
 	{
 		Engine::GetGame()->ChangeGameState(GameState::MainMenu);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
@@ -211,8 +223,8 @@ void UIManager::SetUpWinCanvas()
 
 	Button* menuButton = new Button("MenuButton", midscreen, Vector2(200, 50));
 	menuButton->AddText("MenuButtonText", "Menu", "Vorgang", { 255, 255, 255, 255 });
-	menuButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	menuButton->OnClick = []()
+	menuButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	menuButton->OnClick() = []()
 	{
 		Engine::GetGame()->ChangeGameState(GameState::MainMenu);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
@@ -238,8 +250,8 @@ void UIManager::SetUpGameOverCanvas()
 	// retry button
 	Button* retryButton = new Button("RetryButton", midscreen, Vector2(200, 50));
 	retryButton->AddText("RetryButtonText", "Retry", "Vorgang", { 255, 255, 255, 255 });
-	retryButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	retryButton->OnClick = []()
+	retryButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	retryButton->OnClick() = []()
 	{
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
 		Engine::GetGame()->RetryGame();
@@ -251,8 +263,8 @@ void UIManager::SetUpGameOverCanvas()
 	// menu button
 	Button* menuButton = new Button("MenuButton", midscreen - Vector2(0, -100), Vector2(200, 50));
 	menuButton->AddText("MenuButtonText", "Menu", "Vorgang", { 255, 255, 255, 255 });
-	menuButton->OnMouseOver = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
-	menuButton->OnClick = []()
+	menuButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	menuButton->OnClick() = []()
 	{
 		Engine::GetGame()->ChangeGameState(GameState::MainMenu);
 		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
@@ -281,7 +293,6 @@ void UIManager::Update(float deltaTime)
 
 void UIManager::EnableCanvasByID(std::string id)
 {
-	std::cout << "Enabling canvas: " << id << std::endl;
 	for (auto& canvas : activeCanvases)
 	{
 		if (canvas->GetID() == id)

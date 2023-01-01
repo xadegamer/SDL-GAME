@@ -27,10 +27,10 @@ private:
 	static Canvas* lastActiveCanvas;
 	static Canvas* activeCanvas;
 
+	static std::vector<Canvas*> activeCanvases;
+
 public:
 
-	static std::vector<Canvas*> activeCanvases;
-	
 	static void Init();
 	
 	static void SetUpMainMenuCanvas();
@@ -54,5 +54,7 @@ public:
 	static void Clean();
 	
 	static Canvas* GetCanvasByID(std::string id);
+
+	inline static Canvas* GetActiveCanvas() { return activeCanvas; }
 };
 

@@ -27,7 +27,8 @@ private:
 
 	bool isRunning;
 	bool showDebug;
-	int money;
+	int totalMoney;
+	int currentMoney;
 	GameState gameState;
 	GroundTileMap* groundTileMap;
 	LayoutTileMap* layoutTileMap;

@@ -10,6 +10,5 @@ public:
 	~LayoutTileMap();
 
 	void DrawMap() override;
-
 	void PopulateLevel(std::string id, Vector2 position);
 };

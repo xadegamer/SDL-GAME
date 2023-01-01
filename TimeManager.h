@@ -4,6 +4,21 @@
 
 class TimeManager
 {
+	
+private:
+	//The clock time when the timer started
+	Uint32 mStartTicks;
+
+	//The ticks stored when the timer was paused
+	Uint32 mPausedTicks;
+
+	Uint64 now = SDL_GetPerformanceCounter();
+	Uint64 last = 0;
+
+	//The timer status
+	bool mPaused;
+	bool mStarted;
+	
 public:
 	//Initializes variables
 	TimeManager();
@@ -25,19 +40,5 @@ public:
 	//Checks the status of the timer
 	bool isStarted();
 	bool isPaused();
-
-private:
-	//The clock time when the timer started
-	Uint32 mStartTicks;
-
-	//The ticks stored when the timer was paused
-	Uint32 mPausedTicks;
-
-	Uint64 now = SDL_GetPerformanceCounter();
-	Uint64 last = 0;
-
-	//The timer status
-	bool mPaused;
-	bool mStarted;
 };
 

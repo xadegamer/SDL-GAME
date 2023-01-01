@@ -4,7 +4,7 @@
 
 #include "Engine.h"
 
-#include "VfxEffect.h"
+#include "AnimationControlledVfxEffect.h"
 
 #include "TimedDelayVfxEffect.h"
 
@@ -28,10 +28,6 @@ Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 	tag = Tag::ENEMY;
 
 	spriteRenderer->SetSortingOrder(SortingLayer::EnemyLayer);
-
-	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
-	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
-	circleCollider->GetOnCollisionEnterEvent() = [=](Collider* other) {OnCollisionEnter(other); };
 	
 	health->SetHealth(maxhealth);
 	
@@ -120,6 +116,7 @@ void Enemy::OnDeath()
 	circleCollider->SetIsEnabled(false);
 	circleCollider->GetOnCollisionEnterEvent() = nullptr;
 	animator->ChangeAnimation("Die", true);
+	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Kill"), false);
 	GameObject::Instantiate(new TimedDelayVfxEffect(circleCollider->GetCentre(), "blood pool", SortingLayer::CharacterBloodLayer, 10));
 	GameObject::Instantiate(new Money(circleCollider->GetCentre(), "Money", ColliderType::BOX, SortingLayer::CollectableLayer, 50));
 }

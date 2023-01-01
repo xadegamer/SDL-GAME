@@ -11,7 +11,6 @@ private:
 
 	float duration;
 	float currentLifeTime;
-	
 	SpriteRenderer* spriteRenderer;
 	bool isDestroyed = false;
 

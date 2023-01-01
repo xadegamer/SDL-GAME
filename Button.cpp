@@ -49,14 +49,14 @@ void Button::Update(float deltaTime)
 	{
 		if (InputManager::GetMouseButtonDown(InputManager::LEFT))
 		{
-			if (OnClick) OnClick();
+			if (onClick) onClick();
 			currentState = buttonState::PRESSED;
 		}
 		else
 		{
 			if (currentState != buttonState::HOVERED)
 			{
-				if (OnMouseOver) OnMouseOver();
+				if (onMouseOver) onMouseOver();
 				
 				currentState = buttonState::HOVERED;
 			}
@@ -74,7 +74,7 @@ void Button::AddText(std::string id,std::string inputText, std::string fontID, S
 {
 	text = new Text(id, inputText, fontID, color, anchorPositon);
 
-	text->OnTextChange = [this]()
+	text->OnTextChange() = [this]()
 	{
 		if (text->GetSize().x > size.x)
 		{

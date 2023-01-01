@@ -37,7 +37,7 @@ void Text::SetText(std::string text)
 	rect.x = centerPositon.x;
 	rect.y = centerPositon.y;
 
-	if(OnTextChange) OnTextChange();
+	if(onTextChange) onTextChange();
 }
 
 void Text::Draw()

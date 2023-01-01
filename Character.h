@@ -12,14 +12,15 @@
 class Character : public GameObject
 {
 protected:
+
 	SpriteRenderer* spriteRenderer;
+	CircleCollider* circleCollider;
 	RigidBody* rigidBody;
 	Animator* animator;
 	HealthComponent* health;
 	
 	float maxHealth;
 	float moveSpeed;
-	float runSpeed;
 	float currentMoveSpeed;
 	
 	bool canMove = true;
@@ -49,7 +50,5 @@ public:
 	Vector2 GetBulletSpawnLocation(Vector2 playerPos);
 
 	void SpawnBullet(Vector2 spawnPos, Vector2 direction, BulletType type);
-
-	inline HealthComponent* GetHealth() { return health; }
 };
 

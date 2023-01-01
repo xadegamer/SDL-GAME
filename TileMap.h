@@ -8,17 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
 #include <vector>
-
-struct Tile
-{
-	std::string id;
-	Tile(std::string id)
-	{
-		this->id = id;
-	}
-};
 
 class TileMap
 {
@@ -33,7 +23,7 @@ protected:
 	int tileSize;
 	int numTiles;
 
-	std::vector<std::vector<Tile*>> tiles;
+	std::vector<std::vector<std::string>> tiles;
 	
 public:
 	TileMap(int width, int height, int tileSize, std::string mapPath);

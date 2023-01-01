@@ -20,8 +20,11 @@ Character::Character(Vector2 position) : GameObject(position)
 	animator->AddAnimationClip("Die", AssetManager::GetSprite("CowBoy_6_Die"), 5, 0.05, false)->AddAnimationEvent("Shoot Event", 4, [=]() {OnDead(); });
 	animator->AddAnimationClip("Attack", AssetManager::GetSprite("CowBoy_6_Pistol_Shoot"), 8, 0.02, false)->AddAnimationEvent("Shoot Event", 5, [=]() {OnShootEvent(); });
 
+	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
+	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
+	circleCollider->GetOnCollisionEnterEvent() = [=](Collider* other) {OnCollisionEnter(other); };
+
 	moveSpeed = 100;
-	runSpeed = 200;
 }
 
 Character::~Character()

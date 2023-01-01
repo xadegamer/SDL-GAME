@@ -16,13 +16,11 @@ Player::Player(Vector2 position, float maxhealth) : Character(position)
 
 	spriteRenderer->SetSortingOrder(SortingLayer::PlayerLayer);
 	
-	circleCollider = AddComponent<CircleCollider>(new CircleCollider);
-	circleCollider->SetUp(transform, Vector2(animator->GetCurrentAnimationClip()->animPixelWidth, animator->GetCurrentAnimationClip()->animPixelHeight), 2);
-	circleCollider->GetOnCollisionEnterEvent() = [=](Collider* other) {OnCollisionEnter(other); };
-	
 	health->SetHealth(maxhealth);
 
 	currentMoveSpeed = moveSpeed;
+
+	runSpeed = 200;
 
 	animator->GetAnimationClipByName("Walk")->AddAnimationEvent("Foot Step Event 1", 2, [=]() {FootStep(); });
 	animator->GetAnimationClipByName("Walk")->AddAnimationEvent("Foot Step Event 2", 6, [=]() {FootStep(); });

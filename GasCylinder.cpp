@@ -1,6 +1,6 @@
 #include "GasCylinder.h"
 
-#include "VfxEffect.h"
+#include "AnimationControlledVfxEffect.h"
 
 #include "HealthComponent.h"
 
@@ -40,7 +40,7 @@ void GasCylinder::TriggerExplosion()
 	if (!hasTriggerExplosion && !exploded)
 	{
 		hasTriggerExplosion = true;
-		smokeEffect = new VfxEffect(collider->GetPosition(), "SmokeBeam", 2, SortingLayer::VfxLayer,false, false);
+		smokeEffect = new AnimationControlledVfxEffect(collider->GetPosition(), "SmokeBeam", 2, SortingLayer::VfxLayer,false, false);
 	}
 }
 
@@ -68,7 +68,7 @@ void GasCylinder::Explosion()
 		}
 	}
 
-	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "ExplosionEffect", 8, SortingLayer::VfxLayer,false));
+	Instantiate<AnimationControlledVfxEffect>(new AnimationControlledVfxEffect(collider->GetPosition(), "ExplosionEffect", 8, SortingLayer::VfxLayer,false));
 
 //	Instantiate<VfxEffect>(new VfxEffect(collider->GetPosition(), "SmokeEffect", 8, false));
 

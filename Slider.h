@@ -12,14 +12,11 @@ private:
 	float maxValue;
 	SDL_Rect fillRect;
 	Text* text;
-	int padding;
 		
 public:
 
-	std::function <void()> OnClick;
-	std::function <void()> OnMouseOver;
 	
-	Slider(std::string id, Vector2 position, Vector2 size, int padding = 0);
+	Slider(std::string id, Vector2 position, Vector2 size);
 	~Slider() override;
 
 	void Draw() override;

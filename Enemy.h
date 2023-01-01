@@ -19,9 +19,6 @@ private:
 	static int noOfEnemies;
 	static std::function<void(int)> OnAnyEnemyKilled;
 	
-	BoxCollider* boxCollider;
-	CircleCollider* circleCollider;
-	
 	float fireRate;
 	float fireTimer;
 	

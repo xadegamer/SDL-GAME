@@ -132,9 +132,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files\Statics</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files\Statics</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Statics</Filter>
     </ClCompile>
@@ -144,7 +141,7 @@
     <ClCompile Include="ToggleButton.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="VfxEffect.cpp">
+    <ClCompile Include="AnimationControlledVfxEffect.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GasCylinder.cpp">
@@ -176,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="AnimatedImage.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +266,6 @@
     <ClInclude Include="Engine.h">
       <Filter>Header Files\Statics</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files\Statics</Filter>
-    </ClInclude>
     <ClInclude Include="MathUtility.h">
       <Filter>Header Files\Statics</Filter>
     </ClInclude>
@@ -278,7 +275,7 @@
     <ClInclude Include="ToggleButton.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="VfxEffect.h">
+    <ClInclude Include="AnimationControlledVfxEffect.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GasCylinder.h">
@@ -310,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="AnimatedImage.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

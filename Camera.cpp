@@ -33,8 +33,3 @@ Vector2 Camera::GetPosition()
 {
 	return  Vector2(viewBox.x, viewBox.y);
 }
-
-void Camera::Clean()
-{
-	player = nullptr;
-}

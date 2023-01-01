@@ -1,6 +1,6 @@
 #include "Slider.h"
 
-Slider::Slider(std::string id, Vector2 position, Vector2 size, int padding)
+Slider::Slider(std::string id, Vector2 position, Vector2 size)
 {
 	ID = id;
 	value = 0;
@@ -10,10 +10,6 @@ Slider::Slider(std::string id, Vector2 position, Vector2 size, int padding)
 	layer = 0;
 	anchorPositon = position;
 	this->size = size;
-	this->padding = padding;
-
-	size.x += padding;
-	size.y += padding;
 
 	centerPositon = anchorPositon - (size / 2);
 	rect = { (int)centerPositon.x, (int)centerPositon.y, (int)size.x , (int)size.y };

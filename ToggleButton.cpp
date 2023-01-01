@@ -4,12 +4,12 @@ ToggleButton::ToggleButton(std::string id, std::vector <std::string> toggleTexts
 {
 	this->isOn = isOn;
 	this->toggleTexts = toggleTexts;
-	OnClick = [=](){Toggle();};
+	onClick = [=](){Toggle();};
 	AddText(id + "ToggleText", toggleTexts[0], "Vorgang", { 255, 255, 255, 255 });
 }
 
 void ToggleButton::Toggle()
 {	
 	SetText(toggleTexts[isOn]);
-	if(OnToggleChange)OnToggleChange(isOn = !isOn);
+	if(onToggleChange)onToggleChange(isOn = !isOn);
 }

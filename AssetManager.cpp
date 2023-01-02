@@ -1,10 +1,16 @@
 #include "AssetManager.h"
 
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+#include "DialogManager.h"
 
 std::map<std::string, Sprite*> AssetManager::sprites = std::map<std::string, Sprite*>();
 std::map<std::string, TTF_Font*> AssetManager::fonts = std::map<std::string, TTF_Font*>();
 std::map<std::string, Mix_Chunk*> AssetManager::sounds = std::map<std::string, Mix_Chunk*>();
 std::map<std::string, Mix_Music*> AssetManager::musics = std::map<std::string, Mix_Music*>();
+std::map<std::string, Dialog*> AssetManager::dialogs = std::map<std::string, Dialog*>();
 
 void AssetManager::Init()
 {
@@ -23,6 +29,24 @@ void AssetManager::Clear()
 		if (font.second != nullptr) TTF_CloseFont(font.second);
 	}
 	fonts.clear();
+
+	for (auto sound : sounds)
+	{
+		if (sound.second != nullptr) Mix_FreeChunk(sound.second);
+	}
+	sounds.clear();
+
+	for (auto music : musics)
+	{
+		if (music.second != nullptr) Mix_FreeMusic(music.second);
+	}
+	musics.clear();
+
+	for (auto dialog : dialogs)
+	{
+		if (dialog.second != nullptr) delete dialog.second;
+	}
+	dialogs.clear();
 }
 
 Sprite* AssetManager::GetSprite(std::string filename)
@@ -87,4 +111,27 @@ Mix_Music* AssetManager::GetMusic(std::string filename)
 	}
 
 	return musics[fullPath];
+}
+
+Dialog* AssetManager::GetDialog(std::string filename)
+{
+	std::string fullPath = "Assets/Dialog/" + filename + ".txt";
+	if (dialogs[fullPath] == nullptr)
+	{
+		std::vector<std::string> texts = std::vector<std::string>();
+		std::string str;
+
+		std::ifstream file(fullPath);
+		if (!file.bad())
+		{
+			while (std::getline(file, str))	if (str.size() > 0) texts.push_back(str);
+			file.close();
+		}
+		else return nullptr;
+
+		Dialog* dialog = new Dialog(filename,texts);
+		return dialogs[fullPath] = dialog;
+	}
+
+	return dialogs[fullPath];
 }

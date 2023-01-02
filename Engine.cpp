@@ -23,6 +23,8 @@ void Engine::Start()
 		
 	game = new Game();
 
+	game->SetUp();
+
 	systemTimer.tick();
 	deltaTimer.tick();
 

@@ -22,15 +22,9 @@ Game::Game()
 	showDebug = false;
 	gameState = GameState::MainMenu;
 	groundTileMap = nullptr;
-	totalMoney = 0;
 	currentMoney = 0;
 	layoutTileMap = nullptr;
-	srand((unsigned)time(NULL));
-	UIManager::Init();
-	DialogManager::Init();
-	LoadData();
-	isRunning = true; // everything inited successfully, start the main loop
-	PlayGameStateMusic();
+	playerData = PlayerData();
 }
 
 Game::~Game()
@@ -41,27 +35,32 @@ Game::~Game()
 	SDLManager::Clean();
 }
 
-void Game::LoadLevel()
+void Game::SetUp()
 {
-	int randomLevel = MathUtility::RandomRange(1, 2);
-	//groundTileMap = new GroundTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Ground Map 1.txt");
-	//layoutTileMap = new LayoutTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Layout Map " + std::to_string(randomLevel) + ".txt");
-
-	groundTileMap = new GroundTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Ground Map 2.txt");
-	layoutTileMap = new LayoutTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Layout Map 2.txt");
-	
-	Enemy::GetOnAnyEnemyKilled() = [this](int num){ CheckWinCondition(num); };
-
-	Camera::SetUp(GameObject::FindGameObjectWithTag(Tag::PLAYER));
-
-	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
-
-	DialogManager::ShowDialog("Intro");
+	srand((unsigned)time(NULL));
+	LoadData();
+	UIManager::Init();
+	DialogManager::Init();
+	UIManager::GetCanvasByID("MainMenu")->GetUIObjectByID<Text>("MenuMoneyText")->SetText(std::to_string(playerData.totalMoney));
+	isRunning = true; // everything inited successfully, start the main loop
+	PlayGameStateMusic();
 }
 
-void Game::StartGame()
+void Game::LoadLevel(int level)
 {
-	LoadLevel();
+	currentLevel = level;
+	
+	groundTileMap = new GroundTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Ground Map " + std::to_string(level) + ".txt");
+	layoutTileMap = new LayoutTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Layout Map " + std::to_string(level) + ".txt");
+	
+	Enemy::GetOnAnyEnemyKilled() = [this](int num) { CheckWinCondition(num); };
+	
+	Camera::SetUp(GameObject::FindGameObjectWithTag(Tag::PLAYER));
+	
+	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+	
+	DialogManager::ShowDialog("Dialog " + std::to_string(level), [this]() {   std::cout << "Dialog finished" << std::endl; });
+	
 	ChangeGameState(GameState::PlayMode);
 }
 
@@ -74,7 +73,7 @@ void Game::ResetGame()
 void Game::RetryGame()
 {
 	ResetGame();
-	StartGame();
+	LoadLevel(currentLevel);
 }
 
 void Game::Quit()
@@ -105,9 +104,9 @@ void Game::CheckWinCondition(int enemiesKilled)
 {
 	if (isRunning && (gameState == GameState::PlayMode && enemiesKilled == 0))
 	{
-		totalMoney += currentMoney;
-		SaveData(totalMoney);
-		UIManager::GetCanvasByID("MainMenu")->GetUIObjectByID<Text>("MenuMoneyText")->SetText(std::to_string(totalMoney));
+		playerData.totalMoney += currentMoney;
+		SaveData();
+		UIManager::GetCanvasByID("MainMenu")->GetUIObjectByID<Text>("MenuMoneyText")->SetText(std::to_string(playerData.totalMoney));
 		
 		currentMoney = 0;
 		UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("MoneyText")->SetText("Money: " + std::to_string(currentMoney));
@@ -129,27 +128,16 @@ void Game::ToggleDebug(bool toggle)
 	showDebug = toggle;
 }
 
-void Game::SaveData(int score)
+void Game::SaveData()
 {
-	std::ofstream file;
-	file.open("data.txt");
-	if (!file.bad())
-	{
-		file << score;
-		file.close();
-	}
+	ofstream savedFile("data.txt");
+	if (!savedFile.bad()) savedFile << playerData.totalMoney << std::endl << playerData.numOfLevelUnlocked;
 }
 
 void Game::LoadData()
 {	
-	std::ifstream file;
-	file.open("data.txt");
-	if (!file.bad())
-	{
-		file >> totalMoney;
-		file.close();
-	}
-	UIManager::GetCanvasByID("MainMenu")->GetUIObjectByID<Text>("MenuMoneyText")->SetText(std::to_string(totalMoney));
+	ifstream savedFile("data.txt");
+	if (!savedFile.bad()) savedFile >> playerData.totalMoney >> playerData.numOfLevelUnlocked;
 }
 
 void Game::HandleEvents()
@@ -195,4 +183,9 @@ void Game::Render()
 	}
 	
 	UIManager::Draw();
+}
+
+int Game::TotalNumberOfLevelUnlocked()
+{
+	return playerData.numOfLevelUnlocked;
 }

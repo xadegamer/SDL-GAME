@@ -1,4 +1,4 @@
-﻿  DialogManager.cpp
+﻿  Game.cpp
 D:\GIT Repo\SDL-GAME\MathUtility.h(17,13): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(61,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(61,34): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
@@ -6,4 +6,10 @@ D:\GIT Repo\SDL-GAME\MathUtility.h(62,54): warning C4244: 'argument': conversion
 D:\GIT Repo\SDL-GAME\MathUtility.h(62,34): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(63,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 D:\GIT Repo\SDL-GAME\MathUtility.h(63,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Camera.h(6,15): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
+D:\GIT Repo\SDL-GAME\Vector2.h(5): message : see declaration of 'Vector2'
+D:\GIT Repo\SDL-GAME\HealthComponent.h(38,37): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+D:\GIT Repo\SDL-GAME\Collider.h(40,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Collider.h(40,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\GIT Repo\SDL-GAME\Game.cpp(122,16): warning C4834: discarding return value of function with 'nodiscard' attribute
   SDL Game.vcxproj -> D:\GIT Repo\SDL-GAME\x64\Debug\SDL Game.exe

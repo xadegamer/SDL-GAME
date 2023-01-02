@@ -37,6 +37,8 @@ public:
 	
 	static void SetUpOptionCanvas();
 
+	static void SetULevelSelectCanvas();
+
 	static void SetUpGameCanvas();
 
 	static void SetUpPauseCanvas();

@@ -14,7 +14,11 @@
 
 #include <iostream>
 
-
+struct PlayerData
+{
+	int totalMoney = 0;
+	int numOfLevelUnlocked = 1;
+};
 
 enum class GameState
 {
@@ -27,50 +31,52 @@ private:
 
 	bool isRunning;
 	bool showDebug;
-	int totalMoney;
 	int currentMoney;
+	int currentLevel;
+	int maxLevel;	
 	GameState gameState;
 	GroundTileMap* groundTileMap;
 	LayoutTileMap* layoutTileMap;
+	PlayerData playerData;
 	
 public:
 
 	Game();
 
 	~Game();
-	
-	 void Render();
-	
-	 void Update(float deltaTime);
-	
-	 void HandleEvents();
-	
-	 bool IsRunning() { return isRunning; }
-	
-	 void LoadLevel();
 
-	 void LoadLevel(int level);
+	void SetUp();
 	
-	 void StartGame();
+	void Render();
 	
-	 void ResetGame();
+	void Update(float deltaTime);
 	
-	 void RetryGame();
+	void HandleEvents();
 	
-	 void Quit();
+	bool IsRunning() { return isRunning; }
+
+	void LoadLevel(int level = 1);
 	
-	 void ChangeGameState(GameState state);
+	void ResetGame();
 	
-	 void PlayGameStateMusic();
+	void RetryGame();
 	
-	 void CheckWinCondition(int enemiesKilled);
+	void Quit();
 	
-	 void AddMoney(int amount);
+	void ChangeGameState(GameState state);
 	
-	 void ToggleDebug(bool toggle);
+	void PlayGameStateMusic();
 	
-	 void SaveData(int score);
+	void CheckWinCondition(int enemiesKilled);
 	
-	 void LoadData();
+	void AddMoney(int amount);
+	
+	void ToggleDebug(bool toggle);
+	
+	void SaveData();
+	
+	void LoadData();
+
+	int TotalNumberOfLevelUnlocked();
 };
 

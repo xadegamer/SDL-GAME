@@ -12,6 +12,7 @@ void UIManager::Init()
 {
 	SetUpMainMenuCanvas();
 	SetUpOptionCanvas();
+	SetULevelSelectCanvas();
 	SetUpGameCanvas();
 	SetUpPauseCanvas();
 	SetUpWinCanvas();
@@ -32,9 +33,7 @@ void UIManager::SetUpMainMenuCanvas()
 	playButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
 	playButton->OnClick() = []()
 	{
-		Engine::GetGame()->StartGame();
-		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
-		EnableCanvasByID("GameMenu");
+		EnableCanvasByID("LevelSelectMenu");
 	};
 	canvas->AddUIObject(playButton);
 
@@ -133,6 +132,48 @@ void UIManager::SetUpOptionCanvas()
 	activeCanvases.push_back(canvas);
 }
 
+void UIManager::SetULevelSelectCanvas()
+{
+	Canvas* canvas = new Canvas("LevelSelectMenu", Vector2(Engine::SCREEN_WIDTH, Engine::Engine::SCREEN_HEIGHT), Vector2(0, 0));
+
+	Vector2 midscreen = Vector2(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
+
+	Text* title = new Text("TitleText", "Level Select", "Vorgang", { 0, 255, 255, 255 }, midscreen - Vector2(0, 200));
+	canvas->AddUIObject(title);
+
+	if (Engine::GetGame() == nullptr)
+	{
+		std::cout << "Game is null" << std::endl;
+	}
+
+	// for loop to create buttons for each unlocked level
+	for (int i = 0; i < Engine::GetGame()->TotalNumberOfLevelUnlocked(); i++)
+	{
+		Button* levelButton = new Button("LevelButton" + std::to_string(i), midscreen - Vector2(0, 100) + Vector2(0, 100 * i), Vector2(200, 50));
+		levelButton->AddText("LevelButtonText" + std::to_string(i), "Level " + std::to_string(i + 1), "Vorgang", { 255, 255, 255, 255 });
+		levelButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+		levelButton->OnClick() = [i]()
+		{
+			AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
+			Engine::GetGame()->LoadLevel(i + 1);
+			EnableCanvasByID("GameMenu");
+		};
+		canvas->AddUIObject(levelButton);
+	}
+
+	Button* backButton = new Button("BackButton", midscreen - Vector2(0, -200), Vector2(200, 50));
+	backButton->AddText("BackButtonText", "Back", "Vorgang", { 255, 255, 255, 255 });
+	backButton->OnMouseOver() = []() {AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonHover"), false); };
+	backButton->OnClick() = []()
+	{
+		AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("ButtonClick"), false);
+		EnableCanvasByID("MainMenu");
+	};
+	canvas->AddUIObject(backButton);
+
+	activeCanvases.push_back(canvas);
+}
+
 void UIManager::SetUpGameCanvas()
 {
 	Canvas* canvas = new Canvas("GameMenu", Vector2(Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT), Vector2(0, 0),false);
@@ -156,8 +197,7 @@ void UIManager::SetUpGameCanvas()
 	slider->AddText("HealthSliderText","100", "Vorgang_Small", { 255, 255, 255, 255 },20);
 	canvas->AddUIObject(slider);
 
-	// create score text
-	
+	// create score text	
 	Text* scoreText = new Text("MoneyText", "Money: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(100, 100));
 	canvas->AddUIObject(scoreText);
 

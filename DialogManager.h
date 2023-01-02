@@ -20,10 +20,9 @@ class DialogManager
 {
 	
 private:
+	
 	DialogManager() = delete;
 	~DialogManager() = delete;
-
-
 	
 	static Dialog* currentDialog;
 	static Text* dialogText;
@@ -33,12 +32,12 @@ private:
 	static float dialogTimer;
 	static float dialogMessageInterval;
 	static int currentDialogIndex;
+	static std::function <void()> OnFinishedEvent;
 	
 public:
 	
 	static void Init();
-	static void PopulateDialogs();
-	static void ShowDialog(std::string id);
+	static void ShowDialog(std::string id, std::function <void()> OnFinished = nullptr);
 	static void Update(float deltaTime);
 	static void EndDialog();
 };

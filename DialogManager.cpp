@@ -7,32 +7,19 @@ bool DialogManager::isDialogActive = false;
 float DialogManager::dialogTimer = 0.0f;
 float DialogManager::dialogMessageInterval = 1.5f;
 int DialogManager::currentDialogIndex = 0;
+std::function <void()> DialogManager::OnFinishedEvent = nullptr;
 
 void DialogManager::Init()
 {
 	dialogText = UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("DialogText");
 	EndDialog();
-	PopulateDialogs();
 }
 
-void DialogManager::PopulateDialogs()
-{
-	std::vector<std::string> introDialogTexts = { "Welcome to the game!","Use WASD to move", "Use the mouse to aim", "Left click to shoot" };
-	dialogs.push_back(new Dialog("Intro", introDialogTexts));
-}
-
-void DialogManager::ShowDialog(std::string id)
+void DialogManager::ShowDialog(std::string id, std::function <void()> OnFinished)
 {
 	EndDialog();
-	
-	for (Dialog* dialog : dialogs)
-	{
-		if (dialog->ID == id)
-		{
-			currentDialog = dialog;
-			break;
-		}
-	}
+	currentDialog = AssetManager::GetDialog(id);
+	OnFinishedEvent = OnFinished;
 }
 
 void DialogManager::Update(float deltaTime)
@@ -47,7 +34,15 @@ void DialogManager::Update(float deltaTime)
 				currentDialogIndex++;
 				dialogTimer = 0.0f;
 			}
-			else EndDialog();
+			else
+			{
+				if (OnFinishedEvent)
+				{
+					OnFinishedEvent();
+					OnFinishedEvent = nullptr;
+				}
+				EndDialog();
+			}
 		}
 		else dialogTimer += deltaTime;
 	}

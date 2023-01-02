@@ -6,6 +6,8 @@
 
 #include "SDLManager.h"
 
+struct Dialog;
+
 class AssetManager
 {
 private:
@@ -16,6 +18,8 @@ private:
 	static std::map<std::string, Mix_Chunk*> sounds;
 	
 	static std::map<std::string, Mix_Music*> musics;
+
+	static std::map<std::string, Dialog*> dialogs;
 	
 public:
 
@@ -29,6 +33,8 @@ public:
 	static Mix_Chunk* GetSoundEffect(std::string filename);
 
 	static Mix_Music* GetMusic(std::string filename);
+
+	static Dialog* GetDialog(std::string filename);
 
 private:
 	AssetManager() = delete;

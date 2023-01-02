@@ -17,6 +17,9 @@ class Enemy : public Character
 private:
 
 	static int noOfEnemies;
+	static int numberOfEnemiesAlive;
+	
+	static std::function<void(int)> OnAnyEnemyDespawned;
 	static std::function<void(int)> OnAnyEnemyKilled;
 	
 	float fireRate;
@@ -40,6 +43,8 @@ private:
 public:
 	
 	static inline std::function <void(int)>& GetOnAnyEnemyKilled() { return OnAnyEnemyKilled; }
+	static inline std::function <void(int)>& GetOnAnyEnemyDespawned() { return OnAnyEnemyDespawned; }
+	static inline int GetNumberOfEnemyAlive() { return noOfEnemies; }
 
 	Enemy(Vector2 position, float maxhealth);
 	~Enemy();

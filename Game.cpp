@@ -53,11 +53,11 @@ void Game::LoadLevel(int level)
 	groundTileMap = new GroundTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Ground Map " + std::to_string(level) + ".txt");
 	layoutTileMap = new LayoutTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Layout Map " + std::to_string(level) + ".txt");
 	
-	Enemy::GetOnAnyEnemyKilled() = [this](int num) { CheckWinCondition(num); };
+	SetUpWinCondition();
 	
 	Camera::SetUp(GameObject::FindGameObjectWithTag(Tag::PLAYER));
 	
-	AudioManager::PlayMusic(AssetManager::GetMusic("Three Kinds of Suns - Norma Rockwell"), true);
+	AudioManager::PlayMusic(AssetManager::GetMusic("Level " + std::to_string(level)), true);
 	
 	DialogManager::ShowDialog("Dialog " + std::to_string(level), [this]() {   std::cout << "Dialog finished" << std::endl; });
 	
@@ -100,6 +100,18 @@ void Game::PlayGameStateMusic()
 	}
 }
 
+void Game::SetUpWinCondition()
+{
+	Enemy::GetOnAnyEnemyKilled() = [this](int amount)
+	{
+		UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("KillCountText")->SetText(std::to_string(amount));
+		if (amount == 0) DialogManager::ShowDialog("Success");
+	};
+
+	Enemy::GetOnAnyEnemyDespawned() = [this](int num) { CheckWinCondition(num); };
+	UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("KillCountText")->SetText(std::to_string(Enemy::GetNumberOfEnemyAlive()));
+}
+
 void Game::CheckWinCondition(int enemiesKilled)
 {
 	if (isRunning && (gameState == GameState::PlayMode && enemiesKilled == 0))
@@ -107,10 +119,10 @@ void Game::CheckWinCondition(int enemiesKilled)
 		playerData.totalMoney += currentMoney;
 		SaveData();
 		UIManager::GetCanvasByID("MainMenu")->GetUIObjectByID<Text>("MenuMoneyText")->SetText(std::to_string(playerData.totalMoney));
-		
+
 		currentMoney = 0;
-		UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("MoneyText")->SetText("Money: " + std::to_string(currentMoney));
-		
+		UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("MoneyText")->SetText(std::to_string(currentMoney));
+
 		ChangeGameState(GameState::GameOver);
 		UIManager::EnableCanvasByID("WinMenu");
 	}
@@ -119,8 +131,7 @@ void Game::CheckWinCondition(int enemiesKilled)
 void Game::AddMoney(int amount)
 {
 	currentMoney += amount;
-	std::to_string(currentMoney);
-	UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("MoneyText")->SetText("Money: " + std::to_string(currentMoney));
+	UIManager::GetCanvasByID("GameMenu")->GetUIObjectByID<Text>("MoneyText")->SetText(std::to_string(currentMoney));
 }
 
 void Game::ToggleDebug(bool toggle)

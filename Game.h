@@ -17,7 +17,7 @@
 struct PlayerData
 {
 	int totalMoney = 0;
-	int numOfLevelUnlocked = 1;
+	int numOfLevelUnlocked = 2;
 };
 
 enum class GameState
@@ -66,6 +66,8 @@ public:
 	void ChangeGameState(GameState state);
 	
 	void PlayGameStateMusic();
+
+	void SetUpWinCondition();
 	
 	void CheckWinCondition(int enemiesKilled);
 	

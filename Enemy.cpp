@@ -11,11 +11,14 @@
 #include "Money.h"
 
 int Enemy::noOfEnemies;
+int Enemy::numberOfEnemiesAlive;
 std::function<void(int)> Enemy::OnAnyEnemyKilled = [](int) {};
+std::function<void(int)> Enemy::OnAnyEnemyDespawned = [](int) {};
 
 Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 {
 	noOfEnemies++;
+	numberOfEnemiesAlive = noOfEnemies;
 	
 	fireRate = 3;
 	fireTimer = 0;
@@ -43,7 +46,7 @@ Enemy::Enemy(Vector2 position, float maxhealth) : Character(position)
 Enemy::~Enemy()
 {
 	noOfEnemies--; 
-	if (OnAnyEnemyKilled)OnAnyEnemyKilled(noOfEnemies);
+	if (OnAnyEnemyDespawned)OnAnyEnemyDespawned(noOfEnemies);
 }
 
 void Enemy::Update(float deltaTime)
@@ -119,6 +122,9 @@ void Enemy::OnDeath()
 	AudioManager::PlaySoundEffect(AssetManager::GetSoundEffect("Kill"), false);
 	GameObject::Instantiate(new TimedDelayVfxEffect(circleCollider->GetCentre(), "blood pool", SortingLayer::CharacterBloodLayer, 10));
 	GameObject::Instantiate(new Money(circleCollider->GetCentre(), "Money", ColliderType::BOX, SortingLayer::CollectableLayer, 50));
+
+	numberOfEnemiesAlive--;
+	if (OnAnyEnemyKilled)OnAnyEnemyKilled(numberOfEnemiesAlive);
 }
 
 void Enemy::PatrolState(float deltaTime)

@@ -197,9 +197,20 @@ void UIManager::SetUpGameCanvas()
 	slider->AddText("HealthSliderText","100", "Vorgang_Small", { 255, 255, 255, 255 },20);
 	canvas->AddUIObject(slider);
 
+	// money image
+	Image* moneyIcon = new Image("MoneyImage", "MoneyIcon", topLeftScreenCorner + Vector2(70, 100));
+	canvas->AddUIObject(moneyIcon);
+
 	// create score text	
-	Text* scoreText = new Text("MoneyText", "Money: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(100, 100));
+	Text* scoreText = new Text("MoneyText", "0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(120, 105));
 	canvas->AddUIObject(scoreText);
+
+	// enemy image
+	Image* enemyIcon = new Image("MoneyImage", "EnemyIcon", topLeftScreenCorner + Vector2(300, 100));
+	canvas->AddUIObject(enemyIcon);
+
+	Text* killCountText = new Text("KillCountText", "Kill Count: 0", "Vorgang", { 255, 255, 255, 255 }, topLeftScreenCorner + Vector2(340, 100));
+	canvas->AddUIObject(killCountText);
 
 	// add a dialog text in lower middle of screen
 	Text* dialogText = new Text("DialogText", " ", "Vorgang", { 255, 255, 255, 255 }, midscreen + Vector2(0, 450));

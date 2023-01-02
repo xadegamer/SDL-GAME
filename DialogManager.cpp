@@ -5,7 +5,7 @@ Text* DialogManager::dialogText = nullptr;
 std::vector<Dialog*> DialogManager::dialogs;
 bool DialogManager::isDialogActive = false;
 float DialogManager::dialogTimer = 0.0f;
-float DialogManager::dialogMessageInterval = 1.5f;
+float DialogManager::dialogMessageInterval = 2.0f;
 int DialogManager::currentDialogIndex = 0;
 std::function <void()> DialogManager::OnFinishedEvent = nullptr;
 

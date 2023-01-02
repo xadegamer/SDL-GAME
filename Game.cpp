@@ -48,6 +48,8 @@ void Game::SetUp()
 
 void Game::LoadLevel(int level)
 {
+	// Loads the level from the file and sets up the game
+	
 	currentLevel = level;
 	
 	groundTileMap = new GroundTileMap((Engine::LEVEL_WIDTH / Engine::TILE_SIZE) + 1, (Engine::LEVEL_HEIGHT / Engine::TILE_SIZE) + 1, Engine::TILE_SIZE, "Assets/Maps/Ground Map " + std::to_string(level) + ".txt");

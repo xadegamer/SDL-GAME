@@ -178,7 +178,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DialogManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Statics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,7 +315,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DialogManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Statics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

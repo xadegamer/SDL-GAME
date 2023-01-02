@@ -55,7 +55,7 @@ public:
 	
 	bool IsRunning() { return isRunning; }
 
-	void LoadLevel(int level = 1);
+	void LoadLevel(int level);
 	
 	void ResetGame();
 	
